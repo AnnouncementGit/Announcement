@@ -1,0 +1,1 @@
+please read this file before starting development
