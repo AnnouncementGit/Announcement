@@ -9,11 +9,9 @@ using Android.OS;
 
 namespace Announcement.Android
 {
-    [Activity(Label = "Announcement.Android", MainLauncher = true, Icon = "@drawable/icon")]
+    [Activity(Label = "Announcement.Android", MainLauncher = true, Icon = "@drawable/icon", Theme="@style/splash_theme", ScreenOrientation = global::Android.Content.PM.ScreenOrientation.Portrait)]
     public class MainActivity : Activity
     {
-        int count = 1;
-
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);

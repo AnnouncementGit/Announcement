@@ -61,7 +61,12 @@
     <AndroidResource Include="Resources\drawable-xhdpi\Icon.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\Icon.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\Icon.png" />
+    <AndroidResource Include="Resources\values\Styles.xml" />
+    <AndroidResource Include="Resources\drawable\splash_screen.xml" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\big_logo.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\big_logo.png" />
   </ItemGroup>
+  <Import Project="..\Announcement.Core\Announcement.Core.projitems" Label="Shared" Condition="Exists('..\Announcement.Core\Announcement.Core.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <ItemGroup>
     <Folder Include="Resources\drawable\" />
