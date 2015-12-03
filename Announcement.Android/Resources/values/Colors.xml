@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<resources>
+     <color name="facebook_button_pressed">#5e6982</color>
+     <color name="facebook_button_normal">#5f7bb6</color>
+
+     <color name="google_plus_button_pressed">#ab5548</color>
+     <color name="google_plus_button_normal">#df4a32</color>
+
+     <color name="linked_in_button_pressed">#1a6380</color>
+     <color name="linked_in_button_normal">#0080b2</color>
+
+     <color name="vk_button_pressed">#4b5c70</color>
+     <color name="vk_button_normal">#4c75a3</color>
+
+     <color name="moderator_button_pressed">#35679c</color>
+     <color name="moderator_button_normal">#1c71ce</color>
+
+</resources>

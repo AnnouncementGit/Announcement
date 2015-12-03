@@ -8,4 +8,29 @@
   <PropertyGroup Label="Configuration">
     <Import_RootNamespace>Announcement.Core</Import_RootNamespace>
   </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)Models\" />
+    <Folder Include="$(MSBuildThisFileDirectory)ViewModels\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Modules\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Language.Designer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\Moderator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\BaseViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ModeratorsViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Modules\AlertModule.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Modules\ProgressModule.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Modules\LocalizationModule.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)InitializationStatus.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ActionResult.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\AdminMainViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SourceManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\LoginViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\UserMainViewModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Language.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
 </Project>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <Announcement.Android.Controls.Button
+        style="@style/login_social_button_style"
+        android:id="@+id/FacebookButton"
+        android:layout_centerVertical="true"
+        android:background="@drawable/facebook_button_selector"
+        local:localizationKey="button_title_facebook" />
+    <Announcement.Android.Controls.Button
+        style="@style/login_social_button_style"
+        android:id="@+id/GooglePlusButton"
+        android:layout_below="@+id/FacebookButton"
+        android:background="@drawable/google_plus_button_selector"
+        local:localizationKey="button_title_google_plus" />
+    <Announcement.Android.Controls.Button
+        style="@style/login_social_button_style"
+        android:id="@+id/LinkedInButton"
+        android:layout_below="@+id/VKButton"
+        android:background="@drawable/linked_in_button_selector"
+        local:localizationKey="button_title_linked_in" />
+    <Announcement.Android.Controls.Button
+        style="@style/login_social_button_style"
+        android:id="@+id/VKButton"
+        android:layout_below="@+id/GooglePlusButton"
+        android:background="@drawable/vk_button_selector"
+        local:localizationKey="button_title_vk" />
+    <Announcement.Android.Controls.Button
+        android:id="@+id/ModeratorButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:background="@null"
+        android:textColor="@drawable/moderator_button_selector"
+        android:textSize="24sp"
+        local:localizationKey="button_title_moderator" />
+</RelativeLayout>
