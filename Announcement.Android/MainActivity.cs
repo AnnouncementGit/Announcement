@@ -13,6 +13,8 @@ namespace Announcement.Android
 
             SetContentView(Resource.Layout.main_layout);
 
+			MainActivityInstance.Current = this;
+
             NavigationManager.Initialize(this);
 
             NavigationManager.Forward(typeof(LoginViaSocialFragment));
@@ -26,6 +28,21 @@ namespace Announcement.Android
             }
         }
     }
+
+	public class MainActivityInstance {
+		public static MainActivity Current{
+			get { return current; }
+			set{ if (current == value)
+					return;
+			
+				if (value == null)
+					Previous = current;
+			
+				current = value;}
+		}
+		public static MainActivity Previous { get; set;}
+		private static MainActivity current;
+	}
 }
 
 
