@@ -21,12 +21,11 @@
     <Compile Include="$(MSBuildThisFileDirectory)Modules\AlertModule.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Modules\ProgressModule.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Modules\LocalizationModule.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)InitializationStatus.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ActionResult.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\AdminMainViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SourceManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\LoginViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\UserMainViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Result.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Language.resx">

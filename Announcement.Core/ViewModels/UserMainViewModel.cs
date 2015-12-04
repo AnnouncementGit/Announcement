@@ -15,37 +15,24 @@ namespace Announcement.Core
             }
         }
             
-        public UserMainViewModel()
-        {
-            
-        }
-
-        public override InitializationStatus Initialize()
-        {
-            return base.Initialize();
-        }
-
         public async void PushReportSpam(int latitude, int longitude, byte[] buffer, Action callback)
         {
-            //
-            //TODO
-            //
             ProgressModule.Message(LocalizationModule.Translate("progress_authentication"));
 
-            var status = await Task.Run<ActionResult>(() => SourceManager.PushReportSpam(latitude, longitude, buffer));
+            var result = await Task.Run<Result>(() => SourceManager.PushReportSpam(latitude, longitude, buffer));
 
             ProgressModule.End();
 
-            if (status.HasError)
+            if (result.HasError)
+            {
+                AlertModule.Show(result, () => PushReportSpam(latitude, longitude, buffer, callback));
+            }
+            else
             {
                 if (callback != null)
                 {
                     callback.Invoke();
                 }
-            }
-            else
-            {
-                AlertModule.Show(AlertModule.INFORMATION, status.Message, LocalizationModule.Translate("alert_try_again"), () => PushReportSpam(latitude, longitude, buffer, callback));
             }
         }
                

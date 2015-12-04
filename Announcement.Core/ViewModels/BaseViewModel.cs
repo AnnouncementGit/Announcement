@@ -18,13 +18,11 @@ namespace Announcement.Core
 
         }
 
-        public virtual InitializationStatus Initialize()
+        public virtual Result Initialize()
         {
-            var status = new InitializationStatus();
+            Erase();
 
-            status.IsSuccess = true;
-
-            return status;
+            return new Result() { Type = ResultType.Success };
         }
 
         public virtual void Erase()

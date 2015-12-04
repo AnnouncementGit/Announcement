@@ -17,11 +17,11 @@ namespace Announcement.Core
         }
             
 
-        public ActionResult<List<Moderator>> PullModerators()
+        public Result<List<Moderator>> PullModerators()
         {
             ProgressModule.Message(LocalizationModule.Translate("progress_receiving_data"));
 
-            var result = new ActionResult<List<Moderator>>();
+            var result = new Result<List<Moderator>>();
 
             List<Moderator> moderators = null;
 
@@ -40,18 +40,16 @@ namespace Announcement.Core
             if (result.Value == null)
             {
                 moderators = new List<Moderator>();
-            }
+            }                
 
             return result;
         }
 
-        public ActionResult PushReportSpam(int latitude, int longitude, byte[] buffer)
+        public Result PushReportSpam(int latitude, int longitude, byte[] buffer)
         {
             ProgressModule.Message(LocalizationModule.Translate("progress_send_report_spam"));
 
-            var result = new ActionResult();
-
-            List<Moderator> moderators = null;
+            var result = new Result();
 
             Thread.Sleep(3000);
 
