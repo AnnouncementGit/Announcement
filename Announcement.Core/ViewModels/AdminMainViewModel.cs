@@ -14,56 +14,26 @@ namespace Announcement.Core
             }
         }
             
-        public AdminMainViewModel()
-        {
-            
-        }
-
-        public override InitializationStatus Initialize()
-        {
-            var status = new InitializationStatus() { IsSuccess = true };
-
-            Erase();
-
-            var pullModeratorsResult = SourceManager.PullModerators();
-
-            if (pullModeratorsResult.HasError)
-            {
-                status.IsSuccess = false;
-
-                status.Message = pullModeratorsResult.Message;
-
-                return status;
-            }
-
-            return status;
-        }
-
-        public override void Erase()
-        {
-            
-        }
-            
         public async void InitializeModerators(Action callback)
         {
             var viewModel = ModeratorsViewModel.Instance;
 
-            var status = await Task.Run<InitializationStatus>(() => viewModel.Initialize());
+            var result = await Task.Run<Result>(() => viewModel.Initialize());
 
-            await Task.Delay(5000);
+            await Task.Delay(3000);
 
             ProgressModule.End();
 
-            if (status.IsSuccess)
+            if (result.HasError)
+            {
+                AlertModule.Show(result, () => InitializeModerators(callback));
+            }
+            else
             {
                 if (callback != null)
                 {
                     callback.Invoke();
                 }
-            }
-            else
-            {
-                //AlertModule.Show(LocalizationModule.Translate("title_key"), status.Message, LocalizationModule.Translate("try_again_key"), () => NavigateToUsersView(callback), null);
             }
         }
 
@@ -71,22 +41,22 @@ namespace Announcement.Core
         {
             var viewModel = ModeratorsViewModel.Instance;
 
-            var status = await Task.Run<InitializationStatus>(() => viewModel.Initialize());
+            var result = await Task.Run<Result>(() => viewModel.Initialize());
 
-            await Task.Delay(5000);
+            await Task.Delay(3000);
 
             ProgressModule.End();
 
-            if (status.IsSuccess)
+            if (result.HasError)
+            {
+                AlertModule.Show(result, () => InitializeValidations(callback));
+            }
+            else
             {
                 if (callback != null)
                 {
                     callback.Invoke();
                 }
-            }
-            else
-            {
-                //AlertModule.Show(LocalizationModule.Translate("title_key"), status.Message, LocalizationModule.Translate("try_again_key"), () => NavigateToUsersView(callback), null);
             }
         }
 

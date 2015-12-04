@@ -26,12 +26,12 @@ namespace Announcement.Android
 
             moderatorsButton.Click += (sender, e) => 
                 {
-                    //ViewModel.InitializeModerators(InitializeModeratorsCallback);
+                    ViewModel.InitializeModerators(InitializeModeratorsCallback);
                 };
 
             validationsButton.Click += (sender, e) => 
                 {
-                    //ViewModel.InitializeValidations(InitializeValidationsCallback);
+                    ViewModel.InitializeValidations(InitializeValidationsCallback);
                 };
 
             return view;
