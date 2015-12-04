@@ -54,7 +54,7 @@ namespace Announcement.Core
 
             if (result.HasError)
             {
-                //AlertModule.Show(result, () => LoginViaFacebook(token, callback));
+                AlertModule.Show(result, () => LoginViaFacebook(token, callback));
             }
             else
             {
