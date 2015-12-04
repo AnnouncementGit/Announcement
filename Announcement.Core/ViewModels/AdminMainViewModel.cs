@@ -44,7 +44,30 @@ namespace Announcement.Core
             
         }
             
-        public async void OpenModerators(Action callback)
+        public async void InitializeModerators(Action callback)
+        {
+            var viewModel = ModeratorsViewModel.Instance;
+
+            var status = await Task.Run<InitializationStatus>(() => viewModel.Initialize());
+
+            await Task.Delay(5000);
+
+            ProgressModule.End();
+
+            if (status.IsSuccess)
+            {
+                if (callback != null)
+                {
+                    callback.Invoke();
+                }
+            }
+            else
+            {
+                //AlertModule.Show(LocalizationModule.Translate("title_key"), status.Message, LocalizationModule.Translate("try_again_key"), () => NavigateToUsersView(callback), null);
+            }
+        }
+
+        public async void InitializeValidations(Action callback)
         {
             var viewModel = ModeratorsViewModel.Instance;
 

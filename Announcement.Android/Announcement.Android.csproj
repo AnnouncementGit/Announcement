@@ -59,6 +59,7 @@
     <Compile Include="Pages\LoginFragment.cs" />
     <Compile Include="Pages\LoginViaSocialFragment.cs" />
     <Compile Include="Controls\Button.cs" />
+    <Compile Include="Controls\EditText.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -79,7 +80,6 @@
     <AndroidResource Include="Resources\drawable-xxhdpi\big_logo.png" />
     <AndroidResource Include="Resources\layout\user_main_layout.axml" />
     <AndroidResource Include="Resources\layout\main_layout.axml" />
-    <AndroidResource Include="Resources\layout\super_admin_main_layout.axml" />
     <AndroidResource Include="Resources\layout\add_new_moderator_layout.axml" />
     <AndroidResource Include="Resources\layout\moderators_layout.axml" />
     <AndroidResource Include="Resources\layout\admin_main_layout.axml" />
@@ -92,6 +92,7 @@
     <AndroidResource Include="Resources\drawable\vk_button_selector.xml" />
     <AndroidResource Include="Resources\values\Colors.xml" />
     <AndroidResource Include="Resources\drawable\moderator_button_selector.xml" />
+    <AndroidResource Include="Resources\drawable\button_selector.xml" />
   </ItemGroup>
   <Import Project="..\Announcement.Core\Announcement.Core.projitems" Label="Shared" Condition="Exists('..\Announcement.Core\Announcement.Core.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />

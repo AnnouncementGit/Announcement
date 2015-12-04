@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
 <resources>
 
- <declare-styleable name="button">
+ <declare-styleable name="localization">
     <attr name="localizationKey" format="string"/>
  </declare-styleable>
 

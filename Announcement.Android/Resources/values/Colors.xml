@@ -15,4 +15,7 @@
      <color name="moderator_button_pressed">#35679c</color>
      <color name="moderator_button_normal">#1c71ce</color>
 
+     <color name="button_pressed">#5e6982</color>
+     <color name="button_normal">#5f7bb6</color>
+
 </resources>

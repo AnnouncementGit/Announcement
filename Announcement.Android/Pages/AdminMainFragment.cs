@@ -18,19 +18,31 @@ namespace Announcement.Android
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
-            var view = inflater.Inflate(Resource.Layout.super_admin_main_layout, null);
+            var view = inflater.Inflate(Resource.Layout.admin_main_layout, null);
 
             var moderatorsButton = view.FindViewById<Button>(Resource.Id.ModeratorsButton);
 
+            var validationsButton = view.FindViewById<Button>(Resource.Id.ValidationsButton);
+
             moderatorsButton.Click += (sender, e) => 
                 {
-                    ViewModel.OpenModerators(OpenModeratorsCallback);
+                    //ViewModel.InitializeModerators(InitializeModeratorsCallback);
+                };
+
+            validationsButton.Click += (sender, e) => 
+                {
+                    //ViewModel.InitializeValidations(InitializeValidationsCallback);
                 };
 
             return view;
         }
 
-        public void OpenModeratorsCallback()
+        public void InitializeModeratorsCallback()
+        {
+            //NavigationManager.Forward(typeof(ModeratorsFragment));
+        }
+
+        public void InitializeValidationsCallback()
         {
             //NavigationManager.Forward(typeof(ModeratorsFragment));
         }
