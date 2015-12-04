@@ -27,6 +27,13 @@ namespace Announcement.Android
                 base.OnBackPressed();
             }
         }
+
+		protected override void OnActivityResult (int requestCode, Result resultCode, global::Android.Content.Intent data)
+		{
+			base.OnActivityResult (requestCode, resultCode, data);
+
+			SocialServices.Instance.OnActivityResult (requestCode, resultCode, data);
+		}
     }
 
 	public class MainActivityInstance {

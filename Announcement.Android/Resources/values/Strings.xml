@@ -2,4 +2,5 @@
 <resources>
     <string name="hello">Hello World, Click Me!</string>
     <string name="app_name">Announcement.Android</string>
+    <string name="fb_app_id">467795070094543</string>
 </resources>

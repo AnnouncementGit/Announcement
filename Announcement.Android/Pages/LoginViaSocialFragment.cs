@@ -18,8 +18,6 @@ namespace Announcement.Android
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
-			var socialServices = new SocialServices ();
-
             var view = inflater.Inflate(Resource.Layout.login_via_social_layout, null);
 
             var facebookButton = view.FindViewById<Button>(Resource.Id.FacebookButton);
@@ -34,28 +32,28 @@ namespace Announcement.Android
 
             facebookButton.Click += (sender, e) => 
             {
-				socialServices.FacebookLogin((token) => { 
-						ViewModel.LoginViaFacebook(token, LoginViaSocialCallback);
+				SocialServices.Instance.FacebookLogin((token) => { 
+					ViewModel.LoginViaFacebook(token, LoginViaSocialCallback);
 				});
 			};
 
             googlePlusButton.Click += (sender, e) => 
             {
-				socialServices.GoogleLogin((token) => { 
+				SocialServices.Instance.GoogleLogin((token) => { 
 						ViewModel.LoginViaGooglePlus(token, LoginViaSocialCallback);
 				});
             };
 
             vkButton.Click += (sender, e) => 
             {
-				socialServices.VKLogin((token) => { 
+				SocialServices.Instance.VKLogin((token) => { 
 						ViewModel.LoginViaVK(token, LoginViaSocialCallback);
 				});
             };
 
             linkedInButton.Click += (sender, e) => 
             {
-				socialServices.LinkedInLogin((token) => { 
+				SocialServices.Instance.LinkedInLogin((token) => { 
 						ViewModel.LoginViaLinkedIn(token, LoginViaSocialCallback);
 				});
             };
