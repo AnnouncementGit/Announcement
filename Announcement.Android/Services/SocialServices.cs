@@ -6,10 +6,13 @@ using Xamarin.Facebook.Login;
 using Android.Gms.Common;
 using Android.Gms.Common.Apis;
 using Android.Gms.Plus;
+using Android.Gms.Auth;
+using System.Threading.Tasks;
+using Android.OS;
 
 namespace Announcement.Android
 {
-	public class SocialServices : Android.Gms.Common.Apis.GoogleApiClient.IConnectionCallbacks
+	public class SocialServices : Java.Lang.Object, global::Android.Gms.Common.Apis.GoogleApiClient.IConnectionCallbacks, global::Android.Gms.Common.Apis.GoogleApiClient.IOnConnectionFailedListener
 	{
 		private MainActivity activity;
 
@@ -76,28 +79,21 @@ namespace Announcement.Android
 		//			activity.StartActivity (intent);
 		//		}
 		#endregion
-		#region GoogleLogin SDK - get token = 
+		#region GoogleLogin SDK - get token = ok
 
-		private bool googleApiIntentInProgress;
-		private bool googleApiSignInClicked;
 		private GoogleApiClient googleApiClient;
 		private ConnectionResult googleConnectionResult;
+		private bool googleLogInButtonClicked;
+		private Action<string> googleLoginCallback;
 
 		public void GoogleLogin(Action<string> callback)
 		{
-			if (googleConnectionResult.HasResolution) {
-				try {
-				
-					googleApiIntentInProgress = true;
-					MainActivityInstance.Current.StartIntentSenderForResult (googleConnectionResult.Resolution.IntentSender, 0, null, 0, 0, 0);
-				} catch (global::Android.Content.IntentSender.SendIntentException exception) {
-					googleApiIntentInProgress = false;
-					googleApiClient.Connect ();
-					Console.WriteLine (exception.Message);
-				}
-			} else {
-				GooglePlayServicesUtil.GetErrorDialog (googleConnectionResult.ErrorCode, activity, 0).Show ();
-			}
+			googleLogInButtonClicked = true;
+			AddGoogleApiClient ();
+			googleApiClient.Connect ();
+
+			if(callback!=null)
+			    googleLoginCallback = callback;
 		}
 
 		private void AddGoogleApiClient()
@@ -106,9 +102,44 @@ namespace Announcement.Android
 			googleApiClientBuilder.AddConnectionCallbacks (this);
 			googleApiClientBuilder.AddOnConnectionFailedListener (this);
 			googleApiClientBuilder.AddApi (PlusClass.API);
-			googleApiClientBuilder.AddScope (PlusClass.ScopePlusProfile);
 			googleApiClientBuilder.AddScope (PlusClass.ScopePlusLogin);
+			googleApiClientBuilder.AddScope (PlusClass.ScopePlusProfile);
 			googleApiClient = googleApiClientBuilder.Build ();
+		}
+
+		public void OnConnectionSuspended (int cause)
+		{
+		}
+
+		public void OnConnectionFailed (ConnectionResult result)
+		{
+			googleConnectionResult = result;
+
+			if (googleLogInButtonClicked) {
+				googleLogInButtonClicked = false;
+				if (googleConnectionResult.HasResolution) {
+					try {
+						MainActivityInstance.Current.StartIntentSenderForResult (googleConnectionResult.Resolution.IntentSender, 0, null, 0, 0, 0);
+					} catch (global::Android.Content.IntentSender.SendIntentException exception) {
+						googleApiClient.Connect ();
+						Console.WriteLine (exception.Message);
+					}
+				} else {
+					GooglePlayServicesUtil.GetErrorDialog (googleConnectionResult.ErrorCode, activity, 0).Show ();
+				}
+			}
+		}
+
+		public void OnConnected (global::Android.OS.Bundle connectionHint)
+		{
+//			if (PlusClass.PeopleApi.GetCurrentPerson (googleApiClient) != null) {
+//				var person = PlusClass.PeopleApi.GetCurrentPerson (googleApiClient);
+//			}
+//
+			var account = PlusClass.AccountApi.GetAccountName (googleApiClient);
+
+			var t = new GoogleAccessTokenAsyncLoader (account, googleLoginCallback);
+			t.Execute ();
 		}
 		#endregion
 		#region GoogleLogin oAuth2 - get token = bad
@@ -207,20 +238,42 @@ namespace Announcement.Android
 
 		public void OnActivityResult(int requestCode, Result resultCode, global::Android.Content.Intent data)
 		{
-			if (requestCode == 0) {
-				if (resultCode != Result.Ok)
-					googleApiSignInClicked = false;
-				
-				googleApiIntentInProgress = false;
-				
-				if (!googleApiClient.IsConnecting)
-					googleApiClient.Connect ();
-			}
+			if (googleApiClient != null && !googleApiClient.IsConnecting && requestCode == 0)
+				googleApiClient.Connect ();
 
 			if (callbackManager != null)
 				callbackManager.OnActivityResult (requestCode, (int)resultCode, data);
-			
 		}
+	}
+
+	public class GoogleAccessTokenAsyncLoader : AsyncTask<string, string, string>
+	{
+		string account;
+		Action<string> callback;
+		public GoogleAccessTokenAsyncLoader(string account, Action<string> callback)
+		{
+			this.account = account;
+			this.callback = callback;
+		}
+		#region implemented abstract members of AsyncTask
+
+		protected override string RunInBackground (params string[] @params)
+		{
+			var token = string.Empty;
+			try
+			{
+				token = GoogleAuthUtil.GetToken(MainActivityInstance.Current, account,"oauth2:" + Scopes.PlusLogin);
+
+				if (callback != null)
+					callback.Invoke (token);
+			}
+			catch (Exception){
+				//
+			}
+
+			return token;
+		}
+		#endregion
 	}
 
 	public class FacebookAcessTokenTracker : AccessTokenTracker
