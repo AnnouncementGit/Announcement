@@ -20,31 +20,7 @@ namespace Announcement.Android
         {
             var view = inflater.Inflate(Resource.Layout.admin_main_layout, null);
 
-            var moderatorsButton = view.FindViewById<Button>(Resource.Id.ModeratorsButton);
-
-            var validationsButton = view.FindViewById<Button>(Resource.Id.ValidationsButton);
-
-            moderatorsButton.Click += (sender, e) => 
-                {
-                    ViewModel.InitializeModerators(InitializeModeratorsCallback);
-                };
-
-            validationsButton.Click += (sender, e) => 
-                {
-                    ViewModel.InitializeValidations(InitializeValidationsCallback);
-                };
-
             return view;
-        }
-
-        public void InitializeModeratorsCallback()
-        {
-            //NavigationManager.Forward(typeof(ModeratorsFragment));
-        }
-
-        public void InitializeValidationsCallback()
-        {
-            //NavigationManager.Forward(typeof(ModeratorsFragment));
         }
     }
 }

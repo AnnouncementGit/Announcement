@@ -19,41 +19,57 @@ namespace Announcement.Core
 
         public Result<List<Moderator>> PullModerators()
         {
-            ProgressModule.Message(LocalizationModule.Translate("progress_receiving_data"));
+            ProgressModule.Message(LocalizationModule.Translate("progress_receiving_moderators"));
 
-            var result = new Result<List<Moderator>>();
-
-            List<Moderator> moderators = null;
-
-            ///
-            moderators = new List<Moderator>();
-
-            for (int index = 0; index < 20; index++)
-            {
-                moderators.Add(new Moderator(){ Email = string.Format("moderator{0}@mail.com", index) });
-            }
-
-            Thread.Sleep(3000);
-            ///
-            result.Value = moderators;
-
-            if (result.Value == null)
-            {
-                moderators = new List<Moderator>();
-            }                
-
-            return result;
+            return AmazonModule.InvokeLambda<List<Moderator>>("PullModerators", null);
         }
 
-        public Result PushReportSpam(int latitude, int longitude, byte[] buffer)
+        public Result<Ratings> PullRatings()
+        {
+            ProgressModule.Message(LocalizationModule.Translate("progress_receiving_ratings"));
+
+            return AmazonModule.InvokeLambda<Ratings>("PullRatings", null);
+        }
+
+        public Result<List<Report>> PullReports()
+        {
+            ProgressModule.Message(LocalizationModule.Translate("progress_receiving_reports"));
+
+            return AmazonModule.InvokeLambda<List<Report>>("PullReports", null);
+        }
+
+        public Result<object> PushModerator(string username, string password)
+        {
+            ProgressModule.Message(LocalizationModule.Translate("progress_creating_moderator"));
+
+            var moderator = new ModeratorRegistration() { Username = username, Password = password };
+
+            return AmazonModule.InvokeLambda<object>("PushModerator", moderator);
+        }
+
+        public Result<object> RejectReport(int id)
+        {
+            ProgressModule.Message(LocalizationModule.Translate("progress_report_rejecting"));
+
+            return AmazonModule.InvokeLambda<object>("RejectReport", id);
+        }
+
+        public Result<object> ConfirmReport(int id, string phoneNumber, string audioRecord)
+        {
+            ProgressModule.Message(LocalizationModule.Translate("progress_report_rejecting"));
+
+            var report = new Report() { Id = id, PhoneNumber = phoneNumber, AudioRecord = audioRecord };
+
+            return AmazonModule.InvokeLambda<object>("ConfirmReport", report);
+        }
+            
+        public Result<int> PushReportSpam(float latitude, float longitude, byte[] photo)
         {
             ProgressModule.Message(LocalizationModule.Translate("progress_send_report_spam"));
 
-            var result = new Result();
+            var report = new SingleReport() { Latitude = latitude, Longitude = longitude, Photo = photo  };
 
-            Thread.Sleep(3000);
-
-            return result;
+            return AmazonModule.InvokeLambda<int>("PushReport", report);
         }
 
 

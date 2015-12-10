@@ -9,61 +9,6 @@ namespace Announcement.Core
 {
     public static class AlertModule
     {
-        public static void Show(Result result, Action okCallback = null)
-        {
-            Application.SynchronizationContext.Post(ignored =>
-                {
-                    var activity = NavigationManager.CurrentActivity;
-
-                    if (activity == null)
-                        return;
-
-                    if (alertSimpleView == null)
-                    {
-                        alertSimpleView = new AlertDialogEx(activity);
-                    }
-
-                    var okButton = "[none]";
-
-                    var title = "[none]";
-
-                    switch (result.Type)
-                    {
-                        case ResultType.Error:
-                            title = LocalizationModule.Translate("alert_title_type_error");
-                            okButton = LocalizationModule.Translate("alert_button_try_again");
-                            break;
-                        case ResultType.Warning:
-                            title = LocalizationModule.Translate("alert_title_type_warning");
-                            okButton = LocalizationModule.Translate("alert_button_ok");
-                            break;
-                        case ResultType.Information:
-                            title = LocalizationModule.Translate("alert_title_type_information");
-                            okButton = LocalizationModule.Translate("alert_button_ok");
-                            break;
-                        case ResultType.Success:
-                            title = LocalizationModule.Translate("alert_title_type_success");
-                            okButton = LocalizationModule.Translate("alert_button_ok");
-                            break;
-                    }
-
-                    alertSimpleView.SetTitle(title);
-
-                    alertSimpleView.SetMessage(result.Message);
-
-                    alertSimpleView.SetButton(okButton, handler: (s, e) =>
-                        { 
-                            if (result.Type == ResultType.Error && okCallback != null)
-                            {
-                                okCallback.Invoke();
-                            }
-                        });
-
-                    alertSimpleView.Show();
-
-                }, null);
-        }
-
         public static void Show(string title, string message, string okButton, Action okCallback = null)
         {
             Application.SynchronizationContext.Post(ignored =>
@@ -133,6 +78,22 @@ namespace Announcement.Core
 
                 }, null);
         }
+
+        public static void ShowError(string message, Action okCallback = null, Action cancelCallback = null)
+        {
+            Show(LocalizationModule.Translate("alert_title_type_error"), message, LocalizationModule.Translate("alert_button_try_again"), LocalizationModule.Translate("alert_button_cancel"), okCallback, cancelCallback);
+        }
+
+        public static void ShowInformation(string message, Action okCallback = null)
+        {
+            Show(LocalizationModule.Translate("alert_title_type_information"), message, LocalizationModule.Translate("alert_button_ok"), okCallback);
+        }
+
+        public static void ShowWarning(string message, Action okCallback = null, Action cancelCallback = null)
+        {
+            Show(LocalizationModule.Translate("alert_title_type_warning"), message, LocalizationModule.Translate("alert_button_try_again"), LocalizationModule.Translate("alert_button_cancel"), okCallback, cancelCallback);
+        }
+            
 
         private static AlertDialog alertSimpleView;
 

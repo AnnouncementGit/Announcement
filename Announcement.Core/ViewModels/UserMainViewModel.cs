@@ -15,23 +15,25 @@ namespace Announcement.Core
             }
         }
             
-        public async void PushReportSpam(int latitude, int longitude, byte[] buffer, Action callback)
+        public async void PushReportSpam(float latitude, float longitude, byte[] photo, Action callback, Action continueCallback)
         {
-            ProgressModule.Message(LocalizationModule.Translate("progress_authentication"));
-
-            var result = await Task.Run<Result>(() => SourceManager.PushReportSpam(latitude, longitude, buffer));
+            var result = await Task.Run<Result<int>>(() => SourceManager.PushReportSpam(latitude, longitude, photo));
 
             ProgressModule.End();
 
             if (result.HasError)
             {
-                AlertModule.Show(result, () => PushReportSpam(latitude, longitude, buffer, callback));
+                AlertModule.ShowError(result.Message, () => PushReportSpam(latitude, longitude, photo, callback, continueCallback));
             }
             else
             {
-                if (callback != null)
+                if (result.IsSuccess)
                 {
-                    callback.Invoke();
+                    AlertModule.ShowInformation("Report sent and successfully processed. Thanks", callback);
+                }
+                else
+                {
+                    AlertModule.ShowWarning("Report sent successfully but can't analize photo.", continueCallback);
                 }
             }
         }

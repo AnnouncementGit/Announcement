@@ -22,7 +22,7 @@ namespace Announcement.Core
         {
             Erase();
 
-            return new Result() { Type = ResultType.Success };
+            return new Result();
         }
 
         public virtual void Erase()

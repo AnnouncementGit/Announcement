@@ -2,11 +2,11 @@
 
 namespace Announcement.Core
 {
-    public class Moderator
+    public class ModeratorRegistration
     {
-        public int Id { get; set; }
-        
         public string Username { get; set; }
+
+        public string Password { get; set; }
     }
 }
 

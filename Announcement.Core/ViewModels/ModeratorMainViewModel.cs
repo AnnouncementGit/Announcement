@@ -5,21 +5,19 @@ using System.Collections.Generic;
 
 namespace Announcement.Core
 {
-    public class AdminMainViewModel : BaseViewModel
+    public class ModeratorMainViewModel : BaseViewModel
     {
-        public List<Moderator> Moderators { get; private set; }
-
         public List<User> RatingTopUsers { get; private set; }
 
         public List<Spammer> RatingTopSpammers { get; private set; }
 
         public List<Report> Reports { get; private set; }
         
-        public static AdminMainViewModel Instance
+        public static ModeratorMainViewModel Instance
         {
             get
             {
-                return instance ?? (instance = new AdminMainViewModel());
+                return instance ?? (instance = new ModeratorMainViewModel());
             }
         }
 
@@ -27,17 +25,6 @@ namespace Announcement.Core
         public override Result Initialize()
         {
             var result = base.Initialize();
-
-            var resultModerators = SourceManager.PullModerators();
-
-            if (resultModerators.HasError)
-            {
-                return resultModerators;
-            }
-            else
-            {
-                Moderators = resultModerators.Value;
-            }
 
             var resultReports = SourceManager.PullReports();
 
@@ -70,27 +57,6 @@ namespace Announcement.Core
 
             return result;
         }
-            
-        public async void InitializeCreateModerator(Action callback)
-        {
-            var viewModel = CreateModeratorViewModel.Instance;
-
-            var result = await Task.Run<Result>(() => viewModel.Initialize());
-
-            ProgressModule.End();
-
-            if (result.HasError)
-            {
-                AlertModule.ShowError(result.Message, () => InitializeCreateModerator(callback));
-            }
-            else
-            {
-                if (callback != null)
-                {
-                    callback.Invoke();
-                }
-            }
-        }
 
         public async void InitializeReportValidation(Report report, Action callback)
         {
@@ -112,8 +78,8 @@ namespace Announcement.Core
                 }
             }
         }
-
-        private static AdminMainViewModel instance;
+            
+        private static ModeratorMainViewModel instance;
     }
 }
 

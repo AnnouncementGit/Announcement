@@ -17,7 +17,7 @@ namespace Announcement.Android
 
             NavigationManager.Initialize(this);
 
-            NavigationManager.Forward(typeof(LoginViaSocialFragment));
+            NavigationManager.Forward(typeof(LoginFragment));
         }
 
         public override void OnBackPressed()

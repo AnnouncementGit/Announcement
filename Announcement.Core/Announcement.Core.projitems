@@ -17,7 +17,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Language.Designer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\Moderator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\BaseViewModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ModeratorsViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Modules\AlertModule.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Modules\ProgressModule.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Modules\LocalizationModule.cs" />
@@ -26,6 +25,16 @@
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\LoginViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\UserMainViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Result.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\SingleReport.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Modules\AmazonModule.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\Ratings.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\User.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\Spammer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\Report.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ModeratorMainViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\ModeratorRegistration.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\CreateModeratorViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ReportValidationViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Language.resx">

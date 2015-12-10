@@ -17,36 +17,29 @@ namespace Announcement.Core
              
         public async void LoginViaFacebook(string token, Action callback)
         {
-            await Test(token, callback);
+            await SocialLogin(token, callback);
         }
 
         public async void LoginViaGooglePlus(string token, Action callback)
         {
-            await Test(token, callback);
+            await SocialLogin(token, callback);
         }
 
         public async void LoginViaVK(string token, Action callback)
         {
-            await Test(token, callback);
+            await SocialLogin(token, callback);
         }
 
         public async void LoginViaLinkedIn(string token, Action callback)
         {
-            await Test(token, callback);
+            await SocialLogin(token, callback);
         }
 
         public async void LoginForAdminStuff(string username, string password, Action callback)
         {
-            await Test(null, callback);
-        }
-
-        protected async Task Test(string token, Action callback)
-        {
             var viewModel = AdminMainViewModel.Instance;
 
             ProgressModule.Message(LocalizationModule.Translate("progress_authentication"));
-
-            await Task.Delay(3000);
 
             var result = await Task.Run<Result>(() => viewModel.Initialize());
 
@@ -54,7 +47,32 @@ namespace Announcement.Core
 
             if (result.HasError)
             {
-                AlertModule.Show(result, () => LoginViaFacebook(token, callback));
+                AlertModule.ShowError(result.Message, () => LoginForAdminStuff(username, password, callback));
+            }
+            else
+            {
+                if (callback != null)
+                {
+                    callback.Invoke();
+                }
+            }
+        }
+
+        protected async Task SocialLogin(string token, Action callback)
+        {
+            var viewModel = UserMainViewModel.Instance;
+
+            ProgressModule.Message(LocalizationModule.Translate("progress_authentication"));
+
+            await Task.Delay(1000);
+
+            var result = await Task.Run<Result>(() => viewModel.Initialize());
+
+            ProgressModule.End();
+
+            if (result.HasError)
+            {
+                AlertModule.ShowError(result.Message, async () => await SocialLogin(token, callback));
             }
             else
             {

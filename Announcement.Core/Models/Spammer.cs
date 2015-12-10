@@ -2,11 +2,11 @@
 
 namespace Announcement.Core
 {
-    public class Moderator
+    public class Spammer 
     {
         public int Id { get; set; }
-        
-        public string Username { get; set; }
+
+        public String PhoneNumber { get; set; }
     }
 }
 
