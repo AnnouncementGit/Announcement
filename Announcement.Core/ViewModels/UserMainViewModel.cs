@@ -17,7 +17,7 @@ namespace Announcement.Core
             
         public async void PushReportSpam(float latitude, float longitude, byte[] photo, Action callback, Action continueCallback)
         {
-            var result = await Task.Run<Result<int>>(() => SourceManager.PushReportSpam(latitude, longitude, photo));
+            var result = await Task.Run<Result<string>>(() => SourceManager.PushReportSpam(latitude, longitude, photo));
 
             ProgressModule.End();
 

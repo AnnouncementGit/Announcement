@@ -11,8 +11,6 @@ namespace Announcement.Core
 
         public List<string> Photos { get; set; }
 
-        public string AudioRecord { get; set; }
-
 
         public static ReportValidationViewModel Instance
         {
@@ -33,8 +31,6 @@ namespace Announcement.Core
             {
                 PhoneNumber = report.PhoneNumber != null ? report.PhoneNumber : string.Empty;
 
-                AudioRecord = report.AudioRecord != null ? report.AudioRecord : string.Empty;
-
                 Photos = report.Photos != null ? report.Photos : new List<string>();
             }
             else
@@ -49,7 +45,7 @@ namespace Announcement.Core
 
         public async void ConfirmReport(Action callback)
         {
-            var result = await Task.Run<Result<object>>(() => SourceManager.ConfirmReport(currentReport.Id, PhoneNumber, AudioRecord));
+            var result = await Task.Run<Result<string>>(() => SourceManager.ConfirmReport(currentReport.Id, PhoneNumber));
 
             ProgressModule.End();
 
@@ -72,7 +68,7 @@ namespace Announcement.Core
 
         public async void RejectReport(Action callback)
         {
-            var result = await Task.Run<Result<object>>(() => SourceManager.RejectReport(currentReport.Id));
+            var result = await Task.Run<Result<string>>(() => SourceManager.RejectReport(currentReport.Id));
 
             ProgressModule.End();
 

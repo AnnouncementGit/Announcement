@@ -38,38 +38,38 @@ namespace Announcement.Core
             return AmazonModule.InvokeLambda<List<Report>>("PullReports", null);
         }
 
-        public Result<object> PushModerator(string username, string password)
+        public Result<string> PushModerator(string username, string password)
         {
             ProgressModule.Message(LocalizationModule.Translate("progress_creating_moderator"));
 
             var moderator = new ModeratorRegistration() { Username = username, Password = password };
 
-            return AmazonModule.InvokeLambda<object>("PushModerator", moderator);
+            return AmazonModule.InvokeLambda<string>("PushModerator", moderator);
         }
 
-        public Result<object> RejectReport(int id)
+        public Result<string> RejectReport(string id)
         {
             ProgressModule.Message(LocalizationModule.Translate("progress_report_rejecting"));
 
-            return AmazonModule.InvokeLambda<object>("RejectReport", id);
+            return AmazonModule.InvokeLambda<string>("RejectReport", id);
         }
 
-        public Result<object> ConfirmReport(int id, string phoneNumber, string audioRecord)
+        public Result<string> ConfirmReport(string id, string phoneNumber)
         {
             ProgressModule.Message(LocalizationModule.Translate("progress_report_rejecting"));
 
-            var report = new Report() { Id = id, PhoneNumber = phoneNumber, AudioRecord = audioRecord };
+            var report = new Report() { Id = id, PhoneNumber = phoneNumber };
 
-            return AmazonModule.InvokeLambda<object>("ConfirmReport", report);
+            return AmazonModule.InvokeLambda<string>("ConfirmReport", report);
         }
             
-        public Result<int> PushReportSpam(float latitude, float longitude, byte[] photo)
+        public Result<string> PushReportSpam(float latitude, float longitude, byte[] photo)
         {
             ProgressModule.Message(LocalizationModule.Translate("progress_send_report_spam"));
 
             var report = new SingleReport() { Latitude = latitude, Longitude = longitude, Photo = photo  };
 
-            return AmazonModule.InvokeLambda<int>("PushReport", report);
+            return AmazonModule.InvokeLambda<string>("PushReport", report);
         }
 
 

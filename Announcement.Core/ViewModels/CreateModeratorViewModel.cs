@@ -17,7 +17,7 @@ namespace Announcement.Core
 
         public async void PushModerator(string username, string password, Action callback)
         {
-            var result = await Task.Run<Result<object>>(() => SourceManager.PushModerator(username, password));
+            var result = await Task.Run<Result<string>>(() => SourceManager.PushModerator(username, password));
 
             ProgressModule.End();
 

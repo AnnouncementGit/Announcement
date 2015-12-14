@@ -4,9 +4,11 @@ namespace Announcement.Core
 {
     public class Spammer 
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         public String PhoneNumber { get; set; }
+
+        public String AudioRecord { get; set; }
     }
 }
 
