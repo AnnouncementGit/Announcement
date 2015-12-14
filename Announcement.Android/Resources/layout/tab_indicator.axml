@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/tab_indicator_selector">
+    <Announcement.Android.Controls.TextView
+        android:id="@+id/indicatorTextView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textSize="24sp"
+        android:textColor="@color/major_color"
+        android:gravity="center" />
+</LinearLayout>

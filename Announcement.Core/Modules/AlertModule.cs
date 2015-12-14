@@ -4,80 +4,86 @@ using Android.Views;
 using Android.Content;
 using Announcement.Android;
 using System.Threading.Tasks;
+using Android.Graphics.Drawables;
+using Announcement.Android.Controls;
+using Android.Graphics;
 
 namespace Announcement.Core
 {
     public static class AlertModule
     {
         public static void Show(string title, string message, string okButton, Action okCallback = null)
-        {
-            Application.SynchronizationContext.Post(ignored =>
-                {
-                    var activity = NavigationManager.CurrentActivity;
+		{
+			Application.SynchronizationContext.Post (ignored => {
+				var activity = NavigationManager.CurrentActivity;
 
-                    if (activity == null)
-                        return;
+				if (activity == null)
+					return;
 
-                    if (alertSimpleView == null)
-                    {
-                        alertSimpleView = new AlertDialogEx(activity);
-                    }
+				var customView = activity.LayoutInflater.Inflate (Resource.Layout.simple_alert, null);
+				var builder = new AlertDialogEx.Builder (activity);
+				builder.SetView (customView);
 
-                    alertSimpleView.SetTitle(title);
+				var alertSimpleView = builder.Create ();
 
-                    alertSimpleView.SetMessage(message);
+				alertSimpleView.Show ();
 
-                    alertSimpleView.SetButton(okButton, handler: (s, e) =>
-                        { 
-                            if (okCallback != null)
-                            {
-                                okCallback.Invoke();
-                            }
-                        });
+				alertSimpleView.FindViewById<TextView> (Resource.Id.alertTitle).Text = title;
 
-                    alertSimpleView.Show();
+				alertSimpleView.FindViewById<TextView> (Resource.Id.alertText1).Text = message;
 
-                }, null);
-        }
+				alertSimpleView.FindViewById<Button> (Resource.Id.alertBtnRetry).Visibility = ViewStates.Gone;
+
+				alertSimpleView.FindViewById<Button> (Resource.Id.alertBtnDismiss).Text = okButton;
+				alertSimpleView.FindViewById<Button> (Resource.Id.alertBtnDismiss).Click += (sender, e) => {
+					alertSimpleView.Dismiss ();
+				};
+				alertSimpleView.DismissEvent += (sender, e) => {
+					if (okCallback != null)
+						okCallback.Invoke ();
+				};
+
+			}, null);
+		}
 
         public static void Show(string title, string message, string okButton, string cancelButton, Action okCallback = null, Action cancelCallback = null)
-        {
-            Application.SynchronizationContext.Post(ignored =>
-                {
-                    var activity = NavigationManager.CurrentActivity;
+		{
+			Application.SynchronizationContext.Post (ignored => {
+				var activity = NavigationManager.CurrentActivity;
 
-                    if (activity == null)
-                        return;
+				if (activity == null)
+					return;
+					
+				var customView = activity.LayoutInflater.Inflate (Resource.Layout.simple_alert, null);
+				var builder = new AlertDialogEx.Builder (activity);
+				builder.SetView (customView);
 
-                    if (alertWithCancelView == null)
-                    {
-                        alertWithCancelView = new AlertDialogEx(activity);
-                    }
+				var alertWithCancelView = builder.Create ();
 
-                    alertWithCancelView.SetTitle(title);
+				alertWithCancelView.Show ();
 
-                    alertWithCancelView.SetMessage(message);
+				alertWithCancelView.FindViewById<TextView> (Resource.Id.alertTitle).Text = title;
 
-                    alertWithCancelView.SetButton(okButton, handler: (s, e) =>
-                        { 
-                            if (okCallback != null)
-                            {
-                                okCallback.Invoke();
-                            }
-                        });
+				alertWithCancelView.FindViewById<TextView> (Resource.Id.alertText1).Text = message;
 
-                    alertWithCancelView.SetButton2(cancelButton, handler: (s, e) =>
-                        { 
-                            if (cancelCallback != null)
-                            {
-                                cancelCallback.Invoke();
-                            }
-                        });
+				alertWithCancelView.FindViewById<Button> (Resource.Id.alertBtnRetry).Text = okButton;
+				alertWithCancelView.FindViewById<Button> (Resource.Id.alertBtnRetry).Click += (sender, e) => {
+					if (okCallback != null)
+						okCallback.Invoke ();
+				};
 
-                    alertWithCancelView.Show();
+				alertWithCancelView.FindViewById<Button> (Resource.Id.alertBtnDismiss).Text = cancelButton;
+				alertWithCancelView.FindViewById<Button> (Resource.Id.alertBtnDismiss).Click += (sender, e) => {
+					alertWithCancelView.Dismiss ();
+				};
 
-                }, null);
-        }
+				alertWithCancelView.DismissEvent += (sender, e) => {
+					if (cancelCallback != null)
+						cancelCallback.Invoke ();
+				};
+
+			}, null);
+		}
 
         public static void ShowError(string message, Action okCallback = null, Action cancelCallback = null)
         {
@@ -93,11 +99,6 @@ namespace Announcement.Core
         {
             Show(LocalizationModule.Translate("alert_title_type_warning"), message, LocalizationModule.Translate("alert_button_try_again"), LocalizationModule.Translate("alert_button_cancel"), okCallback, cancelCallback);
         }
-            
-
-        private static AlertDialog alertSimpleView;
-
-        private static AlertDialog alertWithCancelView;
     }
 
     public class AlertDialogEx : AlertDialog

@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:top="18dp">
+        <shape
+ 			android:innerRadius="0dp"
+ 			android:shape="ring"
+ 			android:thickness="3dp"
+ 			android:useLevel="false">
+		<solid
+ 			android:color="@color/button_normal">
+		</solid>
+		<size
+ 			android:height="2dp"
+ 			android:width="2dp">
+			</size>
+		</shape>
+    </item>
+        <item>
+        <shape
+ 			android:innerRadius="0dp"
+ 			android:shape="ring"
+ 			android:thickness="3dp"
+ 			android:useLevel="false">
+		<solid
+ 			android:color="@color/button_normal">
+		</solid>
+		<size
+ 			android:height="2dp"
+ 			android:width="2dp">
+			</size>
+		</shape>
+    </item>
+    <item android:bottom="18dp">
+        <shape
+ 			android:innerRadius="0dp"
+ 			android:shape="ring"
+ 			android:thickness="3dp"
+ 			android:useLevel="false">
+		<solid
+ 			android:color="@color/button_normal">
+		</solid>
+		<size
+ 			android:height="2dp"
+ 			android:width="2dp">
+			</size>
+		</shape>
+    </item>
+</layer-list>

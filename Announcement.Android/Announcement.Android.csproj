@@ -27,7 +27,6 @@
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
     <AndroidLinkMode>None</AndroidLinkMode>
-    <AndroidKeyStore>True</AndroidKeyStore>
     <AndroidSigningKeyStore>D:\Kondratiuk\Projects\Announcement\Announcement.Android\Announcement.keystore</AndroidSigningKeyStore>
     <AndroidSigningStorePass>password</AndroidSigningStorePass>
     <AndroidSigningKeyAlias>Announcement</AndroidSigningKeyAlias>
@@ -133,6 +132,10 @@
     <Compile Include="Controls\Button.cs" />
     <Compile Include="Controls\EditText.cs" />
     <Compile Include="Services\SocialServices.cs" />
+    <Compile Include="Helpers\ImageDecoderHelper.cs" />
+    <Compile Include="Services\Location\ILocationProvider.cs" />
+    <Compile Include="Services\Location\LocationProvider.cs" />
+    <Compile Include="Controls\TextView.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -156,7 +159,6 @@
     <AndroidResource Include="Resources\layout\add_new_moderator_layout.axml" />
     <AndroidResource Include="Resources\layout\moderators_layout.axml" />
     <AndroidResource Include="Resources\layout\admin_main_layout.axml" />
-    <AndroidResource Include="Resources\layout\login_via_social_layout.axml" />
     <AndroidResource Include="Resources\layout\login_layout.axml" />
     <AndroidResource Include="Resources\values\Attrs.xml" />
     <AndroidResource Include="Resources\drawable\facebook_button_selector.xml" />
@@ -166,7 +168,50 @@
     <AndroidResource Include="Resources\values\Colors.xml" />
     <AndroidResource Include="Resources\drawable\moderator_button_selector.xml" />
     <AndroidResource Include="Resources\drawable\button_selector.xml" />
-  </ItemGroup>
+    <AndroidResource Include="Resources\drawable\report_spam_button_selector.xml" />
+    <AndroidResource Include="Resources\drawable-hdpi\login_background.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\logo.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\splash.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\login_background.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\logo.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\splash.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\login_background.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\logo.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\splash.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\login_background.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\logo.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\splash.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\login_background.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\logo.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\splash.png" />
+    <AndroidResource Include="Resources\drawable\login_fields_background.xml" />
+    <AndroidResource Include="Resources\drawable-hdpi\fb_login_icon.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\google_login_icon.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\in_login_icon.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\vk_login_icon.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\fb_login_icon.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\google_login_icon.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\in_login_icon.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\vk_login_icon.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\fb_login_icon.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\google_login_icon.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\in_login_icon.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\vk_login_icon.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\fb_login_icon.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\google_login_icon.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\in_login_icon.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\vk_login_icon.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\fb_login_icon.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\google_login_icon.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\in_login_icon.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\vk_login_icon.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\camera_logo.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\camera_logo.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\camera_logo.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\camera_logo.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\camera_logo.png" />
+/&gt;
+  <AndroidResource Include="Resources\drawable\menu_button_selector.xml" /><AndroidResource Include="Resources\layout\simple_alert.axml" /><AndroidResource Include="Resources\drawable\alert_background.xml" /><AndroidResource Include="Resources\layout\simple_progress.axml" /><AndroidResource Include="Resources\drawable-xxhdpi\progress_background.png" /><AndroidResource Include="Resources\drawable\menu_button_released.xml" /><AndroidResource Include="Resources\drawable\menu_button_pressed.xml" /><AndroidResource Include="Resources\drawable-xxhdpi\progress_loading.png" /><AndroidResource Include="Resources\drawable\progress_loading_old.xml" /><AndroidResource Include="Resources\drawable-xxxhdpi\progress_loading.png" /><AndroidResource Include="Resources\drawable-xhdpi\progress_loading.png" /><AndroidResource Include="Resources\drawable-hdpi\progress_loading.png" /><AndroidResource Include="Resources\drawable-mdpi\progress_loading.png" /><AndroidResource Include="Resources\layout\tab_indicator.axml" /><AndroidResource Include="Resources\drawable\tab_indicator_selector.xml" /><AndroidResource Include="Resources\drawable\tab_indicator_unselected.xml" /><AndroidResource Include="Resources\drawable\tab_indicator_selected.xml" /><AndroidResource Include="Resources\drawable\tab_indicator_pressed.xml" /><AndroidResource Include="Resources\layout\tab_validation.axml" /></ItemGroup>
   <Import Project="..\Announcement.Core\Announcement.Core.projitems" Label="Shared" Condition="Exists('..\Announcement.Core\Announcement.Core.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ItemGroup>

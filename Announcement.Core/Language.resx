@@ -67,5 +67,10 @@
 
     <data name="progress_report_rejecting" xml:space="preserve"><value>Report is rejecting...</value></data>
 
+    <data name="stop_spam_header_title" xml:space="preserve"><value>Stop Spam</value></data>
+
+    <data name="add_new_moderator_label" xml:space="preserve"><value>Add new moderator</value></data>
+
+    <data name="button_title_create" xml:space="preserve"><value>Create</value></data>
 
 </root>

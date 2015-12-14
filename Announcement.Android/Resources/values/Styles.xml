@@ -5,10 +5,20 @@
     <item name="android:windowNoTitle">true</item>
     <item name="android:colorBackground">@null</item>
     <item name="android:windowFrame">@null</item>
+    <item name="android:popupMenuStyle">@style/popup_style</item>
+    <item name="android:progressDrawable">@drawable/progress_loading</item>
  </style>
 
+ <style name="popup_style" parent="@android:style/Widget.PopupMenu">
+    <item name="android:popupBackground">@android:color/black</item>
+  </style>
+
   <style name="splash_theme" parent="main_theme">
-    <item name="android:windowBackground">@drawable/splash_screen</item>
+    <item name="android:windowBackground">@drawable/splash</item>
+  </style>
+
+  <style name="general_theme" parent="main_theme">
+    <item name="android:windowBackground">@drawable/login_background</item>
   </style>
 
   <style name="login_social_button_style">
