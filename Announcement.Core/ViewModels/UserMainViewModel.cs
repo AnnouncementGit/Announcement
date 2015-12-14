@@ -17,7 +17,16 @@ namespace Announcement.Core
             
         public async void PushReportSpam(float latitude, float longitude, byte[] photo, Action callback, Action continueCallback)
         {
-            var result = await Task.Run<Result<string>>(() => SourceManager.PushReportSpam(latitude, longitude, photo));
+            Result<string> result = null;
+            
+            if (string.IsNullOrEmpty(reportId))
+            {
+                result = await Task.Run<Result<string>>(() => SourceManager.PushReportSpam(latitude, longitude, photo));  
+            }
+            else
+            {
+                result = await Task.Run<Result<string>>(() => SourceManager.PushReportContinue(reportId, latitude, longitude, photo));  
+            }
 
             ProgressModule.End();
 
@@ -29,14 +38,20 @@ namespace Announcement.Core
             {
                 if (result.IsSuccess)
                 {
+                    reportId = null;
+                    
                     AlertModule.ShowInformation("Report sent and successfully processed. Thanks", callback);
                 }
                 else
                 {
+                    reportId = result.Value;
+                    
                     AlertModule.ShowWarning("Report sent successfully but can't analize photo.", continueCallback);
                 }
             }
         }
+
+        private string reportId;
                
         private static UserMainViewModel instance;
     }

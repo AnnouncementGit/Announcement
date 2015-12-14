@@ -35,6 +35,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Models\ModeratorRegistration.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\CreateModeratorViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ReportValidationViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\SingleContinueReport.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Language.resx">

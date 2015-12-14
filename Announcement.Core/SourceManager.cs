@@ -72,6 +72,15 @@ namespace Announcement.Core
             return AmazonModule.InvokeLambda<string>("PushReport", report);
         }
 
+        public Result<string> PushReportContinue(string id, float latitude, float longitude, byte[] photo)
+        {
+            ProgressModule.Message(LocalizationModule.Translate("progress_send_report_spam"));
+
+            var report = new SingleContinueReport() { id = id, Latitude = latitude, Longitude = longitude, Photo = photo  };
+
+            return AmazonModule.InvokeLambda<string>("PushReportContinue", report);
+        }
+
 
         private static SourceManager instance;
     }
