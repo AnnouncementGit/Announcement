@@ -137,9 +137,15 @@
     <Compile Include="Services\Location\ILocationProvider.cs" />
     <Compile Include="Services\Location\LocationProvider.cs" />
     <Compile Include="Controls\TextView.cs" />
+
     <Compile Include="Controls\RadioButton.cs" />
     <Compile Include="Pages\CreateModeratorFragment.cs" />
     <Compile Include="Headers\HeaderFragment.cs" />
+
+    <Compile Include="Controls\ProgressIndicator.cs" />
+    <Compile Include="Managers\FontsManager.cs" />
+    <Compile Include="Managers\ValueConverterManager.cs" />
+
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -248,7 +254,11 @@
     <Folder Include="Pages\" />
     <Folder Include="Controls\" />
     <Folder Include="Managers\" />
+
     <Folder Include="Headers\" />
+
+    <Folder Include="Assets\fonts\" />
+
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="xamarin.auth">
@@ -263,5 +273,9 @@
       <Version>27.0.0.0</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\fonts\times_new_roman.ttf" />
+    <AndroidAsset Include="Assets\fonts\times_new_roman_bold.ttf" />
   </ItemGroup>
 </Project>

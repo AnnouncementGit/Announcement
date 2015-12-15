@@ -6,8 +6,6 @@ using Android.Widget;
 using Android.Content;
 using Android.Provider;
 using System;
-using System.Threading.Tasks;
-using System.Threading;
 
 namespace Announcement.Android
 {
@@ -23,6 +21,7 @@ namespace Announcement.Android
 
 		private ToggleButton btnMenu;
 		private ImageView btnReportSpam;
+		private ImageView spamImageView;
 		private const int cameraRequestCode = 987;
 		private Java.IO.File file;
 
@@ -36,18 +35,15 @@ namespace Announcement.Android
 			btnMenu = view.FindViewById<ToggleButton> (Resource.Id.btnMenu);
 			btnMenu.Click += BtnMenuOnClick;
 
-			NavigationManager.ShowHeader (true);
+			spamImageView = view.FindViewById<ImageView> (Resource.Id.spamImageView);
 
             return view;
         }
 
 		void BtnReportSpamOnClick (object sender, System.EventArgs e)
 		{
-			if (!MainActivityInstance.Current.locationProvider.networkProviderEnabled && !MainActivityInstance.Current.locationProvider.gpsProviderEnabled) 
-			{
-				AlertModule.ShowInformation ("Please enable GPS and Network Positioning in your Settings", null);
-				return;
-			}
+			//clearing ImageView
+			spamImageView.SetImageBitmap (null);
 
 			Intent intent = new Intent (MediaStore.ActionImageCapture);
 			Java.IO.File place = new Java.IO.File(global::Android.OS.Environment.GetExternalStoragePublicDirectory(global::Android.OS.Environment.DirectoryPictures), "Announcement");
@@ -67,13 +63,17 @@ namespace Announcement.Android
 				file = null;
 			} else {
 				if (requestCode == cameraRequestCode) {
-					btnReportSpam.Visibility = ViewStates.Gone;
+
 					try {
-						var imageByteArray = await ImageDecoderHelper.GetByteDataFromFile(file.AbsolutePath);
+						byte[] bitmapData = await ImageDecoderHelper.GetByteDataFromFile(file.AbsolutePath);
 
-						ReportSpam(imageByteArray); // try to find info by deecoding to exsacly image size
+						if (MainActivityInstance.Current.lastKnownLocation == null)
+							viewModel.PushReportSpam (0, 0, bitmapData, DataUploadedCallback, DataUploadedContinueCallback);
+						else
+							viewModel.PushReportSpam ((float)MainActivityInstance.Current.lastKnownLocation.Latitude, (float)MainActivityInstance.Current.lastKnownLocation.Longitude, bitmapData, DataUploadedCallback, DataUploadedContinueCallback);
 
-						//var scaledBitmap = await ImageDecoderHelper.ScaleBitmap (file.AbsolutePath, 1080, 1920);
+						var scaledBitmap = await ImageDecoderHelper.ScaleBitmap (file.AbsolutePath, 1080, 1920);
+						spamImageView.SetImageBitmap (scaledBitmap);
 
 					} catch (Exception) {
 
@@ -82,38 +82,12 @@ namespace Announcement.Android
 			}
 		}
 
-		private void ReportSpam(byte[] byteArray, int progressTime = 0)
-		{
-			if (progressTime > 0) {
-				Task.Run (() => {
-					ProgressModule.Message ("Trying to get  your current location...");
-					Thread.Sleep (progressTime * 1000);
-				}).ContinueWith ((task) => {
-					MainActivityInstance.Current.RunOnUiThread(()=>{
-					ProgressModule.End ();
-						ReportSpam (byteArray);});
-				});
-			} else {
-				if (MainActivityInstance.Current.lastKnownLocation == null)
-					AlertModule.ShowWarning ("Bad current location.\nTry again?", () => ReportSpam (byteArray, 4), DataUploadedCancelCallback);
-				else
-					viewModel.PushReportSpam ((float)MainActivityInstance.Current.lastKnownLocation.Latitude, (float)MainActivityInstance.Current.lastKnownLocation.Longitude, byteArray, DataUploadedCallback, DataUploadedContinueCallback);
-			}
-		}
-
-		private void DataUploadedCancelCallback()
-		{
-			btnReportSpam.Visibility = ViewStates.Visible;
-		}
-
 		private void DataUploadedCallback()
 		{
-			btnReportSpam.Visibility = ViewStates.Visible;
 		}
 
 		private void DataUploadedContinueCallback()
 		{
-			btnReportSpam.Visibility = ViewStates.Visible;
 		}
 
 		void BtnMenuOnClick (object sender, System.EventArgs e)
@@ -135,7 +109,7 @@ namespace Announcement.Android
 			switch (e.Item.ItemId) {
 
 			case 1:
-				NavigationManager.Forward (typeof(LoginFragment));
+				
 				break;
 			}
 		}

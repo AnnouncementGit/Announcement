@@ -24,4 +24,6 @@
 
      <color name="grey_color">#151515</color>
 
+     <color name="progress_transparent">#00000000</color>
+
 </resources>

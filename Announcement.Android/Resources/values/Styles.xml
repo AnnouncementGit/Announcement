@@ -7,6 +7,7 @@
     <item name="android:windowFrame">@null</item>
     <item name="android:popupMenuStyle">@style/popup_style</item>
     <item name="android:progressDrawable">@drawable/progress_loading</item>
+       <item name="android:padding">0dp</item>
  </style>
 
  <style name="popup_style" parent="@android:style/Widget.PopupMenu">
@@ -28,5 +29,28 @@
     <item name="android:textSize">24sp</item>
     <item name="android:layout_centerHorizontal">true</item>
   </style>
+
+    <style name="text_view_normal_font_style">
+    <item name="fontName">"times_new_roman"</item>
+  </style>
+
+  <style name="progress_dialog_theme" parent="android:Theme.Holo.Dialog">
+    <item name="android:alertDialogStyle">@style/progress_dialog_style</item>
+    <item name="android:windowBackground">@color/progress_transparent</item>
+    <item name="android:backgroundDimEnabled">false</item>
+  </style>
+
+ <style name="progress_dialog_style">
+<item name="android:bottomBright">@color/progress_transparent</item>
+<item name="android:bottomDark">@color/progress_transparent</item>
+<item name="android:bottomMedium">@color/progress_transparent</item>
+<item name="android:centerBright">@color/progress_transparent</item>
+<item name="android:centerDark">@color/progress_transparent</item>
+<item name="android:centerMedium">@color/progress_transparent</item>
+<item name="android:fullBright">@color/progress_transparent</item>
+<item name="android:fullDark">@color/progress_transparent</item>
+<item name="android:topBright">@color/progress_transparent</item>
+<item name="android:topDark">@color/progress_transparent</item>
+</style>
 
 </resources>

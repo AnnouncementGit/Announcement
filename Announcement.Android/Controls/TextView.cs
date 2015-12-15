@@ -2,6 +2,9 @@
 using Android.Util;
 using Android.Runtime;
 using Android.Content;
+using Android.Graphics;
+
+
 namespace Announcement.Android.Controls
 {
 	public class TextView : global::Android.Widget.TextView
@@ -43,6 +46,17 @@ namespace Announcement.Android.Controls
 
 				attributes.Recycle();
 			}
+
+            using (var attributes = Context.ObtainStyledAttributes(attrs, Resource.Styleable.font))
+            {
+                var fontName = attributes.GetString(Resource.Styleable.font_fontName);
+
+                if (!string.IsNullOrEmpty(fontName))
+                {
+                    SetTypeface(FontsManager.LoadByName(fontName), TypefaceStyle.Normal);
+                }
+                attributes.Recycle();
+            }
 		}
 	}
 }

@@ -5,4 +5,16 @@
     <attr name="localizationKey" format="string"/>
  </declare-styleable>
 
+  <declare-styleable name="font">
+    <attr name="fontName" format="string"/>
+ </declare-styleable>
+
+ <declare-styleable name="progress_indicator">
+    <attr name="backgroundColor" format="color"/>
+    <attr name="borderColor" format="color"/>
+    <attr name="lineColor" format="color"/>
+    <attr name="borderWidth" format="dimension"/>
+    <attr name="lineWidthPercent" format="integer"/>
+ </declare-styleable>
+
     </resources>

@@ -15,6 +15,8 @@ namespace Announcement.Android
 
         protected override void OnCreate(Bundle bundle)
         {
+            FontsManager.Load(); //temp
+            
             base.OnCreate(bundle);
 
 			SetTheme (Resource.Style.general_theme);
