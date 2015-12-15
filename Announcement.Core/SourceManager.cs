@@ -21,12 +21,20 @@ namespace Announcement.Core
         {
             ProgressModule.Message(LocalizationModule.Translate("progress_receiving_moderators"));
 
-            return AmazonModule.InvokeLambda<List<Moderator>>("PullModerators", null);
+            var result = AmazonModule.InvokeLambda<List<Moderator>>("PullModerators", null);
+
+            if (result.Value == null)
+            {
+                result.Value = new List<Moderator>();
+            }
+
+            return result;
         }
 
         public Result<Ratings> PullRatings()
         {
             ProgressModule.Message(LocalizationModule.Translate("progress_receiving_ratings"));
+
 
             return AmazonModule.InvokeLambda<Ratings>("PullRatings", null);
         }
@@ -35,7 +43,14 @@ namespace Announcement.Core
         {
             ProgressModule.Message(LocalizationModule.Translate("progress_receiving_reports"));
 
-            return AmazonModule.InvokeLambda<List<Report>>("PullReports", null);
+            var result = AmazonModule.InvokeLambda<List<Report>>("PullReports", null);
+
+            if (result.Value == null)
+            {
+                result.Value = new List<Report>();
+            }
+
+            return result;
         }
 
         public Result<string> PushModerator(string username, string password)
