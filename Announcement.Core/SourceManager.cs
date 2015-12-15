@@ -35,8 +35,21 @@ namespace Announcement.Core
         {
             ProgressModule.Message(LocalizationModule.Translate("progress_receiving_ratings"));
 
+            var result = AmazonModule.InvokeLambda<Ratings>("PullRatings", null);
 
-            return AmazonModule.InvokeLambda<Ratings>("PullRatings", null);
+            var ratings = result.Value;
+
+            if (ratings.TopUsers == null)
+            {
+                ratings.TopUsers = new List<User>();
+            }
+
+            if (ratings.TopSpammers == null)
+            {
+                ratings.TopSpammers = new List<Spammer>();
+            }
+
+            return result;
         }
 
         public Result<List<Report>> PullReports()
