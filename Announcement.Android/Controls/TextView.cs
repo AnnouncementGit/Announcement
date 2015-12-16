@@ -39,7 +39,7 @@ namespace Announcement.Android.Controls
 		{
 			using (var attributes = Context.ObtainStyledAttributes(attrs, Resource.Styleable.localization))
 			{
-				Hint = LocalizationModule.Translate(attributes.GetString(Resource.Styleable.localization_localizationKey));
+				Text = LocalizationModule.Translate(attributes.GetString(Resource.Styleable.localization_localizationKey));
 
 				attributes.Recycle();
 			}

@@ -73,4 +73,12 @@
 
     <data name="button_title_create" xml:space="preserve"><value>Create</value></data>
 
+    <data name="list_one_posts_label" xml:space="preserve"><value>Posts:</value></data>
+
+    <data name="list_one_confirmed_label" xml:space="preserve"><value>Confirmed:</value></data>
+
+    <data name="button_title_items" xml:space="preserve"><value>Items</value></data>
+
+    <data name="button_title_users" xml:space="preserve"><value>Users</value></data>
+
 </root>

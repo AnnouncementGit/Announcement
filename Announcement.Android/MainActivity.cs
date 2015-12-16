@@ -11,7 +11,7 @@ namespace Announcement.Android
 	public class MainActivity : FragmentActivity, ILocationListener
 	{
 		public Location lastKnownLocation;
-		private LocationProvider locationProvider;
+		public LocationProvider locationProvider;
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -24,10 +24,11 @@ namespace Announcement.Android
 			MainActivityInstance.Current = this;
 
             NavigationManager.Initialize(this);
-
-			//NavigationManager.Forward(typeof(LoginFragment));
-			NavigationManager.Forward(typeof(UserMainFragment));
+			NavigationManager.AddHeader(typeof(HeaderFragment));
+			NavigationManager.Forward(typeof(LoginFragment));
+			//NavigationManager.Forward(typeof(UserMainFragment));
 			//NavigationManager.Forward(typeof(AdminMainFragment));
+			//NavigationManager.Forward(typeof(ModeratorMainFragment));
 
 			locationProvider = new LocationProvider (this, this);
         }
@@ -73,10 +74,14 @@ namespace Announcement.Android
 
 		public void OnProviderDisabled (string provider)
 		{
+			if(locationProvider!=null)
+				locationProvider.OnResume ();
 		}
 
 		public void OnProviderEnabled (string provider)
 		{
+			if(locationProvider!=null)
+				locationProvider.OnResume ();
 		}
 
 		public void OnStatusChanged (string provider, Availability status, Bundle extras)

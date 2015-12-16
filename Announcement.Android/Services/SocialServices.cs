@@ -267,8 +267,8 @@ namespace Announcement.Android
 				if (callback != null)
 					callback.Invoke (token);
 			}
-			catch (Exception){
-				//
+			catch (GoogleAuthException ex){
+				var t = ex.Message;
 			}
 
 			return token;

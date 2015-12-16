@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="70dp"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp">
+    <Announcement.Android.Controls.TextView
+        android:id="@+id/itemTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="5dp"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:singleLine="true"
+        android:gravity="center_vertical"
+        android:textColor="@color/major_color"
+        android:text="Title here" />
+    <Announcement.Android.Controls.TextView
+        android:id="@+id/itemDescription"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:textSize="14sp"
+        android:gravity="center_vertical"
+        android:textColor="@color/major_color"
+        android:text="Lorem ipsum dolor sit amet, consecteur adipliseing elit, sed do eiusmod tempor." />
+</LinearLayout>

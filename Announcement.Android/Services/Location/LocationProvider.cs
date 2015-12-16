@@ -26,8 +26,8 @@ namespace Announcement.Android.Services.Location
 		const int LOCATION_OUTDATED_WHEN_OLDER_MS = 1000 * 60 * 10;
 
 		/** is gpsProvider and networkProvider enabled in system settings */
-		bool gpsProviderEnabled;
-        bool networkProviderEnabled;
+		public bool gpsProviderEnabled;
+        public bool networkProviderEnabled;
 
 		/** the context in which we're running */
 		Context context;

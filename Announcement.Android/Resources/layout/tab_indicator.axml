@@ -8,7 +8,7 @@
         android:id="@+id/indicatorTextView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textSize="24sp"
+        android:textSize="20sp"
         android:textColor="@color/major_color"
         android:gravity="center" />
 </LinearLayout>

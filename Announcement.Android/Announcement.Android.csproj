@@ -27,11 +27,12 @@
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
     <AndroidLinkMode>None</AndroidLinkMode>
-    <AndroidSigningKeyStore>D:\Kondratiuk\Projects\Announcement\Announcement.Android\Announcement.keystore</AndroidSigningKeyStore>
+    <AndroidSigningKeyStore>/Users/andrewstelmakh/Documents/Projects/Announcement/Announcement.Android/Announcement.keystore</AndroidSigningKeyStore>
     <AndroidSigningStorePass>password</AndroidSigningStorePass>
     <AndroidSigningKeyAlias>Announcement</AndroidSigningKeyAlias>
     <AndroidSigningKeyPass>password</AndroidSigningKeyPass>
     <JavaMaximumHeapSize>1G</JavaMaximumHeapSize>
+    <AndroidKeyStore>True</AndroidKeyStore>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>full</DebugType>
@@ -136,6 +137,9 @@
     <Compile Include="Services\Location\ILocationProvider.cs" />
     <Compile Include="Services\Location\LocationProvider.cs" />
     <Compile Include="Controls\TextView.cs" />
+    <Compile Include="Controls\RadioButton.cs" />
+    <Compile Include="Pages\CreateModeratorFragment.cs" />
+    <Compile Include="Headers\HeaderFragment.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -228,7 +232,12 @@
     <AndroidResource Include="Resources\drawable\tab_indicator_unselected.xml" />
     <AndroidResource Include="Resources\drawable\tab_indicator_selected.xml" />
     <AndroidResource Include="Resources\drawable\tab_indicator_pressed.xml" />
-    <AndroidResource Include="Resources\layout\tab_validation.axml" />
+    <AndroidResource Include="Resources\drawable\rating_radio_button_selector.xml" />
+    <AndroidResource Include="Resources\drawable\rating_radio_button_text_color.xml" />
+    <AndroidResource Include="Resources\layout\list_one_item_view.axml" />
+    <AndroidResource Include="Resources\layout\list_two_item_view.axml" />
+    <AndroidResource Include="Resources\layout\tab_rating.axml" />
+    <AndroidResource Include="Resources\layout\header_view.axml" />
   </ItemGroup>
   <Import Project="..\Announcement.Core\Announcement.Core.projitems" Label="Shared" Condition="Exists('..\Announcement.Core\Announcement.Core.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
@@ -239,6 +248,7 @@
     <Folder Include="Pages\" />
     <Folder Include="Controls\" />
     <Folder Include="Managers\" />
+    <Folder Include="Headers\" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="xamarin.auth">

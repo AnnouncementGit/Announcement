@@ -1,6 +1,7 @@
 ﻿using System;
 using Android.Support.V4.App;
 using System.Collections.Generic;
+using Android.Widget;
 
 namespace Announcement.Android
 {
@@ -30,6 +31,28 @@ namespace Announcement.Android
 
             transaction.Commit();
         }
+
+		public static void ShowHeader(bool show)
+		{
+			var header = CurrentActivity.FindViewById<FrameLayout> (Resource.Id.HeaderContainer);
+
+			if (show)
+				header.Visibility = global::Android.Views.ViewStates.Visible;
+			else
+				header.Visibility = global::Android.Views.ViewStates.Gone;
+		}
+
+		public static void AddHeader(Type headerType)
+		{
+			if (fragmentManager == null)
+				return;
+
+			var transaction = fragmentManager.BeginTransaction();
+
+			transaction.Replace(Resource.Id.HeaderContainer, (Fragment)Activator.CreateInstance(headerType));
+
+			transaction.Commit();
+		}
 
         public static bool Backward()
         {

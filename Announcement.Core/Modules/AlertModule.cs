@@ -62,12 +62,16 @@ namespace Announcement.Core
 
 				alertWithCancelView.Show ();
 
+				alertWithCancelView.SetCanceledOnTouchOutside(false);
+
 				alertWithCancelView.FindViewById<TextView> (Resource.Id.alertTitle).Text = title;
 
 				alertWithCancelView.FindViewById<TextView> (Resource.Id.alertText1).Text = message;
 
 				alertWithCancelView.FindViewById<Button> (Resource.Id.alertBtnRetry).Text = okButton;
 				alertWithCancelView.FindViewById<Button> (Resource.Id.alertBtnRetry).Click += (sender, e) => {
+					alertWithCancelView.Dismiss ();
+
 					if (okCallback != null)
 						okCallback.Invoke ();
 				};
@@ -75,11 +79,12 @@ namespace Announcement.Core
 				alertWithCancelView.FindViewById<Button> (Resource.Id.alertBtnDismiss).Text = cancelButton;
 				alertWithCancelView.FindViewById<Button> (Resource.Id.alertBtnDismiss).Click += (sender, e) => {
 					alertWithCancelView.Dismiss ();
+
+					if (cancelCallback != null)
+						cancelCallback.Invoke ();
 				};
 
 				alertWithCancelView.DismissEvent += (sender, e) => {
-					if (cancelCallback != null)
-						cancelCallback.Invoke ();
 				};
 
 			}, null);

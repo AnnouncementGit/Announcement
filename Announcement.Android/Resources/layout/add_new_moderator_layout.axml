@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp">
         <Announcement.Android.Controls.TextView
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="50dp"
             android:padding="10dp"
             android:textSize="24sp"
@@ -68,7 +68,7 @@
         android:background="@drawable/login_fields_background"
         local:localizationKey="edit_text_hint_password" />
     <Announcement.Android.Controls.Button
-        android:id="@+id/LoginButton"
+        android:id="@+id/btnAdd"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_margin="35dp"
