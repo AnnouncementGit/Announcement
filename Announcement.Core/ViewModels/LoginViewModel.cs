@@ -41,21 +41,21 @@ namespace Announcement.Core
 
             ProgressModule.Message(LocalizationModule.Translate("progress_authentication"));
 
-//            var result = await Task.Run<Result>(() => viewModel.Initialize());
-//
-//            ProgressModule.End();
-//
-//            if (result.HasError)
-//            {
-//                AlertModule.ShowError(result.Message, () => LoginForAdminStuff(username, password, callback));
-//            }
-//            else
-//            {
-//                if (callback != null)
-//                {
-//                    callback.Invoke();
-//                }
-//            }
+            var result = await Task.Run<Result>(() => viewModel.Initialize());
+
+            ProgressModule.End();
+
+            if (result.HasError)
+            {
+                AlertModule.ShowError(result.Message, () => LoginForAdminStuff(username, password, callback));
+            }
+            else
+            {
+                if (callback != null)
+                {
+                    callback.Invoke();
+                }
+            }
         }
 
         protected async Task SocialLogin(string token, Action callback)
