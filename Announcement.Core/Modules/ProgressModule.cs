@@ -13,7 +13,7 @@ namespace Announcement.Core
 {
     public class ProgressModule
     {
-        public static void Message(string message)
+        public static void Message(string message, bool borderless = false)
         {
             Application.SynchronizationContext.Post(ignored =>
                 {
@@ -24,15 +24,26 @@ namespace Announcement.Core
 
                     if (progressView == null)
                     {
-                        var customView = activity.LayoutInflater.Inflate(Resource.Layout.simple_progress, null);
+                        View view = null;
 
-                        ProgressDialog.Builder builder = new ProgressDialog.Builder(activity, Resource.Style.progress_dialog_theme);
-                     
-                        builder.SetView(customView);
+                        ProgressDialog.Builder builder = null;
+
+                        if (borderless)
+                        {
+                            view = activity.LayoutInflater.Inflate(Resource.Layout.progress_borderless_layout, null);
+
+                            builder = new ProgressDialog.Builder(activity, Resource.Style.progress_dialog_borderless_theme);
+                        }
+                        else
+                        {  
+                            view = activity.LayoutInflater.Inflate(Resource.Layout.progress_layout, null);
+
+                            builder = new ProgressDialog.Builder(activity, Resource.Style.progress_dialog_theme);                            
+                        }
+                            
+                        builder.SetView(view);
 
                         progressView = builder.Create();
-
-                        progressView.SetView(customView, 0,0,0,0);
 
                         progressView.SetCancelable(false);
 

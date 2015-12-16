@@ -35,7 +35,7 @@ namespace Announcement.Android
 			btnMenu = view.FindViewById<ToggleButton> (Resource.Id.btnMenu);
 			btnMenu.Click += BtnMenuOnClick;
 
-			spamImageView = view.FindViewById<ImageView> (Resource.Id.spamImageView);
+			//spamImageView = view.FindViewById<ImageView> (Resource.Id.spamImageView);
 
             return view;
         }

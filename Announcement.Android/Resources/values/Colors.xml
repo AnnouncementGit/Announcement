@@ -26,4 +26,6 @@
 
      <color name="progress_transparent">#00000000</color>
 
+     <color name="progress_background">#1f1f1f</color>
+
 </resources>

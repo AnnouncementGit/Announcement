@@ -9,6 +9,14 @@
     <attr name="fontName" format="string"/>
  </declare-styleable>
 
+   <declare-styleable name="padding_fix">
+    <attr name="android:paddingLeft" />
+    <attr name="android:paddingTop" />
+    <attr name="android:paddingRight"/>
+    <attr name="android:paddingBottom" />
+     <attr name="android:padding" />
+ </declare-styleable>
+
  <declare-styleable name="progress_indicator">
     <attr name="backgroundColor" format="color"/>
     <attr name="borderColor" format="color"/>

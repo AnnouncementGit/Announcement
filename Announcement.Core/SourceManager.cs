@@ -93,7 +93,7 @@ namespace Announcement.Core
             
         public Result<string> PushReportSpam(float latitude, float longitude, byte[] photo)
         {
-            ProgressModule.Message(LocalizationModule.Translate("progress_send_report_spam"));
+            ProgressModule.Message(LocalizationModule.Translate("progress_send_report_spam"), true);
 
             var report = new SingleReport() { Latitude = latitude, Longitude = longitude, Photo = photo  };
 
@@ -102,7 +102,7 @@ namespace Announcement.Core
 
         public Result<string> PushReportContinue(string id, float latitude, float longitude, byte[] photo)
         {
-            ProgressModule.Message(LocalizationModule.Translate("progress_send_report_spam"));
+            ProgressModule.Message(LocalizationModule.Translate("progress_send_report_spam"), true);
 
             var report = new SingleContinueReport() { id = id, Latitude = latitude, Longitude = longitude, Photo = photo  };
 

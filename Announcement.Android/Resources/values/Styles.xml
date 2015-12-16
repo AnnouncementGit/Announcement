@@ -34,7 +34,12 @@
     <item name="fontName">"times_new_roman"</item>
   </style>
 
-  <style name="progress_dialog_theme" parent="android:Theme.Holo.Dialog">
+    <style name="progress_dialog_theme" parent="android:Theme.Holo.Dialog">
+    <item name="android:alertDialogStyle">@style/progress_dialog_style</item>
+    <item name="android:windowBackground">@color/progress_transparent</item>
+  </style>
+
+  <style name="progress_dialog_borderless_theme" parent="android:Theme.Holo.Dialog">
     <item name="android:alertDialogStyle">@style/progress_dialog_style</item>
     <item name="android:windowBackground">@color/progress_transparent</item>
     <item name="android:backgroundDimEnabled">false</item>

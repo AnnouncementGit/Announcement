@@ -27,12 +27,7 @@
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
     <AndroidLinkMode>None</AndroidLinkMode>
-    <AndroidSigningKeyStore>/Users/andrewstelmakh/Documents/Projects/Announcement/Announcement.Android/Announcement.keystore</AndroidSigningKeyStore>
-    <AndroidSigningStorePass>password</AndroidSigningStorePass>
-    <AndroidSigningKeyAlias>Announcement</AndroidSigningKeyAlias>
-    <AndroidSigningKeyPass>password</AndroidSigningKeyPass>
     <JavaMaximumHeapSize>1G</JavaMaximumHeapSize>
-    <AndroidKeyStore>True</AndroidKeyStore>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>full</DebugType>
@@ -137,15 +132,12 @@
     <Compile Include="Services\Location\ILocationProvider.cs" />
     <Compile Include="Services\Location\LocationProvider.cs" />
     <Compile Include="Controls\TextView.cs" />
-
     <Compile Include="Controls\RadioButton.cs" />
     <Compile Include="Pages\CreateModeratorFragment.cs" />
     <Compile Include="Headers\HeaderFragment.cs" />
-
     <Compile Include="Controls\ProgressIndicator.cs" />
     <Compile Include="Managers\FontsManager.cs" />
     <Compile Include="Managers\ValueConverterManager.cs" />
-
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -223,7 +215,6 @@
     <AndroidResource Include="Resources\drawable\menu_button_selector.xml" />
     <AndroidResource Include="Resources\layout\simple_alert.axml" />
     <AndroidResource Include="Resources\drawable\alert_background.xml" />
-    <AndroidResource Include="Resources\layout\simple_progress.axml" />
     <AndroidResource Include="Resources\drawable-xxhdpi\progress_background.png" />
     <AndroidResource Include="Resources\drawable\menu_button_released.xml" />
     <AndroidResource Include="Resources\drawable\menu_button_pressed.xml" />
@@ -244,6 +235,9 @@
     <AndroidResource Include="Resources\layout\list_two_item_view.axml" />
     <AndroidResource Include="Resources\layout\tab_rating.axml" />
     <AndroidResource Include="Resources\layout\header_view.axml" />
+    <AndroidResource Include="Resources\layout\progress_layout.axml" />
+    <AndroidResource Include="Resources\layout\progress_borderless_layout.axml" />
+    <AndroidResource Include="Resources\drawable\progress_border.xml" />
   </ItemGroup>
   <Import Project="..\Announcement.Core\Announcement.Core.projitems" Label="Shared" Condition="Exists('..\Announcement.Core\Announcement.Core.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
@@ -254,11 +248,8 @@
     <Folder Include="Pages\" />
     <Folder Include="Controls\" />
     <Folder Include="Managers\" />
-
     <Folder Include="Headers\" />
-
     <Folder Include="Assets\fonts\" />
-
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="xamarin.auth">

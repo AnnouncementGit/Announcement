@@ -33,7 +33,7 @@ namespace Announcement.Android.Controls
 
         protected void Initialize()
         {
-       
+           
         }
             
         protected void ParseAttributes(IAttributeSet attrs)
@@ -41,6 +41,30 @@ namespace Announcement.Android.Controls
             using (var attributes = Context.ObtainStyledAttributes(attrs, Resource.Styleable.localization))
             {
                 Hint = LocalizationModule.Translate(attributes.GetString(Resource.Styleable.localization_localizationKey));
+
+                attributes.Recycle();
+            }
+
+            using (var attributes = Context.ObtainStyledAttributes(attrs, Resource.Styleable.padding_fix))
+            {
+                var paddingLeft = (int)attributes.GetDimension(Resource.Styleable.padding_fix_android_paddingLeft, 0);
+
+                var paddingTop = (int)attributes.GetDimension(Resource.Styleable.padding_fix_android_paddingLeft, 0);
+
+                var paddingRight = (int)attributes.GetDimension(Resource.Styleable.padding_fix_android_paddingLeft, 0);
+
+                var paddingBottom = (int)attributes.GetDimension(Resource.Styleable.padding_fix_android_paddingLeft, 0);
+
+                var padding = (int)attributes.GetDimension(Resource.Styleable.padding_fix_android_padding, 0);
+
+                if (padding > 0)
+                {
+                    SetPadding(padding, padding, padding, padding);
+                }
+                else
+                {
+                    SetPadding(paddingLeft, paddingTop, paddingRight, paddingBottom); 
+                }
 
                 attributes.Recycle();
             }

@@ -35,6 +35,8 @@
 
     <data name="alert_title_type_warning" xml:space="preserve"><value>Warning</value></data>
 
+    <data name="alert_no_internet_connection" xml:space="preserve"><value>No Internet Connection.</value></data>
+    
     <data name="alert_title_type_success" xml:space="preserve"><value>Success</value></data>
     
     <data name="alert_button_try_again" xml:space="preserve"><value>Try again</value></data>
