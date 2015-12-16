@@ -15,7 +15,7 @@ namespace Announcement.Core
             }
         }
             
-        public async void PushReportSpam(float latitude, float longitude, byte[] photo, Action callback, Action continueCallback)
+        public async void PushReportSpam(float latitude, float longitude, byte[] photo, Action callback, Action continueCallback, Action cancelCallback)
         {
             Result<string> result = null;
             
@@ -32,7 +32,7 @@ namespace Announcement.Core
 
             if (result.HasError)
             {
-                AlertModule.ShowError(result.Message, () => PushReportSpam(latitude, longitude, photo, callback, continueCallback));
+                AlertModule.ShowError(result.Message, () => PushReportSpam(latitude, longitude, photo, callback, continueCallback, cancelCallback), cancelCallback);
             }
             else
             {
@@ -46,7 +46,7 @@ namespace Announcement.Core
                 {
                     reportId = result.Value;
                     
-                    AlertModule.ShowWarning("Report sent successfully but can't analize photo.", continueCallback);
+                    AlertModule.ShowWarning("Report sent successfully but can't analize photo.", continueCallback, cancelCallback);
                 }
             }
         }

@@ -51,6 +51,8 @@ namespace Announcement.Core
                 if (lambdaClient == null)
                 {
                     lambdaClient = new AmazonLambdaClient(Credentials, regionEndpoint);
+
+                    lambdaClient.Config.Timeout = TimeSpan.FromSeconds(20);
                 }
 
                 return lambdaClient;
