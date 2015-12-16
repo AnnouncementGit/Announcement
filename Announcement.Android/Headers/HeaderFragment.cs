@@ -59,13 +59,17 @@ namespace Announcement.Android
 			popupWindow.Dismiss ();
 			switch (e.Position) {
 			case 0:
-				if(((ListView)sender).Count > 1)
+				if (((ListView)sender).Count > 1)
 					NavigationManager.Forward (typeof(CreateModeratorFragment));
-				else
+				else 
+				{
+					NavigationManager.EraseBackStack();
 					NavigationManager.Forward (typeof(LoginFragment));
+				}
 				break;
 
 			case 1:
+				NavigationManager.EraseBackStack();
 				NavigationManager.Forward (typeof(LoginFragment));
 				break;
 			}
