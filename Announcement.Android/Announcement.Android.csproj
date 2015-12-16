@@ -159,7 +159,6 @@
     <AndroidResource Include="Resources\layout\user_main_layout.axml" />
     <AndroidResource Include="Resources\layout\main_layout.axml" />
     <AndroidResource Include="Resources\layout\add_new_moderator_layout.axml" />
-    <AndroidResource Include="Resources\layout\moderators_layout.axml" />
     <AndroidResource Include="Resources\layout\admin_main_layout.axml" />
     <AndroidResource Include="Resources\layout\login_layout.axml" />
     <AndroidResource Include="Resources\values\Attrs.xml" />
@@ -238,6 +237,8 @@
     <AndroidResource Include="Resources\layout\progress_layout.axml" />
     <AndroidResource Include="Resources\layout\progress_borderless_layout.axml" />
     <AndroidResource Include="Resources\drawable\progress_border.xml" />
+    <AndroidResource Include="Resources\layout\popup_menu_item.axml" />
+    <AndroidResource Include="Resources\layout\popup_menu.axml" />
   </ItemGroup>
   <Import Project="..\Announcement.Core\Announcement.Core.projitems" Label="Shared" Condition="Exists('..\Announcement.Core\Announcement.Core.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />

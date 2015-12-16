@@ -3,23 +3,6 @@
     xmlns:local="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <Announcement.Android.Controls.TextView
-        android:layout_width="fill_parent"
-        android:layout_height="50dp"
-        android:padding="10dp"
-        android:textSize="24sp"
-        android:gravity="center_vertical"
-        android:textColor="@color/major_color"
-        android:background="@android:color/black"
-        local:localizationKey="stop_spam_header_title" />
-    <ToggleButton
-        android:id="@+id/btnMenu"
-        android:layout_width="40dp"
-        android:layout_height="50dp"
-        android:background="@drawable/menu_button_selector"
-        android:layout_alignParentRight="true"
-        android:textOn=""
-        android:textOff="" />
     <ImageView
         android:id="@+id/btnReportSpam"
         android:layout_width="212dp"

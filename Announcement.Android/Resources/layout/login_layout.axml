@@ -22,16 +22,17 @@
             android:layout_marginLeft="35dp"
             android:layout_marginRight="35dp"
             android:layout_marginTop="15dp"
-            android:paddingLeft="7dp"
-            android:paddingRight="7dp"
             android:textSize="24sp"
             android:textColor="@color/major_color"
+            android:textColorHint="@color/major_color"
             android:singleLine="true"
             android:ellipsize="end"
             android:imeOptions="actionNext"
             android:inputType="textNoSuggestions"
             local:localizationKey="edit_text_hint_username"
-            android:background="@drawable/login_fields_background" />
+            android:background="@drawable/login_fields_background"
+            android:paddingLeft="7dp"
+            android:paddingRight="7dp" />
         <Announcement.Android.Controls.EditText
             android:id="@+id/PasswordEditText"
             android:layout_width="match_parent"
@@ -43,6 +44,7 @@
             android:paddingRight="7dp"
             android:textSize="24sp"
             android:textColor="@color/major_color"
+            android:textColorHint="@color/major_color"
             android:singleLine="true"
             android:ellipsize="end"
             android:password="true"

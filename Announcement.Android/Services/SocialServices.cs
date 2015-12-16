@@ -9,6 +9,7 @@ using Android.Gms.Plus;
 using Android.Gms.Auth;
 using System.Threading.Tasks;
 using Android.OS;
+using Announcement.Core;
 
 namespace Announcement.Android
 {
@@ -188,7 +189,7 @@ namespace Announcement.Android
 			auth.AllowCancel = true;
 			auth.Completed += (s, e) => {
 				if (!e.IsAuthenticated) 
-					ShowErrorMessage("Not Authenticated");
+					AlertModule.ShowInformation("Not Authenticated", null);
 				else
 				{
 					var token = e.Account.Properties ["access_token"].ToString ();
@@ -213,7 +214,7 @@ namespace Announcement.Android
 			auth.AllowCancel = true;
 			auth.Completed += (s, e) => {
 				if (!e.IsAuthenticated)
-					ShowErrorMessage("Not Authenticated");
+					AlertModule.ShowInformation("Not Authenticated", null);
 				else
 				{
 					var token = e.Account.Properties ["access_token"].ToString ();
@@ -226,17 +227,9 @@ namespace Announcement.Android
 			activity.StartActivity (intent);
 		}
 
-		private void ShowErrorMessage(string message)
-		{
-			var builder = new AlertDialog.Builder (activity);
-			builder.SetMessage (message);
-			builder.SetPositiveButton ("Ok", (o, eee)=>{});
-			builder.Create().Show();
-		}
-
 		#endregion
 
-		public void OnActivityResult(int requestCode, Result resultCode, global::Android.Content.Intent data)
+		public void OnActivityResult(int requestCode, global::Android.App.Result resultCode, global::Android.Content.Intent data)
 		{
 			if (googleApiClient != null && !googleApiClient.IsConnecting && requestCode == 0)
 				googleApiClient.Connect ();

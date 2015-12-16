@@ -65,6 +65,8 @@ namespace Announcement.Android
 				});
 			};
 
+			NavigationManager.ShowHeader (false);
+
             return view;
         }
 

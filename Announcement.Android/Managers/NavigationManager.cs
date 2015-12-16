@@ -8,6 +8,15 @@ namespace Announcement.Android
     public static class NavigationManager
     {
         public static global::Android.App.Activity CurrentActivity { get; private set; }
+		public static Type CurrentFragment{
+			get 
+			{
+				if(fragmentManager == null || fragmentManager.FindFragmentById (Resource.Id.FragmentContainer) == null)
+					return null;
+
+				return fragmentManager.FindFragmentById (Resource.Id.FragmentContainer).GetType();
+			}
+		}
         
         public static void Initialize(FragmentActivity activity)
         {
@@ -27,7 +36,9 @@ namespace Announcement.Android
 
             var transaction = fragmentManager.BeginTransaction();
 
-            transaction.Replace(Resource.Id.FragmentContainer, (Fragment)Activator.CreateInstance(fragmentType));
+			transaction.Replace(Resource.Id.FragmentContainer, (Fragment)Activator.CreateInstance(fragmentType));
+
+			ShowHeader (true);
 
             transaction.Commit();
         }
@@ -67,6 +78,8 @@ namespace Announcement.Android
                 var transaction = fragmentManager.BeginTransaction();
 
                 transaction.Replace(Resource.Id.FragmentContainer, (Fragment)Activator.CreateInstance(fragmentType));
+
+				ShowHeader (true);
 
                 transaction.Commit();
 

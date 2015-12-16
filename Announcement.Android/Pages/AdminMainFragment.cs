@@ -18,7 +18,6 @@ namespace Announcement.Android
             }
 		}
 
-		ToggleButton btnMenu;
 		TabHostContentFactory tabHostContentFactory;
 		View ratingTabView;
 		LayoutInflater Inflater;
@@ -31,9 +30,6 @@ namespace Announcement.Android
 			//ViewModel.Initialize ();
 			Inflater = inflater;
             var view = inflater.Inflate(Resource.Layout.admin_main_layout, null);
-
-			btnMenu = view.FindViewById<ToggleButton> (Resource.Id.btnMenu);
-			btnMenu.Click += BtnMenuOnClick;
 
 			var tabHost = view.FindViewById<TabHost> (Android.Resource.Id.tabHost);
 			tabHost.Setup ();
@@ -68,17 +64,6 @@ namespace Announcement.Android
             return view;
 		}
 
-		void BtnMenuOnClick (object sender, System.EventArgs e)
-		{
-			btnMenu.Checked = true;
-			var menu = new PopupMenu(MainActivityInstance.Current, btnMenu);
-			menu.MenuItemClick += OnMenuItemClick;
-			menu.Menu.Add(0, 0, 0, "Add Moderator");
-			menu.Menu.Add(0, 1, 1, "Logout");
-			menu.DismissEvent += OnMenuDismissEvent;
-			menu.Show ();
-		}
-
 		void OnMenuItemClick (object sender, PopupMenu.MenuItemClickEventArgs e)
 		{
 			switch (e.Item.ItemId) {
@@ -90,11 +75,6 @@ namespace Announcement.Android
 				NavigationManager.Forward (typeof(LoginFragment));
 				break;
 			}
-		}
-
-		void OnMenuDismissEvent (object sender, PopupMenu.DismissEventArgs e)
-		{
-			btnMenu.Checked = false;
 		}
 
 		void TabHostContentFactoryOnContentCreated (string tag)
@@ -134,14 +114,6 @@ namespace Announcement.Android
 				}).ToList ();
 			else {
 				valList = new List<ListTwoDataHolder> ();
-				valList.Add(new ListTwoDataHolder() {Title = "Username1", Description = "Description"});
-				valList.Add(new ListTwoDataHolder() {Title = "Username2", Description = "Description"});
-				valList.Add(new ListTwoDataHolder() {Title = "Username3", Description = "Description"});
-				valList.Add(new ListTwoDataHolder() {Title = "Username4", Description = "Description"});
-				valList.Add(new ListTwoDataHolder() {Title = "Username5", Description = "Description"});
-				valList.Add(new ListTwoDataHolder() {Title = "Username6", Description = "Description"});
-				valList.Add(new ListTwoDataHolder() {Title = "Username7", Description = "Description"});
-				valList.Add(new ListTwoDataHolder() {Title = "Username8", Description = "Description"});
 			}
 
 			var validationListAdapter = new ListViewTwoAdapter (Inflater, valList);
