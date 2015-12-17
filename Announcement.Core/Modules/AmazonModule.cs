@@ -78,10 +78,21 @@ namespace Announcement.Core
 
 					var task = LambdaClient.InvokeAsync(request);
 				
-					task.Wait();
+                    var result = task.Wait(CONNECTION_TIMEOUT_MS);
 
-					return JsonConvert.DeserializeObject<Result<T>>(Encoding.UTF8.GetString(task.Result.Payload.ToArray()));
+                    if(result)
+                    {
+                        return JsonConvert.DeserializeObject<Result<T>>(Encoding.UTF8.GetString(task.Result.Payload.ToArray()));
+                    }
+                    else
+                    {
+                        return new Result<T>() { HasError = true, Message = LocalizationModule.Translate("alert_timeout") };
+                    }
 				}
+                catch(TaskCanceledException)
+                {
+                    return new Result<T>() { HasError = true, Message = LocalizationModule.Translate("alert_timeout") };
+                }
 				catch (Exception ex)
 				{
 					return new Result<T>() { HasError = true, Message = ex.Message };
@@ -109,6 +120,8 @@ namespace Announcement.Core
         private static AmazonLambdaClient lambdaClient;
 
         private static RegionEndpoint regionEndpoint = RegionEndpoint.EUWest1;
+
+        private const int CONNECTION_TIMEOUT_MS = 20000;
 
         private const string IDENTITY_POOL_ID = "eu-west-1:7e2559ad-767f-41bf-9372-bcfd7b9cd8c6";
     }

@@ -15,7 +15,7 @@ namespace Announcement.Core
             }
         }
              
-        protected async void Logout( Action callback)
+        public async void Logout( Action callback)
         {
             ProgressModule.Message(LocalizationModule.Translate("progress_logout"));
 

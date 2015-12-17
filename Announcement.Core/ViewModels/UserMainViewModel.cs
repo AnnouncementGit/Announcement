@@ -40,13 +40,13 @@ namespace Announcement.Core
                 {
                     reportId = null;
                     
-                    AlertModule.ShowInformation("Report sent and successfully processed. Thanks", callback);
+                    AlertModule.Show(LocalizationModule.Translate("alert_title_upload_completed"), LocalizationModule.Translate("alert_message_upload_completed"),  LocalizationModule.Translate("alert_button_ok"), callback);
                 }
                 else
                 {
                     reportId = result.Value;
                     
-                    AlertModule.ShowWarning("Report sent successfully but can't analize photo.", continueCallback, cancelCallback);
+                    AlertModule.Show(LocalizationModule.Translate("alert_title_upload_completed"), LocalizationModule.Translate("alert_message_upload_completed_not_found"), LocalizationModule.Translate("alert_button_retry"), LocalizationModule.Translate("alert_button_cancel"), continueCallback, cancelCallback);
                 }
             }
         }

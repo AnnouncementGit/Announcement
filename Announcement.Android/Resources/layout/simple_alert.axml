@@ -1,59 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/alert_background">
+    android:background="@drawable/alert_background"
+    android:padding="1dp">
     <Announcement.Android.Controls.TextView
+        style="@style/text_view_normal_font_style"
         android:id="@+id/alertTitle"
         android:layout_width="match_parent"
-        android:layout_height="42dp"
+        android:layout_height="wrap_content"
         android:textSize="26sp"
-        android:paddingLeft="7dp"
-        android:paddingRight="7dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:textColor="@color/major_color"
-        android:background="@android:color/black"
-        android:layout_margin="1dp" />
+        android:background="@android:color/black" />
     <Announcement.Android.Controls.TextView
+        style="@style/text_view_normal_font_style"
         android:id="@+id/alertText1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:singleLine="false"
         android:textSize="16sp"
-        android:paddingLeft="7dp"
-        android:paddingRight="7dp"
-        android:textColor="@color/major_color"
-        android:layout_margin="10dp"
-        android:layout_below="@+id/alertTitle" />
-    <Announcement.Android.Controls.Button
-        android:id="@+id/alertBtnDismiss"
-        android:minWidth="100dp"
-        android:minHeight="20dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="2dp"
-        android:background="@drawable/button_selector"
-        android:layout_marginRight="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/alertText1" />
-    <Announcement.Android.Controls.Button
-        android:id="@+id/alertBtnRetry"
-        android:minWidth="100dp"
-        android:minHeight="20dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="2dp"
-        android:background="@drawable/button_selector"
-        android:layout_marginRight="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="10dp"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/alertText1" />
-    <View
+        android:padding="10dp"
+        android:textColor="@color/major_color" />
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:layout_below="@+id/alertBtnDismiss" />
-</RelativeLayout>
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="10dp"
+        android:gravity="right">
+        <Announcement.Android.Controls.Button
+            style="@style/text_view_normal_font_style"
+            android:id="@+id/alertBtnRetry"
+            android:minWidth="100dp"
+            android:minHeight="25dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_selector"
+            android:layout_marginRight="10dp" />
+        <Announcement.Android.Controls.Button
+            style="@style/text_view_normal_font_style"
+            android:id="@+id/alertBtnDismiss"
+            android:minWidth="100dp"
+            android:minHeight="25dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_selector" />
+    </LinearLayout>
+</LinearLayout>

@@ -61,7 +61,7 @@ namespace Announcement.Android.Controls
 
             valueAnimator.RepeatCount = ValueAnimator.Infinite;
 
-            valueAnimator.SetInterpolator(new AccelerateDecelerateInterpolator());
+            valueAnimator.SetInterpolator(new AccelerateInterpolator());
 
             valueAnimator.SetDuration(1000);
 

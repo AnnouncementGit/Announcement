@@ -34,6 +34,10 @@
     <item name="fontName">"times_new_roman"</item>
   </style>
 
+   <style name="text_view_bold_font_style">
+    <item name="fontName">"times_new_roman_bold"</item>
+  </style>
+
     <style name="progress_dialog_theme" parent="android:Theme.Holo.Dialog">
     <item name="android:alertDialogStyle">@style/progress_dialog_style</item>
     <item name="android:windowBackground">@color/progress_transparent</item>

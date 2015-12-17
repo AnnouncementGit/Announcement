@@ -636,11 +636,11 @@ namespace Announcement.Android
 			// aapt resource value: 0x7f090001
 			public const int adjust_width = 2131296257;
 			
-			// aapt resource value: 0x7f090036
-			public const int alertBtnDismiss = 2131296310;
-			
 			// aapt resource value: 0x7f090037
-			public const int alertBtnRetry = 2131296311;
+			public const int alertBtnDismiss = 2131296311;
+			
+			// aapt resource value: 0x7f090036
+			public const int alertBtnRetry = 2131296310;
 			
 			// aapt resource value: 0x7f090035
 			public const int alertText1 = 2131296309;
@@ -1159,17 +1159,20 @@ namespace Announcement.Android
 			// aapt resource value: 0x7f080016
 			public const int popup_style = 2131230742;
 			
-			// aapt resource value: 0x7f08001c
-			public const int progress_dialog_borderless_theme = 2131230748;
-			
 			// aapt resource value: 0x7f08001d
-			public const int progress_dialog_style = 2131230749;
+			public const int progress_dialog_borderless_theme = 2131230749;
 			
-			// aapt resource value: 0x7f08001b
-			public const int progress_dialog_theme = 2131230747;
+			// aapt resource value: 0x7f08001e
+			public const int progress_dialog_style = 2131230750;
+			
+			// aapt resource value: 0x7f08001c
+			public const int progress_dialog_theme = 2131230748;
 			
 			// aapt resource value: 0x7f080017
 			public const int splash_theme = 2131230743;
+			
+			// aapt resource value: 0x7f08001b
+			public const int text_view_bold_font_style = 2131230747;
 			
 			// aapt resource value: 0x7f08001a
 			public const int text_view_normal_font_style = 2131230746;

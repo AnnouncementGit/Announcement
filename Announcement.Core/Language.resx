@@ -19,7 +19,9 @@
 
     <data name="progress_receiving_moderators" xml:space="preserve"><value>Receiving list of moderators...</value></data>
 
-     <data name="progress_logout" xml:space="preserve"><value>Logout...</value></data>
+    <data name="progress_logout" xml:space="preserve"><value>Logout...</value></data>
+
+    <data name="progress_getting_photo" xml:space="preserve"><value>Getting photo...</value></data>
 
     <data name="progress_receiving_ratings" xml:space="preserve"><value>Receiving list of ratings...</value></data>
 
@@ -37,13 +39,17 @@
 
     <data name="alert_title_type_warning" xml:space="preserve"><value>Warning</value></data>
 
-    <data name="alert_no_internet_connection" xml:space="preserve"><value>No Internet Connection.</value></data>
+    <data name="alert_timeout" xml:space="preserve"><value>Can't reach server.</value></data>
+
+    <data name="alert_no_internet_connection" xml:space="preserve"><value>No internet connection.</value></data>
     
     <data name="alert_title_type_success" xml:space="preserve"><value>Success</value></data>
     
     <data name="alert_button_try_again" xml:space="preserve"><value>Try again</value></data>
 
-    <data name="alert_button_ok" xml:space="preserve"><value>Ok</value></data>
+    <data name="alert_button_retry" xml:space="preserve"><value>Retry</value></data>
+
+    <data name="alert_button_ok" xml:space="preserve"><value>OK</value></data>
 
     <data name="alert_button_cancel" xml:space="preserve"><value>Cancel</value></data>
 
@@ -91,8 +97,19 @@
 
     <data name="alert_enable_gps" xml:space="preserve"><value>Please enable GPS and Network Positioning in your Settings</value></data>
 
-    <data name="alert_trying_to_get_location" xml:space="preserve"><value>Trying to get  your current location...</value></data>
+    <data name="progress_trying_to_get_location" xml:space="preserve"><value>Trying to get  your current location...</value></data>
 
     <data name="alert_bad_location" xml:space="preserve"><value>Bad current location. Try again?</value></data>
+
+    <data name="alert_title_upload_completed" xml:space="preserve"><value>Upload Completed</value></data>
+
+    <data name="alert_message_upload_completed" xml:space="preserve"><value>Your photo has been successfully uploaded.
+
+Press OK to upload more.</value></data>
+
+<data name="alert_message_upload_completed_not_found" xml:space="preserve"><value>We didn't find any phone number on the photo.
+
+Press Retry to retake photo.</value></data>
+
 
 </root>

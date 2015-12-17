@@ -10,12 +10,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="26sp"
-        android:textColor="@color/major_color" />
+        android:textColor="@color/major_color"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp" />
     <Announcement.Android.Controls.ProgressIndicator
         android:id="@+id/progressView"
         android:layout_width="match_parent"
-        android:layout_height="15dp"
+        android:layout_height="20dp"
         local:backgroundColor="#1f1f1f"
         local:borderColor="@color/major_color"
-        local:lineColor="@color/major_color" />
+        local:lineColor="@color/major_color"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp" />
 </LinearLayout>

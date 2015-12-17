@@ -2,6 +2,7 @@
 using Android.Util;
 using Android.Runtime;
 using Android.Content;
+using Android.Graphics;
 
 namespace Announcement.Android.Controls
 {
@@ -45,15 +46,26 @@ namespace Announcement.Android.Controls
                 attributes.Recycle();
             }
 
+            using (var attributes = Context.ObtainStyledAttributes(attrs, Resource.Styleable.font))
+            {
+                var fontName = attributes.GetString(Resource.Styleable.font_fontName);
+
+                if (!string.IsNullOrEmpty(fontName))
+                {
+                    SetTypeface(FontsManager.LoadByName(fontName), TypefaceStyle.Normal);
+                }
+                attributes.Recycle();
+            }
+
             using (var attributes = Context.ObtainStyledAttributes(attrs, Resource.Styleable.padding_fix))
             {
                 var paddingLeft = (int)attributes.GetDimension(Resource.Styleable.padding_fix_android_paddingLeft, 0);
 
-                var paddingTop = (int)attributes.GetDimension(Resource.Styleable.padding_fix_android_paddingLeft, 0);
+                var paddingTop = (int)attributes.GetDimension(Resource.Styleable.padding_fix_android_paddingTop, 0);
 
-                var paddingRight = (int)attributes.GetDimension(Resource.Styleable.padding_fix_android_paddingLeft, 0);
+                var paddingRight = (int)attributes.GetDimension(Resource.Styleable.padding_fix_android_paddingRight, 0);
 
-                var paddingBottom = (int)attributes.GetDimension(Resource.Styleable.padding_fix_android_paddingLeft, 0);
+                var paddingBottom = (int)attributes.GetDimension(Resource.Styleable.padding_fix_android_paddingBottom, 0);
 
                 var padding = (int)attributes.GetDimension(Resource.Styleable.padding_fix_android_padding, 0);
 

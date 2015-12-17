@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="50dp">
     <Announcement.Android.Controls.TextView
+        style="@style/text_view_normal_font_style"
         android:layout_width="fill_parent"
         android:layout_height="50dp"
         android:padding="10dp"

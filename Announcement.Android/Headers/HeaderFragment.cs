@@ -2,92 +2,106 @@
 using Android.OS;
 using Android.Widget;
 using Android.Views;
+using Announcement.Core;
 using Android.Graphics.Drawables;
 using System.Collections.Generic;
 
 namespace Announcement.Android
-{		
-	public class HeaderFragment : Fragment, ViewTreeObserver.IOnGlobalLayoutListener
-	{
-		private ToggleButton btnMenu;
-		private PopupWindow popupWindow;
-		private ListView popupListView;
+{
+    public class HeaderFragment : Fragment, ViewTreeObserver.IOnGlobalLayoutListener
+    {
+        private MenuViewModel ViewModel
+        { 
+            get
+            { 
+                return MenuViewModel.Instance; 
+            }
+        }
 
-		public override global::Android.Views.View OnCreateView (global::Android.Views.LayoutInflater inflater, global::Android.Views.ViewGroup container, Bundle savedInstanceState)
-		{
-			var view = inflater.Inflate (Resource.Layout.header_view, null);
+        private ToggleButton btnMenu;
+        private PopupWindow popupWindow;
+        private ListView popupListView;
 
-			btnMenu = view.FindViewById<ToggleButton> (Resource.Id.btnMenu);
-			btnMenu.Click += BtnMenuOnClick;
-			btnMenu.ViewTreeObserver.AddOnGlobalLayoutListener (this);
+        public override global::Android.Views.View OnCreateView(global::Android.Views.LayoutInflater inflater, global::Android.Views.ViewGroup container, Bundle savedInstanceState)
+        {
+            var view = inflater.Inflate(Resource.Layout.header_view, null);
 
-			var popupView = inflater.Inflate (Resource.Layout.popup_menu, null);
-			popupWindow = new PopupWindow(MainActivityInstance.Current);
-			popupWindow.Focusable = true;
-			popupWindow.Width = ViewGroup.LayoutParams.WrapContent;
-			popupWindow.Height = ViewGroup.LayoutParams.WrapContent;
-			popupWindow.SetBackgroundDrawable(new BitmapDrawable());
-			popupWindow.ContentView = popupView;
-			popupWindow.OutsideTouchable = true;
+            btnMenu = view.FindViewById<ToggleButton>(Resource.Id.btnMenu);
+            btnMenu.Click += BtnMenuOnClick;
+            btnMenu.ViewTreeObserver.AddOnGlobalLayoutListener(this);
 
-			popupListView = popupWindow.ContentView.FindViewById<ListView> (Resource.Id.listView);
+            var popupView = inflater.Inflate(Resource.Layout.popup_menu, null);
+            popupWindow = new PopupWindow(MainActivityInstance.Current);
+            popupWindow.Focusable = true;
+            popupWindow.Width = ViewGroup.LayoutParams.WrapContent;
+            popupWindow.Height = ViewGroup.LayoutParams.WrapContent;
+            popupWindow.SetBackgroundDrawable(new BitmapDrawable());
+            popupWindow.ContentView = popupView;
+            popupWindow.OutsideTouchable = true;
 
-			return view;
-		}
+            popupListView = popupWindow.ContentView.FindViewById<ListView>(Resource.Id.listView);
 
-		public void OnGlobalLayout ()
-		{
-			if (!popupWindow.IsShowing)
-				return;
+            return view;
+        }
+
+        public void OnGlobalLayout()
+        {
+            if (!popupWindow.IsShowing)
+                return;
 			
-			popupWindow.Dismiss ();
-			btnMenu.Checked = true;
-			ShowPopupMenu ();
-		}
+            popupWindow.Dismiss();
+            btnMenu.Checked = true;
+            ShowPopupMenu();
+        }
 
-		void BtnMenuOnClick (object sender, System.EventArgs e)
-		{
-			ShowPopupMenu ();
-		}
+        void BtnMenuOnClick(object sender, System.EventArgs e)
+        {
+            ShowPopupMenu();
+        }
 
-		void ShowPopupMenu()
-		{
-			var menuItems = new List<string>();
-			if(NavigationManager.CurrentFragment == typeof(AdminMainFragment))
-				menuItems.Add(LocalizationModule.Translate("label_add_moderator"));
-			menuItems.Add (LocalizationModule.Translate("label_logout"));
-			popupListView.Adapter = new ArrayAdapter (MainActivityInstance.Current, Resource.Layout.popup_menu_item, menuItems);
-			popupListView.ItemClick += PopupMenuItemClick;
+        void ShowPopupMenu()
+        {
+            var menuItems = new List<string>();
+            if (NavigationManager.CurrentFragment == typeof(AdminMainFragment))
+                menuItems.Add(LocalizationModule.Translate("label_add_moderator"));
+            menuItems.Add(LocalizationModule.Translate("label_logout"));
+            popupListView.Adapter = new ArrayAdapter(MainActivityInstance.Current, Resource.Layout.popup_menu_item, menuItems);
+            popupListView.ItemClick += PopupMenuItemClick;
 
-			popupWindow.ShowAsDropDown (btnMenu);
-			popupWindow.DismissEvent += PopupWindowOnDismissEvent;
-		}
+            popupWindow.ShowAsDropDown(btnMenu);
+            popupWindow.DismissEvent += PopupWindowOnDismissEvent;
+        }
 
-		void PopupWindowOnDismissEvent (object sender, System.EventArgs e)
-		{
-			btnMenu.Checked = false;
-		}
+        void PopupWindowOnDismissEvent(object sender, System.EventArgs e)
+        {
+            btnMenu.Checked = false;
+        }
 
-		void PopupMenuItemClick (object sender, AdapterView.ItemClickEventArgs e)
-		{
-			popupWindow.Dismiss ();
-			switch (e.Position) {
-			case 0:
-				if (((ListView)sender).Count > 1)
-					NavigationManager.Forward (typeof(CreateModeratorFragment));
-				else 
-				{
-					NavigationManager.EraseBackStack();
-					NavigationManager.Forward (typeof(LoginFragment));
-				}
-				break;
+        void PopupMenuItemClick(object sender, AdapterView.ItemClickEventArgs e)
+        {
+            popupWindow.Dismiss();
+            switch (e.Position)
+            {
+                case 0:
+                    if (((ListView)sender).Count > 1)
+                        NavigationManager.Forward(typeof(CreateModeratorFragment));
+                    else
+                    {
+                        ViewModel.Logout(LogoutCallback);
+                    }
+                    break;
 
-			case 1:
-				NavigationManager.EraseBackStack();
-				NavigationManager.Forward (typeof(LoginFragment));
-				break;
-			}
-		}
-	}
+                case 1:
+                    ViewModel.Logout(LogoutCallback);
+                    break;
+            }
+        }
+
+        protected void LogoutCallback()
+        {
+            NavigationManager.EraseBackStack();
+            NavigationManager.Forward(typeof(LoginFragment)); 
+        }
+    }
 }
 

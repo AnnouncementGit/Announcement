@@ -62,11 +62,11 @@ namespace Announcement.Android.Controls
             {
                 var paddingLeft = (int)attributes.GetDimension(Resource.Styleable.padding_fix_android_paddingLeft, 0);
 
-                var paddingTop = (int)attributes.GetDimension(Resource.Styleable.padding_fix_android_paddingLeft, 0);
+                var paddingTop = (int)attributes.GetDimension(Resource.Styleable.padding_fix_android_paddingTop, 0);
 
-                var paddingRight = (int)attributes.GetDimension(Resource.Styleable.padding_fix_android_paddingLeft, 0);
+                var paddingRight = (int)attributes.GetDimension(Resource.Styleable.padding_fix_android_paddingRight, 0);
 
-                var paddingBottom = (int)attributes.GetDimension(Resource.Styleable.padding_fix_android_paddingLeft, 0);
+                var paddingBottom = (int)attributes.GetDimension(Resource.Styleable.padding_fix_android_paddingBottom, 0);
 
                 var padding = (int)attributes.GetDimension(Resource.Styleable.padding_fix_android_padding, 0);
 

@@ -16,6 +16,7 @@
             android:layout_margin="20dp"
             android:src="@drawable/logo" />
         <Announcement.Android.Controls.EditText
+            style="@style/text_view_normal_font_style"
             android:id="@+id/LoginEditText"
             android:layout_width="match_parent"
             android:layout_height="42dp"
@@ -28,20 +29,21 @@
             android:singleLine="true"
             android:ellipsize="end"
             android:imeOptions="actionNext"
-            android:inputType="textNoSuggestions"
+            android:inputType="textNoSuggestions|textVisiblePassword"
             local:localizationKey="edit_text_hint_username"
             android:background="@drawable/login_fields_background"
-            android:paddingLeft="7dp"
-            android:paddingRight="7dp" />
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp" />
         <Announcement.Android.Controls.EditText
+            style="@style/text_view_normal_font_style"
             android:id="@+id/PasswordEditText"
             android:layout_width="match_parent"
             android:layout_height="42dp"
             android:layout_marginLeft="35dp"
             android:layout_marginRight="35dp"
             android:layout_marginTop="35dp"
-            android:paddingLeft="7dp"
-            android:paddingRight="7dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:textSize="24sp"
             android:textColor="@color/major_color"
             android:textColorHint="@color/major_color"
@@ -52,6 +54,7 @@
             local:localizationKey="edit_text_hint_password"
             android:background="@drawable/login_fields_background" />
         <Announcement.Android.Controls.Button
+            style="@style/text_view_normal_font_style"
             android:id="@+id/LoginButton"
             android:layout_width="match_parent"
             android:layout_height="50dp"

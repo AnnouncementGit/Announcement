@@ -37,12 +37,13 @@ namespace Announcement.Android
                     ViewModel.LoginForAdminStuff("username", "password", LoginForAdminStuffCallback);
                 };
 
-			facebookButton.Click += (sender, e) => 
-			{
-				//SocialServices.Instance.FacebookLogin((token) => { 
-					ViewModel.LoginViaFacebook("", LoginViaSocialCallback);
-				//});
-			};
+            facebookButton.Click += (sender, e) =>
+            {
+                SocialServices.Instance.FacebookLogin((token) =>
+                    { 
+                        ViewModel.LoginViaFacebook("", LoginViaSocialCallback);
+                    });
+            };
 
 			googlePlusButton.Click += (sender, e) => 
 			{

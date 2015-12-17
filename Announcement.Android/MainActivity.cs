@@ -4,6 +4,7 @@ using Android.Locations;
 using Android.Content.PM;
 using Android.Support.V4.App;
 using LocationProvider = Announcement.Android.Services.Location.LocationProvider;
+using Android.Content;
 
 namespace Announcement.Android
 {
@@ -39,7 +40,13 @@ namespace Announcement.Android
         {
             if (!NavigationManager.Backward())
             {
-                base.OnBackPressed();
+                var main = new Intent(Intent.ActionMain);
+
+                main.AddCategory(Intent.CategoryHome);
+
+                main.SetFlags(ActivityFlags.NewTask);
+
+                StartActivity(main);
             }
         }
 

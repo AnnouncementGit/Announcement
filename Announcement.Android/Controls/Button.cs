@@ -2,6 +2,7 @@
 using Android.Util;
 using Android.Runtime;
 using Android.Content;
+using Android.Graphics;
 
 namespace Announcement.Android.Controls
 {
@@ -42,6 +43,17 @@ namespace Announcement.Android.Controls
             {
                 SetText(LocalizationModule.Translate(attributes.GetString(Resource.Styleable.localization_localizationKey)), BufferType.Normal); 
 
+                attributes.Recycle();
+            }
+
+            using (var attributes = Context.ObtainStyledAttributes(attrs, Resource.Styleable.font))
+            {
+                var fontName = attributes.GetString(Resource.Styleable.font_fontName);
+
+                if (!string.IsNullOrEmpty(fontName))
+                {
+                    SetTypeface(FontsManager.LoadByName(fontName), TypefaceStyle.Normal);
+                }
                 attributes.Recycle();
             }
         }
