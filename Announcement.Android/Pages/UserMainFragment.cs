@@ -67,7 +67,7 @@ namespace Announcement.Android
 
 						ReportSpam(imageByteArray); // try to find info by deecoding to exsacly image size
 
-						//var scaledBitmap = await ImageDecoderHelper.ScaleBitmap (file.AbsolutePath, 1080, 1920);
+						await ImageDecoderHelper.ScaleBitmap (file.AbsolutePath, 1080, 1920);
 
 					} catch (Exception) {
 

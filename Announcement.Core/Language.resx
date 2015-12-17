@@ -19,6 +19,8 @@
 
     <data name="progress_receiving_moderators" xml:space="preserve"><value>Receiving list of moderators...</value></data>
 
+     <data name="progress_logout" xml:space="preserve"><value>Logout...</value></data>
+
     <data name="progress_receiving_ratings" xml:space="preserve"><value>Receiving list of ratings...</value></data>
 
     <data name="progress_receiving_reports" xml:space="preserve"><value>Receiving list of reports...</value></data>

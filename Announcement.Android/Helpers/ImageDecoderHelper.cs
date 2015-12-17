@@ -88,7 +88,7 @@ namespace Announcement.Android
 		{
 			float height = options.OutHeight;
 			float width = options.OutWidth;
-			double inSampleSize = 2D; //was 1
+			double inSampleSize = 1D; //was 1
 
 			if (height > reqHeight || width > reqWidth)
 			{

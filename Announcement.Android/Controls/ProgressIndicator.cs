@@ -113,7 +113,7 @@ namespace Announcement.Android.Controls
 
             linePath.Close();
 
-            PostInvalidate(backgroundRect);
+            PostInvalidate(backgroundRect.Left, backgroundRect.Top, backgroundRect.Right, backgroundRect.Bottom);
         }
 
         protected override void OnMeasure(int widthMeasureSpec, int heightMeasureSpec)
