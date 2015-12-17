@@ -77,6 +77,8 @@ namespace Announcement.Core
                     if (progressView != null)
                     {
                         progressView.Dismiss();
+
+                        progressView = null;
                     }
 
                 }, null);

@@ -39,9 +39,9 @@ namespace Announcement.Android
 
 			facebookButton.Click += (sender, e) => 
 			{
-				SocialServices.Instance.FacebookLogin((token) => { 
-					ViewModel.LoginViaFacebook(token, LoginViaSocialCallback);
-				});
+				//SocialServices.Instance.FacebookLogin((token) => { 
+					ViewModel.LoginViaFacebook("", LoginViaSocialCallback);
+				//});
 			};
 
 			googlePlusButton.Click += (sender, e) => 
