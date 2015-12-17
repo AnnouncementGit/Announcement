@@ -86,6 +86,7 @@ namespace Announcement.Android
 		private ConnectionResult googleConnectionResult;
 		private bool googleLogInButtonClicked;
 		private Action<string> googleLoginCallback;
+		public const int GoogleRecoverableAuthRequestCode = 111;
 
 		public void GoogleLogin(Action<string> callback)
 		{
@@ -133,47 +134,27 @@ namespace Announcement.Android
 
 		public void OnConnected (global::Android.OS.Bundle connectionHint)
 		{
-//			if (PlusClass.PeopleApi.GetCurrentPerson (googleApiClient) != null) {
-//				var person = PlusClass.PeopleApi.GetCurrentPerson (googleApiClient);
-//			}
-//
 			var account = PlusClass.AccountApi.GetAccountName (googleApiClient);
 
-			var t = new GoogleAccessTokenAsyncLoader (account, googleLoginCallback);
-			t.Execute ();
+			Task.Run (() => {
+				var token = string.Empty;
+				try
+				{
+					token = GoogleAuthUtil.GetToken(MainActivityInstance.Current, account,"oauth2:" + Scopes.PlusLogin + " https://www.googleapis.com/auth/plus.profile.emails.read");
+
+					if (googleLoginCallback != null)
+						googleLoginCallback.Invoke (token);
+				}
+				catch (UserRecoverableAuthException e)
+				{
+					MainActivityInstance.Current.StartActivityForResult (e.Intent, SocialServices.GoogleRecoverableAuthRequestCode);
+				}
+				catch (GoogleAuthException ex){
+					var t = ex.Message;
+				}		
+			});
 		}
 		#endregion
-		#region GoogleLogin oAuth2 - get token = bad
-//		public void GoogleLogin(Action<string> callback)
-//		{
-//			OAuth2Authenticator auth = new OAuth2Authenticator (
-//				                           clientId: "1096133023554-5lphn591aukp6il8047l8r89km4cedlv.apps.googleusercontent.com",
-//				                           clientSecret: "MuFdnTnQAsA0q4ufRk6lpcn",
-//				                           scope: "https://www.googleapis.com/auth/plus.login",
-//				                           authorizeUrl: new Uri ("https://accounts.google.com/o/oauth2/auth"),
-//				                           redirectUrl: new Uri ("https://localhost/oauth2callback"),
-//				                           accessTokenUrl: new Uri ("https://accounts.google.com/o/oauth2/token"),
-//				                           getUsernameAsync: null) 
-//			{
-//				AllowCancel = true,
-//				ShowUIErrors = false,
-//				Title = "Google Plus Login"
-//			};
-//
-//			auth.Completed += (s, e) => {
-//				if (!e.IsAuthenticated)
-//					ShowErrorMessage ("Not Authenticated");
-//				else {
-//					var token = e.Account.Properties ["access_token"].ToString ();
-//					if (callback != null && !string.IsNullOrWhiteSpace (token))
-//						callback.Invoke (token);
-//				}
-//			};
-//
-//			var intent = auth.GetUI (activity);
-//			activity.StartActivity (intent);
-//		}
-            		#endregion
 		#region LinkedInLogin - get token = ok
 
 		public void LinkedInLogin(Action<string> callback)
@@ -234,39 +215,17 @@ namespace Announcement.Android
 			if (googleApiClient != null && !googleApiClient.IsConnecting && requestCode == 0)
 				googleApiClient.Connect ();
 
+			if (requestCode == GoogleRecoverableAuthRequestCode) 
+			{
+				var extras = data.Extras;
+				var token = extras.GetString ("authtoken");
+				if (!string.IsNullOrWhiteSpace(token) && googleLoginCallback != null)
+					googleLoginCallback.Invoke (token);
+			}
+
 			if (callbackManager != null)
 				callbackManager.OnActivityResult (requestCode, (int)resultCode, data);
 		}
-	}
-
-	public class GoogleAccessTokenAsyncLoader : AsyncTask<string, string, string>
-	{
-		string account;
-		Action<string> callback;
-		public GoogleAccessTokenAsyncLoader(string account, Action<string> callback)
-		{
-			this.account = account;
-			this.callback = callback;
-		}
-		#region implemented abstract members of AsyncTask
-
-		protected override string RunInBackground (params string[] @params)
-		{
-			var token = string.Empty;
-			try
-			{
-				token = GoogleAuthUtil.GetToken(MainActivityInstance.Current, account,"oauth2:" + Scopes.PlusLogin);
-
-				if (callback != null)
-					callback.Invoke (token);
-			}
-			catch (GoogleAuthException ex){
-				var t = ex.Message;
-			}
-
-			return token;
-		}
-		#endregion
 	}
 
 	public class FacebookAcessTokenTracker : AccessTokenTracker
@@ -292,4 +251,3 @@ namespace Announcement.Android
 		}
 	}
 }
-
