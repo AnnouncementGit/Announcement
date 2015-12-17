@@ -83,4 +83,14 @@
 
     <data name="button_title_users" xml:space="preserve"><value>Users</value></data>
 
+    <data name="label_add_moderator" xml:space="preserve"><value>Add Moderator</value></data>
+
+    <data name="label_logout" xml:space="preserve"><value>Logout</value></data>
+
+    <data name="alert_enable_gps" xml:space="preserve"><value>Please enable GPS and Network Positioning in your Settings</value></data>
+
+    <data name="alert_trying_to_get_location" xml:space="preserve"><value>Trying to get  your current location...</value></data>
+
+    <data name="alert_bad_location" xml:space="preserve"><value>Bad current location. Try again?</value></data>
+
 </root>

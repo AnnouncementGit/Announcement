@@ -39,7 +39,7 @@ namespace Announcement.Android
 		{
 			if (!MainActivityInstance.Current.locationProvider.networkProviderEnabled && !MainActivityInstance.Current.locationProvider.gpsProviderEnabled) 
 			{
-				AlertModule.ShowInformation ("Please enable GPS and Network Positioning in your Settings", null);
+				AlertModule.ShowInformation (LocalizationModule.Translate("alert_enable_gps"), null);
 				return;
 			}
 
@@ -80,7 +80,7 @@ namespace Announcement.Android
 		{
 			if (progressTime > 0) {
 				Task.Run (() => {
-					ProgressModule.Message ("Trying to get  your current location...");
+					ProgressModule.Message (LocalizationModule.Translate("alert_trying_to_get_location"));
 					Thread.Sleep (progressTime * 1000);
 				}).ContinueWith ((task) => {
 					MainActivityInstance.Current.RunOnUiThread(()=>{
@@ -89,7 +89,7 @@ namespace Announcement.Android
 				});
 			} else {
 				if (MainActivityInstance.Current.lastKnownLocation == null)
-					AlertModule.ShowWarning ("Bad current location.\nTry again?", () => ReportSpam (byteArray, 4), DataUploadedCancelCallback);
+					AlertModule.ShowWarning (LocalizationModule.Translate("alert_bad_location"), () => ReportSpam (byteArray, 4), DataUploadedCancelCallback);
 				else
 					viewModel.PushReportSpam ((float)MainActivityInstance.Current.lastKnownLocation.Latitude, (float)MainActivityInstance.Current.lastKnownLocation.Longitude, byteArray, DataUploadedCallback, DataUploadedContinueCallback, DataUploadedCancelCallback);
 			}

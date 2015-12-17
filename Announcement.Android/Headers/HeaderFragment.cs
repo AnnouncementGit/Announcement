@@ -7,11 +7,11 @@ using System.Collections.Generic;
 
 namespace Announcement.Android
 {		
-	public class HeaderFragment : Fragment
+	public class HeaderFragment : Fragment, ViewTreeObserver.IOnGlobalLayoutListener
 	{
 		private ToggleButton btnMenu;
 		private PopupWindow popupWindow;
-		private View popupView;
+		private ListView popupListView;
 
 		public override global::Android.Views.View OnCreateView (global::Android.Views.LayoutInflater inflater, global::Android.Views.ViewGroup container, Bundle savedInstanceState)
 		{
@@ -19,16 +19,9 @@ namespace Announcement.Android
 
 			btnMenu = view.FindViewById<ToggleButton> (Resource.Id.btnMenu);
 			btnMenu.Click += BtnMenuOnClick;
+			btnMenu.ViewTreeObserver.AddOnGlobalLayoutListener (this);
 
-			popupView = inflater.Inflate (Resource.Layout.popup_menu, null);
-
-			return view;
-		}
-
-		void BtnMenuOnClick (object sender, System.EventArgs e)
-		{
-
-
+			var popupView = inflater.Inflate (Resource.Layout.popup_menu, null);
 			popupWindow = new PopupWindow(MainActivityInstance.Current);
 			popupWindow.Focusable = true;
 			popupWindow.Width = ViewGroup.LayoutParams.WrapContent;
@@ -36,16 +29,37 @@ namespace Announcement.Android
 			popupWindow.SetBackgroundDrawable(new BitmapDrawable());
 			popupWindow.ContentView = popupView;
 			popupWindow.OutsideTouchable = true;
-			
-			var list = popupWindow.ContentView.FindViewById<ListView> (Resource.Id.listView);
-			List<string> menuItems = new List<string>();
-			if(NavigationManager.CurrentFragment == typeof(AdminMainFragment))
-				menuItems.Add("Add Moderator");
-			menuItems.Add ("Logout");
-			list.Adapter = new ArrayAdapter (MainActivityInstance.Current, Resource.Layout.popup_menu_item, menuItems);
-			list.ItemClick += PopupMenuItemClick;
 
-				popupWindow.ShowAsDropDown (btnMenu);
+			popupListView = popupWindow.ContentView.FindViewById<ListView> (Resource.Id.listView);
+
+			return view;
+		}
+
+		public void OnGlobalLayout ()
+		{
+			if (!popupWindow.IsShowing)
+				return;
+			
+			popupWindow.Dismiss ();
+			btnMenu.Checked = true;
+			ShowPopupMenu ();
+		}
+
+		void BtnMenuOnClick (object sender, System.EventArgs e)
+		{
+			ShowPopupMenu ();
+		}
+
+		void ShowPopupMenu()
+		{
+			var menuItems = new List<string>();
+			if(NavigationManager.CurrentFragment == typeof(AdminMainFragment))
+				menuItems.Add(LocalizationModule.Translate("label_add_moderator"));
+			menuItems.Add (LocalizationModule.Translate("label_logout"));
+			popupListView.Adapter = new ArrayAdapter (MainActivityInstance.Current, Resource.Layout.popup_menu_item, menuItems);
+			popupListView.ItemClick += PopupMenuItemClick;
+
+			popupWindow.ShowAsDropDown (btnMenu);
 			popupWindow.DismissEvent += PopupWindowOnDismissEvent;
 		}
 
