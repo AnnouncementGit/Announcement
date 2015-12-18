@@ -115,7 +115,9 @@ namespace Announcement.Android
 
         private void PushReportSpamContinueCallback()
 		{
-			btnReportSpam.Visibility = ViewStates.Visible;
+			//btnReportSpam.Visibility = ViewStates.Visible;
+
+            btnReportSpam.PerformClick();
 		}
 
 
