@@ -39,7 +39,8 @@ namespace Announcement.Android
             popupWindow.ContentView = popupView;
             popupWindow.OutsideTouchable = true;
 
-            popupListView = popupWindow.ContentView.FindViewById<ListView>(Resource.Id.listView);
+			popupListView = popupWindow.ContentView.FindViewById<ListView>(Resource.Id.listView);
+			popupListView.ItemClick += PopupMenuItemClick;
 
             return view;
         }
@@ -66,7 +67,6 @@ namespace Announcement.Android
                 menuItems.Add(LocalizationModule.Translate("label_add_moderator"));
             menuItems.Add(LocalizationModule.Translate("label_logout"));
             popupListView.Adapter = new ArrayAdapter(MainActivityInstance.Current, Resource.Layout.popup_menu_item, menuItems);
-            popupListView.ItemClick += PopupMenuItemClick;
 
             popupWindow.ShowAsDropDown(btnMenu);
             popupWindow.DismissEvent += PopupWindowOnDismissEvent;
