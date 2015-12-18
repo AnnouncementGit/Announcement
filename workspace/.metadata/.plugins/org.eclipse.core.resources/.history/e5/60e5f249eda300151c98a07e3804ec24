@@ -1,0 +1,178 @@
+package api;
+
+package api;
+
+import com.amazonaws.regions.Region;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
+import com.amazonaws.services.dynamodbv2.datamodeling.PaginatedScanList;
+import com.amazonaws.services.lambda.runtime.Context;
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectResult;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+
+public class Methods {
+    public Result<String> PushReport(SingleReport report, Context context) {
+        Result result = new Result();
+        try {
+            String id = UUID.randomUUID().toString();
+            ByteArrayInputStream stream = new ByteArrayInputStream(report.getPhoto());
+            ObjectMetadata meta = new ObjectMetadata();
+            meta.setContentLength((long)report.getPhoto().length);
+            meta.setContentType("image/jpeg");
+            AmazonS3Client s3Client = new AmazonS3Client();
+            s3Client.setRegion(Region.getRegion((Regions)Regions.EU_WEST_1));
+            String fileName = String.valueOf(id) + "-0.jpg";
+            s3Client.putObject("stop-spam/reports", fileName, (InputStream)stream, meta);
+            AmazonDynamoDBClient dynamoDBClient = new AmazonDynamoDBClient();
+            dynamoDBClient.setRegion(Region.getRegion((Regions)Regions.EU_WEST_1));
+            DynamoDBMapper mapper = new DynamoDBMapper((AmazonDynamoDB)dynamoDBClient);
+            report.setId(id);
+            ArrayList<String> photos = new ArrayList<String>();
+            photos.add(fileName);
+            report.setPhoneNumber("111-11-11-11");
+            report.setPhotos(photos);
+            mapper.save((Object)report);
+            result.setValue((Object)id);
+            result.setIsSuccess(true);
+        }
+        catch (Exception e) {
+            result.setHasError(true);
+            result.setMessage(e.getMessage());
+        }
+        return result;
+    }
+
+    public Result<String> PushReportContinue(SingleReport report, Context context) {
+        Result result = new Result();
+        try {
+            AmazonDynamoDBClient dynamoDBClient = new AmazonDynamoDBClient();
+            dynamoDBClient.setRegion(Region.getRegion((Regions)Regions.EU_WEST_1));
+            DynamoDBMapper mapper = new DynamoDBMapper((AmazonDynamoDB)dynamoDBClient);
+            Report savedReport = (Report)mapper.load((Class)Report.class, (Object)report.getId());
+            String id = savedReport.getId();
+            ByteArrayInputStream stream = new ByteArrayInputStream(report.getPhoto());
+            ObjectMetadata meta = new ObjectMetadata();
+            meta.setContentLength((long)report.getPhoto().length);
+            meta.setContentType("image/jpeg");
+            AmazonS3Client s3Client = new AmazonS3Client();
+            s3Client.setRegion(Region.getRegion((Regions)Regions.EU_WEST_1));
+            String fileName = String.valueOf(id) + "-" + savedReport.getPhotos().size() + ".jpg";
+            s3Client.putObject("stop-spam/reports", fileName, (InputStream)stream, meta);
+            savedReport.getPhotos().add(fileName);
+            savedReport.setPhoneNumber("111-11-11-11");
+            mapper.save((Object)savedReport);
+            result.setValue((Object)id);
+            result.setIsSuccess(true);
+        }
+        catch (Exception e) {
+            result.setHasError(true);
+            result.setMessage(e.getMessage());
+        }
+        return result;
+    }
+
+    public Result<String> PushModerator(ModeratorRegistration moderator, Context context) {
+        Result result = new Result();
+        try {
+            AmazonDynamoDBClient dynamoDBClient = new AmazonDynamoDBClient();
+            dynamoDBClient.setRegion(Region.getRegion((Regions)Regions.EU_WEST_1));
+            DynamoDBMapper mapper = new DynamoDBMapper((AmazonDynamoDB)dynamoDBClient);
+            mapper.save((Object)moderator);
+            result.setValue((Object)moderator.getId());
+            result.setIsSuccess(true);
+        }
+        catch (Exception e) {
+            result.setHasError(true);
+            result.setMessage(e.getMessage());
+        }
+        return result;
+    }
+
+    public Result<Object> RemoveModerator(String id, Context context) {
+        Result result = new Result();
+        try {
+            AmazonDynamoDBClient dynamoDBClient = new AmazonDynamoDBClient();
+            dynamoDBClient.setRegion(Region.getRegion((Regions)Regions.EU_WEST_1));
+            DynamoDBMapper mapper = new DynamoDBMapper((AmazonDynamoDB)dynamoDBClient);
+            Moderator moderator = new Moderator();
+            moderator.setId(id);
+            mapper.delete((Object)moderator);
+            result.setIsSuccess(true);
+        }
+        catch (Exception e) {
+            result.setHasError(true);
+            result.setMessage(e.getMessage());
+        }
+        return result;
+    }
+
+    public Result<List<Moderator>> PullModerators(Context context) {
+        Result result = new Result();
+        try {
+            AmazonDynamoDBClient dynamoDBClient = new AmazonDynamoDBClient();
+            dynamoDBClient.setRegion(Region.getRegion((Regions)Regions.EU_WEST_1));
+            result.setValue((Object)new DynamoDBMapper((AmazonDynamoDB)dynamoDBClient).scan((Class)Moderator.class, new DynamoDBScanExpression()));
+            result.setIsSuccess(true);
+        }
+        catch (Exception e) {
+            result.setHasError(true);
+            result.setMessage(e.getMessage());
+        }
+        return result;
+    }
+
+    public Result<Ratings> PullRatings(Context context) {
+        Result result = new Result();
+        try {
+            AmazonDynamoDBClient dynamoDBClient = new AmazonDynamoDBClient();
+            dynamoDBClient.setRegion(Region.getRegion((Regions)Regions.EU_WEST_1));
+            Ratings ratings = new Ratings();
+            ratings.setTopUsers((List)new DynamoDBMapper((AmazonDynamoDB)dynamoDBClient).scan((Class)User.class, new DynamoDBScanExpression()));
+            ratings.setTopSpammers((List)new DynamoDBMapper((AmazonDynamoDB)dynamoDBClient).scan((Class)Spammer.class, new DynamoDBScanExpression()));
+            result.setValue((Object)ratings);
+            result.setIsSuccess(true);
+        }
+        catch (Exception e) {
+            result.setHasError(true);
+            result.setMessage(e.getMessage());
+        }
+        return result;
+    }
+
+    public Result<Object> ConfirmReport(Report report, Context context) {
+        Result result = new Result();
+        result.setIsSuccess(true);
+        return result;
+    }
+
+    public Result<Object> RejectReport(int id, Context context) {
+        Result result = new Result();
+        result.setIsSuccess(true);
+        return result;
+    }
+
+    public Result<List<Report>> PullReports(Context context) {
+        Result result = new Result();
+        try {
+            AmazonDynamoDBClient dynamoDBClient = new AmazonDynamoDBClient();
+            dynamoDBClient.setRegion(Region.getRegion((Regions)Regions.EU_WEST_1));
+            result.setValue((Object)new DynamoDBMapper((AmazonDynamoDB)dynamoDBClient).scan((Class)Report.class, new DynamoDBScanExpression()));
+            result.setIsSuccess(true);
+        }
+        catch (Exception e) {
+            result.setHasError(true);
+            result.setMessage(e.getMessage());
+        }
+        return result;
+    }
+}
