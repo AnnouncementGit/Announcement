@@ -8,6 +8,7 @@
     android:paddingTop="5dp"
     android:paddingBottom="5dp">
     <Announcement.Android.Controls.TextView
+        style="@style/text_view_bold_font_style"
         android:id="@+id/itemTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,6 +20,7 @@
         android:textColor="@color/major_color"
         android:text="Title here" />
     <Announcement.Android.Controls.TextView
+        style="@style/text_view_normal_font_style"
         android:id="@+id/itemDescription"
         android:layout_width="match_parent"
         android:layout_height="0dp"

@@ -9,6 +9,7 @@
     android:paddingTop="5dp"
     android:paddingBottom="5dp">
     <Announcement.Android.Controls.TextView
+        style="@style/text_view_bold_font_style"
         android:id="@+id/itemTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -18,6 +19,7 @@
         android:gravity="center_vertical"
         android:textColor="@color/major_color" />
     <Announcement.Android.Controls.TextView
+        style="@style/text_view_normal_font_style"
         android:id="@+id/itemPostsLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -29,6 +31,7 @@
         android:textColor="@color/major_color"
         local:localizationKey="list_one_posts_label" />
     <Announcement.Android.Controls.TextView
+        style="@style/text_view_normal_font_style"
         android:id="@+id/itemConfirmedLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -41,6 +44,7 @@
         local:localizationKey="list_one_confirmed_label"
         android:layout_marginBottom="2dp" />
     <Announcement.Android.Controls.TextView
+        style="@style/text_view_normal_font_style"
         android:id="@+id/itemPosts"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -51,6 +55,7 @@
         android:gravity="center_vertical"
         android:textColor="@color/major_color" />
     <Announcement.Android.Controls.TextView
+        style="@style/text_view_normal_font_style"
         android:id="@+id/itemConfirmed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

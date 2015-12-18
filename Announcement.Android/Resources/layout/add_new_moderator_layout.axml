@@ -5,16 +5,17 @@
     android:orientation="vertical"
     android:layout_height="match_parent">
     <Announcement.Android.Controls.TextView
+        style="@style/text_view_bold_font_style"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:layout_marginBottom="20dp"
         android:textSize="26sp"
-        android:textStyle="bold"
         android:gravity="center"
         android:textColor="@color/major_color"
         local:localizationKey="add_new_moderator_label" />
     <Announcement.Android.Controls.EditText
+        style="@style/text_view_normal_font_style"
         android:id="@+id/LoginEditText"
         android:layout_width="match_parent"
         android:layout_height="42dp"
@@ -32,6 +33,7 @@
         android:background="@drawable/login_fields_background"
         local:localizationKey="edit_text_hint_username" />
     <Announcement.Android.Controls.EditText
+        style="@style/text_view_normal_font_style"
         android:id="@+id/PasswordEditText"
         android:layout_width="match_parent"
         android:layout_height="42dp"
@@ -50,6 +52,7 @@
         android:background="@drawable/login_fields_background"
         local:localizationKey="edit_text_hint_password" />
     <Announcement.Android.Controls.Button
+        style="@style/text_view_normal_font_style"
         android:id="@+id/btnAdd"
         android:layout_width="match_parent"
         android:layout_height="50dp"
