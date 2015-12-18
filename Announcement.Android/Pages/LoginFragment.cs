@@ -73,22 +73,16 @@ namespace Announcement.Android
 
         protected void LoginForAdminStuffCallback()
         {
-            Activity.RunOnUiThread(() =>
-                {
-                    NavigationManager.EraseBackStack();
+            NavigationManager.EraseBackStack();
 
-                    NavigationManager.Forward(typeof(AdminMainFragment));
-                });
+            NavigationManager.Forward(typeof(AdminMainFragment));
         }
 
 		protected void LoginViaSocialCallback()
         {
-            Activity.RunOnUiThread(() =>
-                {
-                    NavigationManager.EraseBackStack();
+            NavigationManager.EraseBackStack();
 
-                    NavigationManager.Forward(typeof(UserMainFragment));
-                });
+            NavigationManager.Forward(typeof(UserMainFragment));
         }
     }
 }

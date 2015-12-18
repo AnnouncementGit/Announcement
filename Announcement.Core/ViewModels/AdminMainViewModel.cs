@@ -87,7 +87,7 @@ namespace Announcement.Core
             {
                 if (callback != null)
                 {
-                    callback.Invoke();
+                    DispatcherModule.Invoke(callback);
                 }
             }
         }
@@ -108,7 +108,7 @@ namespace Announcement.Core
             {
                 if (callback != null)
                 {
-                    callback.Invoke();
+                    DispatcherModule.Invoke(callback);
                 }
             }
         }
