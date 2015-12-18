@@ -14,14 +14,16 @@
             android:layout_height="match_parent"
             android:visibility="gone"
             android:dividerHeight="0dp"
-            android:divider="@android:color/transparent" />
+            android:divider="@android:color/transparent"
+            android:listSelector="@drawable/list_item_selector" />
         <ListView
             android:id="@+id/usersListView"
             android:layout_width="match_parent"
             android:visibility="gone"
             android:layout_height="match_parent"
             android:dividerHeight="0dp"
-            android:divider="@android:color/transparent" />
+            android:divider="@android:color/transparent"
+            android:listSelector="@drawable/list_item_selector" />
     </FrameLayout>
     <RadioGroup
         android:id="@+id/ratingRadioGroup"

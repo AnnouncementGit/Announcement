@@ -8,7 +8,8 @@
         android:id="@+id/indicatorTextView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="7dp"
         android:textSize="20sp"
         android:textColor="@color/major_color"
         android:gravity="center" />

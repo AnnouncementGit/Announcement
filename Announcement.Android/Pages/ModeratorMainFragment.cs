@@ -110,6 +110,7 @@ namespace Announcement.Android
 			case "moderatorsTab":
 				ModeratorsListView = new ListView (MainActivityInstance.Current){ LayoutParameters = new ViewGroup.LayoutParams (ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.MatchParent) };
 				ModeratorsListView.DividerHeight = 0;
+				ModeratorsListView.SetSelector (Resource.Drawable.list_item_selector);
 				if (contentCreatedAction != null)
 					contentCreatedAction.Invoke (tag);
 				return ModeratorsListView;
@@ -117,6 +118,7 @@ namespace Announcement.Android
 			case "validationTab":
 				ValidationListView = new ListView (MainActivityInstance.Current){ LayoutParameters = new ViewGroup.LayoutParams (ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.MatchParent) };
 				ValidationListView.DividerHeight = 0;
+				ValidationListView.SetSelector (Resource.Drawable.list_item_selector);
 				if (contentCreatedAction != null)
 					contentCreatedAction.Invoke (tag);
 				return ValidationListView;
@@ -138,12 +140,19 @@ namespace Announcement.Android
 		}
 	}
 
+	class ListOneDataHolder
+	{
+		public string Title { get; set; }
+		public string Posts { get; set; }
+		public string Confirmed { get; set; }
+	}
+
 	class ListViewOneAdapter : BaseAdapter
 	{
 		LayoutInflater inflater;
-		List<Moderator> list;
+		List<ListOneDataHolder> list;
 
-		public ListViewOneAdapter(LayoutInflater inflater, List<Moderator> list)
+		public ListViewOneAdapter(LayoutInflater inflater, List<ListOneDataHolder> list)
 		{
 			this.inflater = inflater;
 			this.list = list;
@@ -185,15 +194,15 @@ namespace Announcement.Android
 			else 
 				holder = (ListViewOneItemHolder)view.Tag;
 
-			holder.ItemTitle.Text = data.Username;
-			holder.ItemPosts.Text = "10234";
-			holder.ItemConfirmed.Text = "8566";
+			holder.ItemTitle.Text = data.Title;
+			holder.ItemPosts.Text = data.Posts;
+			holder.ItemConfirmed.Text = data.Confirmed;
 
 			return view;
 		}
 		#endregion
 
-		public void UpdateList(List<Moderator> newList)
+		public void UpdateList(List<ListOneDataHolder> newList)
 		{
 			if (newList == null)
 				return;
@@ -284,10 +293,6 @@ namespace Announcement.Android
 			public TextView ItemDescription { get; set; }
 		}
 	}
-
-	/*
-	 * Times new Roman
-	 */
 
 	public class AnimatedTabHostListener : Java.Lang.Object, global::Android.Widget.TabHost.IOnTabChangeListener
 	{

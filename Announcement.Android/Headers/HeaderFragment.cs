@@ -37,7 +37,8 @@ namespace Announcement.Android
             popupWindow.Height = ViewGroup.LayoutParams.WrapContent;
             popupWindow.SetBackgroundDrawable(new BitmapDrawable());
             popupWindow.ContentView = popupView;
-            popupWindow.OutsideTouchable = true;
+			popupWindow.OutsideTouchable = true;
+			popupWindow.DismissEvent += PopupWindowOnDismissEvent;
 
 			popupListView = popupWindow.ContentView.FindViewById<ListView>(Resource.Id.listView);
 			popupListView.ItemClick += PopupMenuItemClick;
@@ -69,7 +70,6 @@ namespace Announcement.Android
             popupListView.Adapter = new ArrayAdapter(MainActivityInstance.Current, Resource.Layout.popup_menu_item, menuItems);
 
             popupWindow.ShowAsDropDown(btnMenu);
-            popupWindow.DismissEvent += PopupWindowOnDismissEvent;
         }
 
         void PopupWindowOnDismissEvent(object sender, System.EventArgs e)

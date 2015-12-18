@@ -28,4 +28,6 @@
 
      <color name="progress_background">#1f1f1f</color>
 
+     <color name="list_item_pressed_color">#55F95F5F</color>
+
 </resources>

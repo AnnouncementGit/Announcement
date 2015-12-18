@@ -158,16 +158,17 @@ namespace Announcement.Android
 		void CreateUsersList()
 		{
 			ratingUsersTabList = ratingTabView.FindViewById<ListView> (Resource.Id.usersListView);
-			List<ListTwoDataHolder> usersList;
+			List<ListOneDataHolder> usersList;
 			if (ViewModel.RatingTopUsers != null)
-				usersList = ViewModel.RatingTopSpammers.Select (i => new ListTwoDataHolder () {
+				usersList = ViewModel.RatingTopSpammers.Select (i => new ListOneDataHolder () {
 					Title = i.PhoneNumber,
-					Description = i.Id
+					Posts = "10234",
+					Confirmed = "8566"
 				}).ToList ();
 			else 
-				usersList = new List<ListTwoDataHolder> ();
+				usersList = new List<ListOneDataHolder> ();
 			
-			var ratingUsersTabListAdapter = new ListViewTwoAdapter (Inflater, usersList);
+			var ratingUsersTabListAdapter = new ListViewOneAdapter (Inflater, usersList);
 			ratingUsersTabList.Adapter = ratingUsersTabListAdapter;
 			ratingUsersTabList.ItemClick += RatingUsersTabListViewOnItemClick;
 		}
