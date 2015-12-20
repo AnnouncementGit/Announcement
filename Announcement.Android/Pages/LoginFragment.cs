@@ -30,8 +30,6 @@ namespace Announcement.Android
 
 			var linkedInButton = view.FindViewById<ImageView>(Resource.Id.LinkedInButton);
 
-			//var moderatorButton = view.FindViewById<ImageView>(Resource.Id.ModeratorButton);
-
             loginButton.Click += (sender, e) => 
                 {
                     ViewModel.LoginForAdminStuff("username", "password", LoginForAdminStuffCallback);
@@ -45,26 +43,29 @@ namespace Announcement.Android
                     });
             };
 
-			googlePlusButton.Click += (sender, e) => 
-			{
-				SocialServices.Instance.GoogleLogin((token) => { 
-					ViewModel.LoginViaGooglePlus(token, LoginViaSocialCallback);
-				});
-			};
+            googlePlusButton.Click += (sender, e) =>
+            {
+                SocialServices.Instance.GoogleLogin((token) =>
+                    { 
+                        ViewModel.LoginViaGooglePlus(token, LoginViaSocialCallback);
+                    });
+            };
 
-			vkButton.Click += (sender, e) => 
-			{
-				SocialServices.Instance.VKLogin((token) => { 
-					ViewModel.LoginViaVK(token, LoginViaSocialCallback);
-				});
-			};
+            vkButton.Click += (sender, e) =>
+            {
+                SocialServices.Instance.VKLogin((token) =>
+                    { 
+                        ViewModel.LoginViaVK(token, LoginViaSocialCallback);
+                    });
+            };
 
-			linkedInButton.Click += (sender, e) => 
-			{
-				SocialServices.Instance.LinkedInLogin((token) => { 
-					ViewModel.LoginViaLinkedIn(token, LoginViaSocialCallback);
-				});
-			};
+            linkedInButton.Click += (sender, e) =>
+            {
+                SocialServices.Instance.LinkedInLogin((token) =>
+                    { 
+                        ViewModel.LoginViaLinkedIn(token, LoginViaSocialCallback);
+                    });
+            };
 
 			NavigationManager.ShowHeader (false);
 

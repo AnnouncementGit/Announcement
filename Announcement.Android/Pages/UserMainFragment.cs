@@ -91,6 +91,8 @@ namespace Announcement.Android
             }
             else
             {
+                ProgressModule.End();
+                
                 AlertModule.ShowWarning(LocalizationModule.Translate("alert_bad_location"), async () =>
                     {
                         ProgressModule.Message(LocalizationModule.Translate("progress_trying_to_get_location"), true);

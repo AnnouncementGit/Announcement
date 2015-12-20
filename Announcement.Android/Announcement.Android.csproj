@@ -64,9 +64,6 @@
       <HintPath>..\packages\Xamarin.Facebook.Android.4.8.2.2\lib\MonoAndroid403\Xamarin.Bolts.dll</HintPath>
     </Reference>
     <Reference Include="Mono.Android.Export" />
-    <Reference Include="Xamarin.Auth.Android">
-      <HintPath>..\Components\xamarin.auth-1.2.3.1\lib\android\Xamarin.Auth.Android.dll</HintPath>
-    </Reference>
     <Reference Include="System.Net.Http.Extensions">
       <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\monoandroid\System.Net.Http.Extensions.dll</HintPath>
     </Reference>
@@ -115,6 +112,9 @@
     </Reference>
     <Reference Include="Validation">
       <HintPath>..\packages\Validation.2.2.8\lib\portable-net40+sl50+win+wpa81+wp80+MonoAndroid10+xamarinios10+MonoTouch10\Validation.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Auth.Android">
+      <HintPath>..\Components\xamarin.auth-1.2.3.1\lib\android\Xamarin.Auth.Android.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -240,6 +240,13 @@
     <AndroidResource Include="Resources\drawable\progress_border.xml" />
     <AndroidResource Include="Resources\layout\popup_menu_item.axml" />
     <AndroidResource Include="Resources\layout\popup_menu.axml" />
+    <AndroidResource Include="Resources\drawable\list_item_selector.xml" />
+    <AndroidResource Include="Resources\anim\fade_in_animation.xml" />
+    <AndroidResource Include="Resources\anim\fade_out_animation.xml" />
+    <AndroidResource Include="Resources\anim\slide_backward_in_animation.xml" />
+    <AndroidResource Include="Resources\anim\slide_backward_out_animation.xml" />
+    <AndroidResource Include="Resources\anim\slide_forward_in_animation.xml" />
+    <AndroidResource Include="Resources\anim\slide_forward_out_animation.xml" />
   </ItemGroup>
   <Import Project="..\Announcement.Core\Announcement.Core.projitems" Label="Shared" Condition="Exists('..\Announcement.Core\Announcement.Core.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />

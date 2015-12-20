@@ -23,32 +23,28 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:singleLine="false"
-        android:textSize="16sp"
+        android:textSize="18sp"
         android:padding="10dp"
         android:textColor="@color/major_color" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_margin="20dp"
         android:gravity="right">
         <Announcement.Android.Controls.Button
             style="@style/text_view_normal_font_style"
             android:id="@+id/alertBtnRetry"
             android:minWidth="100dp"
-            android:minHeight="25dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="35dp"
             android:background="@drawable/button_selector"
-            android:layout_marginRight="10dp" />
+            android:layout_marginRight="20dp" />
         <Announcement.Android.Controls.Button
             style="@style/text_view_normal_font_style"
             android:id="@+id/alertBtnDismiss"
             android:minWidth="100dp"
-            android:minHeight="25dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="35dp"
             android:background="@drawable/button_selector" />
     </LinearLayout>
 </LinearLayout>

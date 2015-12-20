@@ -36,6 +36,8 @@ namespace Announcement.Android
 
             var transaction = fragmentManager.BeginTransaction();
 
+            transaction.SetCustomAnimations(Resource.Animation.slide_forward_in_animation, Resource.Animation.slide_forward_out_animation);
+
 			transaction.Replace(Resource.Id.FragmentContainer, (Fragment)Activator.CreateInstance(fragmentType));
 
 			ShowHeader (true);

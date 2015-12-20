@@ -13,6 +13,7 @@ using Announcement.Android;
 using Amazon.CognitoIdentity;
 using System.Threading.Tasks;
 using Amazon.CognitoSync.SyncManager;
+using System.Threading;
 
 namespace Announcement.Core
 {

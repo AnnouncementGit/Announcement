@@ -2,6 +2,7 @@
 using Announcement.Android;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace Announcement.Core
 {
@@ -34,12 +35,12 @@ namespace Announcement.Core
         {
             await SocialLogin(token, callback);
         }
-
+            
         public async void LoginForAdminStuff(string username, string password, Action callback)
         {
-            var viewModel = AdminMainViewModel.Instance;
-
             ProgressModule.Message(LocalizationModule.Translate("progress_authentication"));
+
+            var viewModel = AdminMainViewModel.Instance;
 
             var result = await Task.Run<Result>(() => viewModel.Initialize());
 
@@ -52,7 +53,7 @@ namespace Announcement.Core
             else
             {
                 if (callback != null)
-                {
+                {                   
                     DispatcherModule.Invoke(callback);
                 }
             }
@@ -64,7 +65,7 @@ namespace Announcement.Core
 
             ProgressModule.Message(LocalizationModule.Translate("progress_authentication"));
 
-            await Task.Delay(1000);
+            await Task.Delay(2000);
 
             var result = await Task.Run<Result>(() => viewModel.Initialize());
 

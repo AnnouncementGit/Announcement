@@ -51,6 +51,8 @@
 
     <data name="alert_button_ok" xml:space="preserve"><value>OK</value></data>
 
+     <data name="alert_title_facebook" xml:space="preserve"><value>Facebook</value></data>
+
     <data name="alert_button_cancel" xml:space="preserve"><value>Cancel</value></data>
 
     <data name="button_title_facebook" xml:space="preserve"><value>Facebook</value></data>

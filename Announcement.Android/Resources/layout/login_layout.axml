@@ -3,12 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:scrollbars="none"
-    android:fillViewport="true">
+    android:fillViewport="true"
+    android:overScrollMode="never">
     <LinearLayout xmlns:local="http://schemas.android.com/apk/res-auto"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal">
+        android:gravity="center_horizontal"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
         <ImageView
             android:id="@+id/logo"
             android:layout_width="170dp"
@@ -20,8 +23,8 @@
             android:id="@+id/LoginEditText"
             android:layout_width="match_parent"
             android:layout_height="42dp"
-            android:layout_marginLeft="35dp"
-            android:layout_marginRight="35dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
             android:layout_marginTop="15dp"
             android:textSize="24sp"
             android:textColor="@color/major_color"
@@ -32,6 +35,7 @@
             android:inputType="textNoSuggestions|textVisiblePassword"
             local:localizationKey="edit_text_hint_username"
             android:background="@drawable/login_fields_background"
+            android:textCursorDrawable="@null"
             android:paddingLeft="10dp"
             android:paddingRight="10dp" />
         <Announcement.Android.Controls.EditText
@@ -39,9 +43,9 @@
             android:id="@+id/PasswordEditText"
             android:layout_width="match_parent"
             android:layout_height="42dp"
-            android:layout_marginLeft="35dp"
-            android:layout_marginRight="35dp"
-            android:layout_marginTop="35dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="30dp"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:textSize="24sp"
@@ -52,51 +56,58 @@
             android:password="true"
             android:imeOptions="actionDone"
             local:localizationKey="edit_text_hint_password"
-            android:background="@drawable/login_fields_background" />
+            android:background="@drawable/login_fields_background"
+            android:textCursorDrawable="@null" />
         <Announcement.Android.Controls.Button
             style="@style/text_view_normal_font_style"
             android:id="@+id/LoginButton"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_marginLeft="35dp"
-            android:layout_marginRight="35dp"
-            android:layout_marginTop="35dp"
-            android:layout_marginBottom="10dp"
-            android:textSize="26sp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="30dp"
+            android:textSize="32sp"
             android:background="@drawable/button_selector"
             local:localizationKey="button_title_login" />
         <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:layout_marginBottom="30dp" />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="100dp"
-            android:padding="25dp"
-            android:orientation="horizontal">
+            android:paddingTop="30dp"
+            android:paddingBottom="30dp"
+            android:orientation="horizontal"
+            android:gravity="center">
             <ImageView
                 android:id="@+id/FacebookButton"
-                android:layout_width="0dp"
+                android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_weight="1"
+                android:layout_marginRight="30dp"
+                android:background="@drawable/facebook_button_selector"
                 android:src="@drawable/fb_login_icon" />
             <ImageView
                 android:id="@+id/GooglePlusButton"
-                android:layout_width="0dp"
+                android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_weight="1"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/google_plus_button_selector"
                 android:src="@drawable/google_login_icon" />
             <ImageView
                 android:id="@+id/VKButton"
-                android:layout_width="0dp"
+                android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_weight="1"
+                android:layout_marginLeft="15dp"
+                android:background="@drawable/vk_button_selector"
                 android:src="@drawable/vk_login_icon" />
             <ImageView
                 android:id="@+id/LinkedInButton"
-                android:layout_width="0dp"
+                android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_weight="1"
+                android:layout_marginLeft="30dp"
+                android:background="@drawable/linked_in_button_selector"
                 android:src="@drawable/in_login_icon" />
         </LinearLayout>
     </LinearLayout>

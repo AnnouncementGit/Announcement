@@ -3,6 +3,8 @@ using Android.Util;
 using Android.Runtime;
 using Android.Content;
 using Android.Graphics;
+using Android.Views;
+using Android.Content.Res;
 
 namespace Announcement.Android.Controls
 {
@@ -35,6 +37,24 @@ namespace Announcement.Android.Controls
         protected void Initialize()
         {
            
+        }
+
+        protected override void OnMeasure(int widthMeasureSpec, int heightMeasureSpec)
+        {
+            if (Resources.Configuration.Orientation == Orientation.Landscape)
+            {
+                var widthMode = MeasureSpec.GetMode(widthMeasureSpec);
+
+                var layouts = (ViewGroup.MarginLayoutParams)LayoutParameters;
+
+                var widthSize = Resources.DisplayMetrics.HeightPixels - layouts.LeftMargin - layouts.RightMargin;
+
+                base.OnMeasure(MeasureSpec.MakeMeasureSpec(widthSize, widthMode), heightMeasureSpec); 
+            }
+            else
+            {
+                base.OnMeasure(widthMeasureSpec, heightMeasureSpec); 
+            }
         }
             
         protected void ParseAttributes(IAttributeSet attrs)

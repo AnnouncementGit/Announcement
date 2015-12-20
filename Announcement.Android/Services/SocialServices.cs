@@ -13,15 +13,15 @@ using Announcement.Core;
 
 namespace Announcement.Android
 {
-	public class SocialServices : Java.Lang.Object, global::Android.Gms.Common.Apis.GoogleApiClient.IConnectionCallbacks, global::Android.Gms.Common.Apis.GoogleApiClient.IOnConnectionFailedListener
+    public class SocialServices : Java.Lang.Object, global::Android.Gms.Common.Apis.GoogleApiClient.IConnectionCallbacks, global::Android.Gms.Common.Apis.GoogleApiClient.IOnConnectionFailedListener
 	{
-		private MainActivity activity;
-
-		private static SocialServices instance;
 		public static SocialServices Instance
-		{
-			get{ return instance!= null ? instance : (instance = new SocialServices());}
-		}
+        {
+            get
+            { 
+                return instance != null ? instance : (instance = new SocialServices());
+            }
+        }
 
 		private SocialServices ()
 		{
@@ -29,57 +29,64 @@ namespace Announcement.Android
 		}
 
 		#region FacebookLogin SDK - get token = ok
-		bool isFacebookInit;
-		public static ICallbackManager callbackManager;
+		
 		public void FacebookLogin(Action<string> callback)
 		{
+            if (isFacebookInProcess)
+            {
+                return;
+            }
+            
 			if (activity != null)
 			{
-				if (!isFacebookInit)
+                isFacebookInProcess = true;
+                
+                if (!FacebookSdk.IsInitialized)
 				{
 					FacebookSdk.SdkInitialize(activity.ApplicationContext);
-
-					isFacebookInit = true;
-
-					callbackManager = CallbackManagerFactory.Create();
 
 					var accesstokenTracker = new FacebookAcessTokenTracker();
 
 					accesstokenTracker.StartTracking();
 
-					accesstokenTracker.AccessTokenChanged += (sender, e) =>
-					{
-						if(callback != null &&!string.IsNullOrWhiteSpace(e.Token))
-							callback.Invoke(e.Token);
-					};
-					LoginManager.Instance.RegisterCallback (callbackManager, null);
+                    accesstokenTracker.AccessTokenChanged += (sender, e) =>
+                    {
+                        isFacebookInProcess = false;
+                            
+                        if (callback != null && !string.IsNullOrWhiteSpace(e.Token))
+                        {
+                            callback.Invoke(e.Token);
+                        }
+                    };
+
+                    var facebookCallback = new FacebookCallback();
+
+                    facebookCallback.Cancel += (sender, e) => 
+                        {
+                            isFacebookInProcess = false; 
+                        };
+
+                    facebookCallback.Error += (sender, e) => 
+                        {
+                            isFacebookInProcess = false;
+                            
+                            AlertModule.Show(LocalizationModule.Translate("alert_title_facebook"), LocalizationModule.Translate("alert_no_internet_connection"), LocalizationModule.Translate("alert_button_ok"));
+                        };
+
+                    facebookCallback.Success += (sender, e) => 
+                        {
+                            isFacebookInProcess = false;
+                        };
+
+                    callbackManager = CallbackManagerFactory.Create();
+
+                    LoginManager.Instance.RegisterCallback (callbackManager, facebookCallback);
 				}
 				LoginManager.Instance.LogInWithReadPermissions (activity, new [] { "user_friends" });
 			}
 		}
 		#endregion
-		#region FacebookLogin oAuth2 - get token = ok
-		//		public void FacebookLogin(Action<string> callback){
-		//			var auth = new OAuth2Authenticator (
-		//				clientId: "467795070094543",
-		//				scope: "",
-		//				authorizeUrl: new Uri ("https://m.facebook.com/dialog/oauth/"),
-		//				redirectUrl: new Uri ("http://www.facebook.com/connect/login_success.html"));
-		//
-		//			auth.Completed += (s, e) => {
-		//				if (!e.IsAuthenticated) 
-		//					ShowErrorMessage("Not Authenticated");
-		//				else{
-		//					var token = e.Account.Properties ["access_token"].ToString ();
-		//					if(callback != null && !string.IsNullOrWhiteSpace(token))
-		//						callback.Invoke(token);
-		//				}
-		//			} ;
-		//
-		//			var intent = auth.GetUI (activity);
-		//			activity.StartActivity (intent);
-		//		}
-		#endregion
+
 		#region GoogleLogin SDK - get token = ok
 
 		private GoogleApiClient googleApiClient;
@@ -90,12 +97,23 @@ namespace Announcement.Android
 
 		public void GoogleLogin(Action<string> callback)
 		{
+            if (isGooglePlusInProcess)
+            {
+                return;
+            }
+
+            isGooglePlusInProcess = true;
+
 			googleLogInButtonClicked = true;
+
 			AddGoogleApiClient ();
+
 			googleApiClient.Connect ();
 
-			if(callback!=null)
-			    googleLoginCallback = callback;
+            if (callback != null)
+            {
+                googleLoginCallback = callback;
+            }
 		}
 
 		private void AddGoogleApiClient()
@@ -109,10 +127,11 @@ namespace Announcement.Android
 			googleApiClient = googleApiClientBuilder.Build ();
 		}
 
-		public void OnConnectionSuspended (int cause)
-		{
-		}
-
+        public void OnConnectionSuspended(int cause)
+        {
+           
+        }
+            
 		public void OnConnectionFailed (ConnectionResult result)
 		{
 			googleConnectionResult = result;
@@ -151,7 +170,9 @@ namespace Announcement.Android
 				}
 				catch (GoogleAuthException ex){
 					var t = ex.Message;
-				}		
+				}	
+
+                isGooglePlusInProcess = false;
 			});
 		}
 		#endregion
@@ -159,6 +180,13 @@ namespace Announcement.Android
 
 		public void LinkedInLogin(Action<string> callback)
 		{
+            if (isLinkeInInProcess)
+            {
+                return;
+            }
+
+            isLinkeInInProcess = true;
+            
 			var auth = new OAuth2Authenticator (
 				clientId: "77o5jxdgmf5uho",
 				clientSecret: "XCYQtNLFRUoMGPVO",
@@ -177,6 +205,8 @@ namespace Announcement.Android
 					if(callback != null && !string.IsNullOrWhiteSpace(token))
 						callback.Invoke(token);
 				}
+
+                isLinkeInInProcess = false;
 			} ;
 
 			var intent = auth.GetUI (activity);
@@ -187,6 +217,13 @@ namespace Announcement.Android
 		#region VKLogin - get token = ok
 		public void VKLogin (Action<string> callback)
 		{
+            if (isVKInProcess)
+            {
+                return;
+            }
+
+            isVKInProcess = true;
+            
 			var auth = new OAuth2Authenticator (
 				clientId: "5173092",
 				scope: "friends,video,groups",
@@ -202,6 +239,8 @@ namespace Announcement.Android
 					if(callback!=null && !string.IsNullOrWhiteSpace(token))
 						callback.Invoke(token);   
 				}
+
+                isVKInProcess = false;
 			} ;
 
 			var intent = auth.GetUI (activity);
@@ -212,21 +251,82 @@ namespace Announcement.Android
 
 		public void OnActivityResult(int requestCode, global::Android.App.Result resultCode, global::Android.Content.Intent data)
 		{
-			if (googleApiClient != null && !googleApiClient.IsConnecting && requestCode == 0)
-				googleApiClient.Connect ();
+            isGooglePlusInProcess = false;
+            
+            if (googleApiClient != null && !googleApiClient.IsConnecting && requestCode == 0)
+            {
+                googleApiClient.Connect();
+            }
 
 			if (requestCode == GoogleRecoverableAuthRequestCode) 
 			{
 				var extras = data.Extras;
 				var token = extras.GetString ("authtoken");
-				if (!string.IsNullOrWhiteSpace(token) && googleLoginCallback != null)
-					googleLoginCallback.Invoke (token);
+                if (!string.IsNullOrWhiteSpace(token) && googleLoginCallback != null)
+                {
+                    googleLoginCallback.Invoke(token);
+                }
 			}
 
-			if (callbackManager != null)
+            if (FacebookSdk.IsInitialized && requestCode == FacebookSdk.CallbackRequestCodeOffset && callbackManager != null)
+            {
 				callbackManager.OnActivityResult (requestCode, (int)resultCode, data);
+            }
 		}
+
+        private MainActivity activity;
+
+        private static SocialServices instance;
+
+        public static ICallbackManager callbackManager;
+
+        private bool isFacebookInProcess;
+
+        private bool isGooglePlusInProcess;
+
+        private bool isVKInProcess;
+
+        private bool isLinkeInInProcess;
 	}
+
+    public class FacebookCallback : Java.Lang.Object, IFacebookCallback
+    {
+        public event EventHandler Cancel;
+
+        public event EventHandler<FacebookException> Error;
+
+        public event EventHandler<Java.Lang.Object> Success;
+
+        public void OnCancel()
+        {
+            var handler = Cancel;
+
+            if (handler != null)
+            {
+                handler(this, EventArgs.Empty);
+            }  
+        }
+
+        public void OnError(FacebookException exception)
+        {
+            var handler = Error;
+
+            if (handler != null)
+            {
+                handler(this, exception);
+            }
+        }
+
+        public void OnSuccess(Java.Lang.Object value)
+        {
+            var handler = Success;
+
+            if (handler != null)
+            {
+                handler(this, value);
+            }
+        }
+    }
 
 	public class FacebookAcessTokenTracker : AccessTokenTracker
 	{
@@ -239,8 +339,10 @@ namespace Announcement.Android
 
 		protected override void OnCurrentAccessTokenChanged(Xamarin.Facebook.AccessToken oldAcessToken, Xamarin.Facebook.AccessToken currentAcessToken)
 		{
-			if (currentAcessToken != null)
-				Console.WriteLine ("Facebook access token:" +currentAcessToken.Token);
+            if (currentAcessToken != null)
+            {
+                Console.WriteLine("Facebook access token:" + currentAcessToken.Token);
+            }
 
 			var handler = AccessTokenChanged;
 
