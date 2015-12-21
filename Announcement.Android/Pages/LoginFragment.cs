@@ -39,7 +39,7 @@ namespace Announcement.Android
             {
                 SocialServices.Instance.FacebookLogin((token) =>
                     { 
-                        ViewModel.LoginViaFacebook("", LoginViaSocialCallback);
+                            ViewModel.LoginViaFacebook(token, LoginViaSocialCallback);
                     });
             };
 

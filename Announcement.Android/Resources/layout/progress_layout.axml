@@ -11,7 +11,9 @@
         android:background="@drawable/progress_border"
         android:orientation="vertical"
         android:layout_gravity="center"
-        android:padding="20dp">
+        android:padding="20dp"
+        android:layoutAnimation="@anim/progress_animation"
+        android:animateLayoutChanges="true">
         <Announcement.Android.Controls.TextView
             style="@style/text_view_normal_font_style"
             android:id="@+id/progressTitle"
