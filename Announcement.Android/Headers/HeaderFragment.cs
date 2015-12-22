@@ -80,21 +80,21 @@ namespace Announcement.Android
         void PopupMenuItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
             popupWindow.Dismiss();
-            switch (e.Position)
-            {
-                case 0:
-                    if (((ListView)sender).Count > 1)
-                        NavigationManager.Forward(typeof(CreateModeratorFragment));
-                    else
-                    {
-                        ViewModel.Logout(LogoutCallback);
-                    }
-                    break;
+			switch (e.Position) {
+			case 0:
+				if (((ListView)sender).Count > 1) {
+					AdminMainViewModel.Instance.InitializeCreateModerator (() => {
+						NavigationManager.Forward (typeof(CreateModeratorFragment));
+					});
+				} else {
+					ViewModel.Logout (LogoutCallback);
+				}
+				break;
 
-                case 1:
-                    ViewModel.Logout(LogoutCallback);
-                    break;
-            }
+			case 1:
+				ViewModel.Logout (LogoutCallback);
+				break;
+			}
         }
 
         protected void LogoutCallback()

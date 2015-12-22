@@ -191,7 +191,6 @@ namespace Announcement.Android
 
 		void ModeratorsTabListViewOnItemClick (object sender, AdapterView.ItemClickEventArgs e)
 		{
-
 		}
 
 		void RatingSpammersTabListViewOnItemClick (object sender, AdapterView.ItemClickEventArgs e)
@@ -206,7 +205,9 @@ namespace Announcement.Android
 
 		void ValidationListOnItemClick (object sender, AdapterView.ItemClickEventArgs e)
 		{
-
+			ViewModel.InitializeReportValidation (ViewModel.Reports [e.Position], () => {
+				NavigationManager.Forward (typeof(ReportValidationFragment));
+			});
 		}
     }
 }

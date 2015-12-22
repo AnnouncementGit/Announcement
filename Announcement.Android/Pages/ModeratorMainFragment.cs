@@ -91,6 +91,7 @@ namespace Announcement.Android
         }
     }
 
+	#region TabHostFactory
 	class TabHostContentFactory : Java.Lang.Object, TabHost.ITabContentFactory
 	{
 		private LayoutInflater inflater;
@@ -137,160 +138,6 @@ namespace Announcement.Android
 		public void SetContentCreatedListener(Action<string> listener)
 		{
 			contentCreatedAction = listener;
-		}
-	}
-
-	class ListOneDataHolder
-	{
-		public string Title { get; set; }
-		public string Posts { get; set; }
-		public string Confirmed { get; set; }
-	}
-
-	class ListViewOneAdapter : BaseAdapter
-	{
-		LayoutInflater inflater;
-		List<ListOneDataHolder> list;
-
-		public ListViewOneAdapter(LayoutInflater inflater, List<ListOneDataHolder> list)
-		{
-			this.inflater = inflater;
-			this.list = list;
-		}
-
-		#region implemented abstract members of BaseAdapter
-		public override Java.Lang.Object GetItem (int position)
-		{
-			throw new System.NotImplementedException ();
-		}
-
-		public override long GetItemId (int position)
-		{
-			return position;
-		}
-
-		public override int Count {
-			get {
-				return list.Count;
-			}
-		}
-
-		public override View GetView (int position, View convertView, ViewGroup parent)
-		{
-			View view;
-			var data = list [position];
-			view = convertView;
-			ListViewOneItemHolder holder;
-			if (view == null) {
-				view = inflater.Inflate (Resource.Layout.list_one_item_view, null);
-				holder = new ListViewOneItemHolder ()
-				{
-					ItemTitle = view.FindViewById<TextView> (Resource.Id.itemTitle),
-					ItemPosts = view.FindViewById<TextView> (Resource.Id.itemPosts),
-					ItemConfirmed = view.FindViewById<TextView> (Resource.Id.itemConfirmed)
-				};
-				view.Tag = holder;
-			} 
-			else 
-				holder = (ListViewOneItemHolder)view.Tag;
-
-			holder.ItemTitle.Text = data.Title;
-			holder.ItemPosts.Text = data.Posts;
-			holder.ItemConfirmed.Text = data.Confirmed;
-
-			return view;
-		}
-		#endregion
-
-		public void UpdateList(List<ListOneDataHolder> newList)
-		{
-			if (newList == null)
-				return;
-
-			list = newList;
-			NotifyDataSetChanged ();
-		}
-
-		class ListViewOneItemHolder : Java.Lang.Object
-		{
-			public TextView ItemTitle { get; set; }
-			public TextView ItemPosts { get; set; }
-			public TextView ItemConfirmed { get; set; }
-		}
-	}
-
-	class ListTwoDataHolder
-	{
-		public string Title { get; set; }
-		public string Description { get; set; }
-	}
-
-	class ListViewTwoAdapter : BaseAdapter
-	{
-		LayoutInflater inflater;
-		List<ListTwoDataHolder> list;
-
-		public ListViewTwoAdapter(LayoutInflater inflater, List<ListTwoDataHolder> list)
-		{
-			this.inflater = inflater;
-			this.list = list;
-		}
-
-		#region implemented abstract members of BaseAdapter
-		public override Java.Lang.Object GetItem (int position)
-		{
-			throw new System.NotImplementedException ();
-		}
-
-		public override long GetItemId (int position)
-		{
-			return position;
-		}
-
-		public override int Count {
-			get {
-				return list.Count;
-			}
-		}
-
-		public override View GetView (int position, View convertView, ViewGroup parent)
-		{
-			View view;
-			var data = list [position];
-			view = convertView;
-			ListViewTwoItemHolder holder;
-			if (view == null) {
-				view = inflater.Inflate (Resource.Layout.list_two_item_view, null);
-				holder = new ListViewTwoItemHolder ()
-				{
-					ItemTitle = view.FindViewById<TextView> (Resource.Id.itemTitle),
-					ItemDescription = view.FindViewById<TextView> (Resource.Id.itemDescription)
-				};
-				view.Tag = holder;
-			} 
-			else 
-				holder = (ListViewTwoItemHolder)view.Tag;
-
-			holder.ItemTitle.Text = data.Title;
-			holder.ItemDescription.Text = data.Description;
-
-			return view;
-		}
-		#endregion
-
-		public void UpdateList(List<ListTwoDataHolder> newList)
-		{
-			if (newList == null)
-				return;
-			
-			list = newList;
-			NotifyDataSetChanged ();
-		}
-
-		class ListViewTwoItemHolder : Java.Lang.Object
-		{
-			public TextView ItemTitle { get; set; }
-			public TextView ItemDescription { get; set; }
 		}
 	}
 
@@ -348,7 +195,7 @@ namespace Announcement.Android
 				Dimension.RelativeToParent, 0.0f, Dimension.RelativeToParent, 0.0f);
 			return setProperties(inFromLeft);
 		}
-			
+
 		private Animation outToLeftAnimation()
 		{
 			Animation outtoLeft = new TranslateAnimation(Dimension.RelativeToParent, 0.0f, Dimension.RelativeToParent, -1.0f,
@@ -363,4 +210,178 @@ namespace Announcement.Android
 			return animation;
 		}
 	}
+	#endregion
+
+	#region ListAdapters
+	class ListOneDataHolder
+	{
+		public string Title { get; set; }
+		public string Posts { get; set; }
+		public string Confirmed { get; set; }
+	}
+
+	class ListViewOneAdapter : BaseAdapter
+	{
+		LayoutInflater inflater;
+		List<ListOneDataHolder> list;
+
+		public ListViewOneAdapter(LayoutInflater inflater, List<ListOneDataHolder> list)
+		{
+			this.inflater = inflater;
+			this.list = list;
+		}
+
+		#region implemented abstract members of BaseAdapter
+		public override Java.Lang.Object GetItem (int position)
+		{
+			throw new System.NotImplementedException ();
+		}
+
+		public override long GetItemId (int position)
+		{
+			return position;
+		}
+
+		public override int Count {
+			get {
+				return list.Count;
+			}
+		}
+
+		public override View GetView (int position, View convertView, ViewGroup parent)
+		{
+			View view;
+			var data = list [position];
+			view = convertView;
+			ListViewOneItemHolder holder;
+			if (view == null) {
+				view = inflater.Inflate (Resource.Layout.list_one_item_view, null);
+				holder = new ListViewOneItemHolder ()
+				{
+					ScrollSection = (global::Announcement.Android.Controls.MagicHorizontalScrollView)view,
+					ItemTitle = view.FindViewById<TextView> (Resource.Id.itemTitle),
+					ItemPosts = view.FindViewById<TextView> (Resource.Id.itemPosts),
+					ItemConfirmed = view.FindViewById<TextView> (Resource.Id.itemConfirmed),
+					RowActionSection = view.FindViewById<RelativeLayout>(Resource.Id.rowActionSection)
+				};
+				holder.ScrollSection.Tag = holder;
+				holder.RowActionSection.Tag = holder;
+				view.Tag = holder;
+			} 
+			else 
+				holder = (ListViewOneItemHolder)view.Tag;
+
+			holder.ItemTitle.Text = data.Title;
+			holder.ItemPosts.Text = data.Posts;
+			holder.ItemConfirmed.Text = data.Confirmed;
+			holder.Position = position;
+
+			return view;
+		}
+		#endregion
+
+		public void UpdateList(List<ListOneDataHolder> newList)
+		{
+			if (newList == null)
+				return;
+
+			list = newList;
+			NotifyDataSetChanged ();
+		}
+
+		class ListViewOneItemHolder : Java.Lang.Object, global::Announcement.Android.Controls.ICollectionItemHolder
+		{
+			public TextView ItemTitle { get; set; }
+			public TextView ItemPosts { get; set; }
+			public TextView ItemConfirmed { get; set; }
+			public global::Announcement.Android.Controls.MagicHorizontalScrollView ScrollSection;
+			public RelativeLayout RowActionSection;
+			public int Position { get ; set ; }
+		}
+	}
+
+	class ListTwoDataHolder
+	{
+		public string Title { get; set; }
+		public string Description { get; set; }
+	}
+
+	class ListViewTwoAdapter : BaseAdapter
+	{
+		LayoutInflater inflater;
+		List<ListTwoDataHolder> list;
+
+		public ListViewTwoAdapter(LayoutInflater inflater, List<ListTwoDataHolder> list)
+		{
+			this.inflater = inflater;
+			this.list = list;
+		}
+
+		#region implemented abstract members of BaseAdapter
+		public override Java.Lang.Object GetItem (int position)
+		{
+			throw new System.NotImplementedException ();
+		}
+
+		public override long GetItemId (int position)
+		{
+			return position;
+		}
+
+		public override int Count {
+			get {
+				return list.Count;
+			}
+		}
+
+		public override View GetView (int position, View convertView, ViewGroup parent)
+		{
+			View view;
+			var data = list [position];
+			view = convertView;
+			ListViewTwoItemHolder holder;
+			if (view == null) {
+				view = inflater.Inflate (Resource.Layout.list_two_item_view, null);
+				holder = new ListViewTwoItemHolder ()
+				{
+					ScrollSection = (global::Announcement.Android.Controls.MagicHorizontalScrollView)view,
+					ItemTitle = view.FindViewById<TextView> (Resource.Id.itemTitle),
+					ItemDescription = view.FindViewById<TextView> (Resource.Id.itemDescription),
+					RowActionSection = view.FindViewById<RelativeLayout>(Resource.Id.rowActionSection)
+				};
+
+				holder.ScrollSection.Tag = holder;
+				holder.RowActionSection.Tag = holder;
+				view.Tag = holder;
+			} 
+			else 
+				holder = (ListViewTwoItemHolder)view.Tag;
+
+			holder.ItemTitle.Text = data.Title;
+			holder.ItemDescription.Text = data.Description;
+			holder.Position = position;
+
+			return view;
+		}
+		#endregion
+
+		public void UpdateList(List<ListTwoDataHolder> newList)
+		{
+			if (newList == null)
+				return;
+			
+			list = newList;
+			NotifyDataSetChanged ();
+		}
+
+		class ListViewTwoItemHolder : Java.Lang.Object, global::Announcement.Android.Controls.ICollectionItemHolder
+		{
+			public TextView ItemTitle { get; set; }
+			public TextView ItemDescription { get; set; }
+			public global::Announcement.Android.Controls.MagicHorizontalScrollView ScrollSection;
+			public RelativeLayout RowActionSection;
+			public int Position { get ; set ; }
+		}
+  	}
+	#endregion
 }

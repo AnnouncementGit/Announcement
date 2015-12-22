@@ -139,6 +139,10 @@
     <Compile Include="Controls\ProgressIndicator.cs" />
     <Compile Include="Managers\FontsManager.cs" />
     <Compile Include="Managers\ValueConverterManager.cs" />
+    <Compile Include="Pages\ReportValidationFragment.cs" />
+    <Compile Include="Controls\MagicHorizontalScrollView.cs" />
+    <Compile Include="Controls\MagicLinearLayoutForScroll.cs" />
+    <Compile Include="Controls\SquareViewPager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -249,6 +253,9 @@
     <AndroidResource Include="Resources\anim\slide_forward_out_animation.xml" />
     <AndroidResource Include="Resources\anim\grow_fade_in_center.xml" />
     <AndroidResource Include="Resources\anim\progress_animation.xml" />
+    <AndroidResource Include="Resources\drawable\tab_indicator_text_color_selector.xml" />
+    <AndroidResource Include="Resources\layout\report_validation_view.axml" />
+    <AndroidResource Include="Resources\layout\validation_images_pager_view.axml" />
   </ItemGroup>
   <Import Project="..\Announcement.Core\Announcement.Core.projitems" Label="Shared" Condition="Exists('..\Announcement.Core\Announcement.Core.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />

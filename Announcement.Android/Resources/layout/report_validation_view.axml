@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:scrollbars="none"
+        android:fillViewport="true"
+        android:overScrollMode="never">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <Announcement.Android.Controls.SquareViewPager
+                android:id="@+id/reportViewPager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/grey_color" />
+            <Announcement.Android.Controls.EditText
+                android:id="@+id/reportPhoneNumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="5dp"
+                android:textColor="@color/major_color"
+                android:textColorHint="@color/major_color"
+                android:inputType="number"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:textSize="24sp"
+                android:background="@drawable/login_fields_background"
+                android:padding="5dp"
+                local:localizationKey="label_enter_phone_number" />
+        </LinearLayout>
+    </ScrollView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+        <Announcement.Android.Controls.Button
+            style="@style/text_view_normal_font_style"
+            android:id="@+id/btnConfirm"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textSize="22sp"
+            android:gravity="center"
+            android:background="@drawable/button_selector"
+            android:button="@android:color/transparent"
+            local:localizationKey="button_title_confirm" />
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent" />
+        <Announcement.Android.Controls.Button
+            style="@style/text_view_normal_font_style"
+            android:id="@+id/btnCancel"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textSize="22sp"
+            android:gravity="center"
+            android:background="@drawable/button_selector"
+            android:button="@android:color/transparent"
+            local:localizationKey="button_title_cancel" />
+    </LinearLayout>
+</LinearLayout>

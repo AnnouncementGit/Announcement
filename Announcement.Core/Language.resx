@@ -113,5 +113,11 @@ Press OK to upload more.</value></data>
 
 Press Retry to retake photo.</value></data>
 
+    <data name="button_title_confirm" xml:space="preserve"><value>Confirm</value></data>
+
+    <data name="button_title_cancel" xml:space="preserve"><value>Cancel</value></data>
+
+    <data name="label_enter_phone_number" xml:space="preserve"><value>Enter phone number</value></data>
+
 
 </root>

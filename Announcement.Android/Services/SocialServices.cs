@@ -161,7 +161,9 @@ namespace Announcement.Android
 				{
 					token = GoogleAuthUtil.GetToken(MainActivityInstance.Current, account,"oauth2:" + Scopes.PlusLogin + " https://www.googleapis.com/auth/plus.profile.emails.read");
 
-					if (googleLoginCallback != null)
+					isGooglePlusInProcess = false;
+
+					if (!string.IsNullOrWhiteSpace(token) && googleLoginCallback != null)
 						googleLoginCallback.Invoke (token);
 				}
 				catch (UserRecoverableAuthException e)
@@ -170,9 +172,9 @@ namespace Announcement.Android
 				}
 				catch (GoogleAuthException ex){
 					var t = ex.Message;
-				}	
 
-                isGooglePlusInProcess = false;
+					isGooglePlusInProcess = false;
+				}
 			});
 		}
 		#endregion
@@ -196,6 +198,7 @@ namespace Announcement.Android
 				accessTokenUrl: new Uri ("https://www.linkedin.com/uas/oauth2/accessToken")
 			);
 			auth.AllowCancel = true;
+			auth.ShowUIErrors = false;
 			auth.Completed += (s, e) => {
 				if (!e.IsAuthenticated) 
 					AlertModule.ShowInformation("Not Authenticated", null);
@@ -230,6 +233,7 @@ namespace Announcement.Android
 				authorizeUrl: new Uri ("https://oauth.vk.com/authorize"),
 				redirectUrl: new Uri ("https://oauth.vk.com/blank.html"));
 			auth.AllowCancel = true;
+			auth.ShowUIErrors = false;
 			auth.Completed += (s, e) => {
 				if (!e.IsAuthenticated)
 					AlertModule.ShowInformation("Not Authenticated", null);
@@ -251,12 +255,13 @@ namespace Announcement.Android
 
 		public void OnActivityResult(int requestCode, global::Android.App.Result resultCode, global::Android.Content.Intent data)
 		{
-            isGooglePlusInProcess = false;
-            
-            if (googleApiClient != null && !googleApiClient.IsConnecting && requestCode == 0)
-            {
-                googleApiClient.Connect();
-            }
+			if (googleApiClient != null && !googleApiClient.IsConnecting && requestCode == 0) {
+				googleApiClient.Connect ();
+			}
+
+			if (googleApiClient == null || !googleApiClient.IsConnecting){
+				isGooglePlusInProcess = false;
+			}
 
 			if (requestCode == GoogleRecoverableAuthRequestCode) 
 			{
@@ -264,7 +269,8 @@ namespace Announcement.Android
 				var token = extras.GetString ("authtoken");
                 if (!string.IsNullOrWhiteSpace(token) && googleLoginCallback != null)
                 {
-                    googleLoginCallback.Invoke(token);
+					googleLoginCallback.Invoke(token);
+					isGooglePlusInProcess = false;
                 }
 			}
 
