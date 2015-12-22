@@ -18,8 +18,8 @@ namespace Announcement.Android
                 {
                     using (var stream = new MemoryStream())
                     {
-                        bitmap.Compress(Bitmap.CompressFormat.Jpeg, 100, stream);
-
+                        bitmap.Compress(Bitmap.CompressFormat.Jpeg, 70, stream);
+                   
                         result = stream.ToArray();
 
                         stream.Close();

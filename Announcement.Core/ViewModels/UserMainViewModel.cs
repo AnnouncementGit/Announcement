@@ -40,13 +40,19 @@ namespace Announcement.Core
                 {
                     reportId = null;
                     
-                    AlertModule.Show(LocalizationModule.Translate("alert_title_upload_completed"), LocalizationModule.Translate("alert_message_upload_completed"),  LocalizationModule.Translate("alert_button_ok"), callback);
+                    AlertModule.Show(LocalizationModule.Translate("alert_title_upload_completed"), LocalizationModule.Translate("alert_message_upload_completed"), LocalizationModule.Translate("alert_button_ok"), callback);
                 }
                 else
                 {
                     reportId = result.Value;
                     
-                    AlertModule.Show(LocalizationModule.Translate("alert_title_upload_completed"), LocalizationModule.Translate("alert_message_upload_completed_not_found"), LocalizationModule.Translate("alert_button_retry"), LocalizationModule.Translate("alert_button_cancel"), continueCallback, cancelCallback);
+                    AlertModule.Show(LocalizationModule.Translate("alert_title_upload_completed"), LocalizationModule.Translate("alert_message_upload_completed_not_found"), LocalizationModule.Translate("alert_button_retry"), LocalizationModule.Translate("alert_button_cancel"), continueCallback,
+                        () =>
+                        { 
+                            reportId = null;
+
+                            DispatcherModule.Invoke(cancelCallback);
+                        });
                 }
             }
         }
