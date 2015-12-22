@@ -4,4 +4,9 @@
 <fullyQualifiedTypeName name="java.util.Random"/>
 <fullyQualifiedTypeName name="com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig"/>
 <fullyQualifiedTypeName name="com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig.TableNameOverride"/>
+<fullyQualifiedTypeName name="java.util.regex.Pattern"/>
+<fullyQualifiedTypeName name="java.util.regex.Matcher"/>
+<fullyQualifiedTypeName name="org.bytedeco.javacpp.BytePointer"/>
+<fullyQualifiedTypeName name="org.bytedeco.javacpp.tesseract.TessBaseAPI"/>
+<fullyQualifiedTypeName name="org.bytedeco.javacpp.lept.PIX"/>
 </qualifiedTypeNameHistroy>

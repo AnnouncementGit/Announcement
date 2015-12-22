@@ -13,11 +13,28 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.bytedeco.javacpp.*;
+import static org.bytedeco.javacpp.lept.*;
+import static org.bytedeco.javacpp.tesseract.*;
 
 
 public class Methods 
 {
-    public Result<String> PushReport(SingleReport report, Context context) 
+	public Result<Integer> PushReport(SingleReport report, Context context) 
+    {
+        Result<Integer> result = new Result<Integer>();
+        
+        TessBaseAPI tessBaseAPI = new TessBaseAPI();
+        
+        result.setValue(tessBaseAPI.Init("src/main/resources/tessdata", "eng"));  
+       
+        return result;
+    }
+	
+    /*public Result<String> PushReport(SingleReport report, Context context) 
     {
         Result<String> result = new Result<String>();
         
@@ -31,13 +48,13 @@ public class Methods
             
             meta.setContentLength(report.getPhoto().length);
             
-            meta.setContentType("image/png");
+            meta.setContentType("image/jpeg");
             
             AmazonS3Client s3Client = new AmazonS3Client();
             
             s3Client.setRegion(Region.getRegion(Regions.EU_WEST_1));
             
-            String fileName = id + "-0.png";
+            String fileName = id + "-0.jpg";
             
             s3Client.putObject("stop-spam/reports", fileName, stream, meta);
             
@@ -55,13 +72,13 @@ public class Methods
 
             report.setPhotos(photos);
             
-            Random random = new Random();
+            String phoneNumber = ScanPhoneNumber(report.getPhoto());
             
-            if(random.nextBoolean())
+            if(phoneNumber != null)
             {
-            	report.setPhoneNumber("111-11-11-11");
+            	report.setPhoneNumber(phoneNumber);
             }
-            
+
             mapper.save(report);
             
             result.setValue(id);
@@ -83,7 +100,7 @@ public class Methods
         }
         
         return result;
-    }
+    }*/
 
     public Result<String> PushReportContinue(SingleReport report, Context context) 
     {
@@ -107,30 +124,30 @@ public class Methods
             
             meta.setContentLength(report.getPhoto().length);
             
-            meta.setContentType("image/png");
+            meta.setContentType("image/jpeg");
             
             AmazonS3Client s3Client = new AmazonS3Client();
             
             s3Client.setRegion(Region.getRegion(Regions.EU_WEST_1));
             
-            String fileName = id + "-" + savedReport.getPhotos().size() + ".png";
+            String fileName = id + "-" + savedReport.getPhotos().size() + ".jpg";
             
             s3Client.putObject("stop-spam/reports", fileName, stream, meta);
             
             savedReport.getPhotos().add(fileName);
             
-            Random random = new Random();
+            String phoneNumber = ScanPhoneNumber(report.getPhoto());
             
-            if(random.nextBoolean())
+            if(phoneNumber != null)
             {
-            	report.setPhoneNumber("111-11-11-11");
+            	savedReport.setPhoneNumber(phoneNumber);
             }
             
             mapper.save(savedReport);
             
             result.setValue(id);
             
-            if(report.getPhoneNumber() == null || report.getPhoneNumber() == "")
+            if(savedReport.getPhoneNumber() == null || savedReport.getPhoneNumber() == "")
             {
             	result.setIsSuccess(false);
             }
@@ -351,6 +368,65 @@ public class Methods
             result.setMessage(e.getMessage());
         }
         
+        return result;
+    }
+    
+    protected String ScanPhoneNumber(byte[] imageBytes)
+    {
+    	String result = null;
+    	
+    	if(imageBytes == null)
+    	{
+    		return null;
+    	}
+    	
+    	try
+    	{
+    		BytePointer outText;
+
+            TessBaseAPI tessBaseAPI = new TessBaseAPI();
+     
+            if (tessBaseAPI.Init("src/main/resources/tessdata", "eng") != 0) 
+            {
+                System.err.println("Could not initialize tesseract.");
+                
+                System.exit(1);
+            }
+
+            PIX image = pixReadMem(imageBytes, imageBytes.length);
+            
+            tessBaseAPI.SetImage(image);
+           
+
+            outText = tessBaseAPI.GetUTF8Text();
+            
+            Pattern p = Pattern.compile("\\d{3}[-\\.\\s]\\d{2}[-\\.\\s]\\d{2}");
+            
+            Matcher m = p.matcher(outText.getString());
+            
+            while (m.find()) 
+            {
+            	String phoneNumber = m.group();
+            	
+            	if(phoneNumber != null && !phoneNumber.isEmpty())
+            	{
+            		result = phoneNumber;
+            		
+            		break;
+            	}
+            }
+
+            tessBaseAPI.End();
+            
+            outText.deallocate();
+            
+            pixDestroy(image);
+    	}
+    	catch(Exception e)
+    	{
+    		
+    	}
+
         return result;
     }
 }

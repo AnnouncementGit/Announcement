@@ -7,6 +7,7 @@
 packages/
 Components/
 TestResults/
+[Ww]orkspace/
 
 # globs
 Makefile.in
