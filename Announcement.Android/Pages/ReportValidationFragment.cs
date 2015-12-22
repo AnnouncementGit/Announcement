@@ -48,7 +48,7 @@ namespace Announcement.Android
 
 		void OnCancelClick(object sender, EventArgs e)
 		{
-
+			viewModel.RejectReport (() => MainActivityInstance.Current.OnBackPressed ());
 		}
 	}
 
@@ -82,8 +82,6 @@ namespace Announcement.Android
 		public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstance)
 		{
 			view = inflater.Inflate (Resource.Layout.validation_images_pager_view, null);
-
-
 
 			try {
 				var uri = global::Android.Net.Uri.Parse (imageUrl);
