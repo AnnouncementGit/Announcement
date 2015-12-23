@@ -143,6 +143,7 @@
     <Compile Include="Controls\MagicHorizontalScrollView.cs" />
     <Compile Include="Controls\MagicLinearLayoutForScroll.cs" />
     <Compile Include="Controls\SquareViewPager.cs" />
+    <Compile Include="Controls\AnimatedLinearLayout.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
