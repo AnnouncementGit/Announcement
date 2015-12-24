@@ -142,8 +142,8 @@
     <Compile Include="Pages\ReportValidationFragment.cs" />
     <Compile Include="Controls\MagicHorizontalScrollView.cs" />
     <Compile Include="Controls\MagicLinearLayoutForScroll.cs" />
-    <Compile Include="Controls\SquareViewPager.cs" />
     <Compile Include="Controls\AnimatedLinearLayout.cs" />
+    <Compile Include="Controls\ScaleImageView.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -257,6 +257,11 @@
     <AndroidResource Include="Resources\drawable\tab_indicator_text_color_selector.xml" />
     <AndroidResource Include="Resources\layout\report_validation_view.axml" />
     <AndroidResource Include="Resources\layout\validation_images_pager_view.axml" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\delete_icon.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\delete_icon.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\delete_icon.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\delete_icon.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\delete_icon.png" />
   </ItemGroup>
   <Import Project="..\Announcement.Core\Announcement.Core.projitems" Label="Shared" Condition="Exists('..\Announcement.Core\Announcement.Core.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />

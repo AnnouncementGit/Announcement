@@ -266,6 +266,7 @@ namespace Announcement.Android
 				};
 				holder.ScrollSection.Tag = holder;
 				holder.RowActionSection.Tag = holder;
+				holder.RowActionSection.Click += DeleteSectionClick;
 				view.Tag = holder;
 			} 
 			else 
@@ -279,6 +280,11 @@ namespace Announcement.Android
 			return view;
 		}
 		#endregion
+
+		private void DeleteSectionClick(object sender, EventArgs e)
+		{
+			var position = ((ListViewOneItemHolder)((View)sender).Tag).Position;
+		}
 
 		public void UpdateList(List<ListOneDataHolder> newList)
 		{
@@ -352,6 +358,7 @@ namespace Announcement.Android
 
 				holder.ScrollSection.Tag = holder;
 				holder.RowActionSection.Tag = holder;
+				holder.RowActionSection.Click += DeleteSectionClick;
 				view.Tag = holder;
 			} 
 			else 
@@ -364,6 +371,11 @@ namespace Announcement.Android
 			return view;
 		}
 		#endregion
+
+		private void DeleteSectionClick(object sender, EventArgs e)
+		{
+			var position = ((ListViewTwoItemHolder)((View)sender).Tag).Position;
+		}
 
 		public void UpdateList(List<ListTwoDataHolder> newList)
 		{

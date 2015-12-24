@@ -161,10 +161,10 @@ namespace Announcement.Android
 				{
 					token = GoogleAuthUtil.GetToken(MainActivityInstance.Current, account,"oauth2:" + Scopes.PlusLogin + " https://www.googleapis.com/auth/plus.profile.emails.read");
 
-					isGooglePlusInProcess = false;
-
-					if (!string.IsNullOrWhiteSpace(token) && googleLoginCallback != null)
+					if (!string.IsNullOrWhiteSpace(token) && googleLoginCallback != null){
 						googleLoginCallback.Invoke (token);
+						isGooglePlusInProcess = false;
+					}
 				}
 				catch (UserRecoverableAuthException e)
 				{

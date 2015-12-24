@@ -6,13 +6,14 @@ using System.Collections.Generic;
 using Android.Widget;
 using Android.Views;
 using Android.OS;
+using Android.Support.V4.View;
 
 namespace Announcement.Android
 {
 	public class ReportValidationFragment : Fragment
 	{
 		private ReportValidationViewModel viewModel { get { return ReportValidationViewModel.Instance; } }
-		private SquareViewPager reportViewPager;
+		private ViewPager reportViewPager;
 		private CustomViewPagerAdapter reportViewPagerAdapter;
 		private Announcement.Android.Controls.EditText txtPhone;
 
@@ -20,7 +21,11 @@ namespace Announcement.Android
 		{
 			var view = inflater.Inflate (Resource.Layout.report_validation_view, null);
 
-			reportViewPager = view.FindViewById<SquareViewPager> (Resource.Id.reportViewPager);
+			reportViewPager = view.FindViewById<ViewPager> (Resource.Id.reportViewPager);
+			if(MainActivityInstance.Current.Resources.DisplayMetrics.WidthPixels < MainActivityInstance.Current.Resources.DisplayMetrics.HeightPixels)
+				reportViewPager.LayoutParameters = new LinearLayout.LayoutParams (LinearLayout.LayoutParams.WrapContent, MainActivityInstance.Current.Resources.DisplayMetrics.WidthPixels);
+			else
+				reportViewPager.LayoutParameters = new LinearLayout.LayoutParams (LinearLayout.LayoutParams.WrapContent, MainActivityInstance.Current.Resources.DisplayMetrics.HeightPixels);
 			reportViewPager.PageScrolled += ReportViewPagerOnPageScrolled;
 			reportViewPagerAdapter = new CustomViewPagerAdapter (MainActivityInstance.Current.SupportFragmentManager, viewModel.Photos);
 			reportViewPager.Adapter = reportViewPagerAdapter;
@@ -84,8 +89,8 @@ namespace Announcement.Android
 			view = inflater.Inflate (Resource.Layout.validation_images_pager_view, null);
 
 			try {
-				var uri = global::Android.Net.Uri.Parse (imageUrl);
-				view.FindViewById<ImageView> (Resource.Id.pagerImageView).SetImageURI (uri);
+//				var uri = global::Android.Net.Uri.Parse (imageUrl);
+//				view.FindViewById<ScaleImageView> (Resource.Id.pagerImageView).SetImageURI (uri);
 			} catch (Exception ex) {
 				Console.WriteLine (ex.Message);
 			}
