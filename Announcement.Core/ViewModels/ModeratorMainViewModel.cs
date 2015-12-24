@@ -12,7 +12,7 @@ namespace Announcement.Core
         public List<Spammer> RatingTopSpammers { get; private set; }
 
         public List<Report> Reports { get; private set; }
-        
+
         public static ModeratorMainViewModel Instance
         {
             get
@@ -25,6 +25,7 @@ namespace Announcement.Core
         public override Result Initialize()
         {
             var result = base.Initialize();
+
 
             var resultReports = SourceManager.PullReports();
 
@@ -57,7 +58,7 @@ namespace Announcement.Core
 
             return result;
         }
-
+            
         public async void InitializeReportValidation(Report report, Action callback)
         {
             var viewModel = ReportValidationViewModel.Instance;
@@ -78,7 +79,7 @@ namespace Announcement.Core
                 }
             }
         }
-            
+
         private static ModeratorMainViewModel instance;
     }
 }

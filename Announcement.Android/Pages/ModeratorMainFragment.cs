@@ -12,88 +12,224 @@ using Android.Animation;
 
 namespace Announcement.Android
 {
-    public class ModeratorMainFragment : Fragment
-    {
-        private ModeratorMainViewModel ViewModel 
-        { 
-            get 
+        public class ModeratorMainFragment : Fragment
+        {
+            private ModeratorMainViewModel ViewModel 
             { 
-				return ModeratorMainViewModel.Instance; 
+                get 
+                { 
+                    return ModeratorMainViewModel.Instance; 
+                }
             }
+
+            public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+            {
+                var view = inflater.Inflate(Resource.Layout.admin_main_layout, null);
+
+
+                tabHost = view.FindViewById<TabHost> (Android.Resource.Id.tabHost);
+
+                tabHost.Setup ();
+
+                tabHostContentFactory = new TabHostContentFactory (inflater);
+
+                tabHostContentFactory.SetContentCreatedListener(TabHostContentFactoryOnContentCreated);
+
+                tabHost.TabChanged += TabHost_TabChanged;
+
+
+                AddTab(LocalizationModule.Translate("tab_title_validation"), VALIDATION_TAB_TAG);
+
+                AddTab(LocalizationModule.Translate("tab_title_ratings"), RATING_TAB_TAG);
+
+
+                tabChangeListener = new AnimatedTabHostListener (tabHost);
+
+                return view;
+            }
+
+            protected void AddTab(string title, string tag)
+            {
+                var tabSpec = tabHost.NewTabSpec (tag);
+
+                tabSpec.SetContent (tabHostContentFactory);
+
+                var view = Activity.LayoutInflater.Inflate (Resource.Layout.tab_indicator, null);
+
+                view.FindViewById<TextView> (Resource.Id.indicatorTextView).Text = title;
+
+                tabSpec.SetIndicator(view);
+
+                tabHost.AddTab(tabSpec); 
+            }
+
+            protected void TabHost_TabChanged (object sender, TabHost.TabChangeEventArgs e)
+            {
+                var view = tabHostContentFactory.ValidationListView;
+
+                if (view != null)
+                {
+                    view.ScrollStateChanged -= View_ScrollStateChanged;
+
+                    view.ScrollStateChanged += View_ScrollStateChanged;
+
+                    view.VerticalScrollBarEnabled = false;
+                }
+
+                view = ratingUsersTabList;
+
+                if (view != null)
+                {
+                    view.ScrollStateChanged -= View_ScrollStateChanged;
+
+                    view.ScrollStateChanged += View_ScrollStateChanged;
+
+                    view.VerticalScrollBarEnabled = false;
+                }
+
+                view = ratingSpammersTabList;
+
+                if (view != null)
+                {
+                    view.ScrollStateChanged -= View_ScrollStateChanged;
+
+                    view.ScrollStateChanged += View_ScrollStateChanged;
+
+                    view.VerticalScrollBarEnabled = false;
+                }
+            }
+
+            protected void View_ScrollStateChanged (object sender, AbsListView.ScrollStateChangedEventArgs e)
+            {
+                var view = sender as View;
+
+                switch (e.ScrollState)
+                {
+                    case ScrollState.TouchScroll:
+
+                        if (!view.VerticalScrollBarEnabled)
+                        {
+                            view.VerticalScrollBarEnabled = true;
+                        }
+                        break;
+                }
+            }
+
+            protected void TabHostContentFactoryOnContentCreated (string tag)
+            {
+                switch (tag)
+                {
+                    case VALIDATION_TAB_TAG:
+                        InitializeValidation();
+                        break;
+
+                    case RATING_TAB_TAG:
+                        ratingTabView = tabHostContentFactory.RatingTabView;
+
+                        ratingsViewSwitcher = ratingTabView.FindViewById<ViewSwitcher>(Resource.Id.RatingsViewSwitcher);
+
+                        ratingsViewSwitcher.SetInAnimation(Activity, Resource.Animation.fade_in_animation);
+
+                        ratingsViewSwitcher.SetOutAnimation(Activity, Resource.Animation.fade_out_animation);
+
+                        InitializeSpamers();
+                        InitializeUsers();
+
+                        ratingRadioButtons = ratingTabView.FindViewById<RadioGroup>(Resource.Id.ratingRadioGroup);
+                        ratingRadioButtons.CheckedChange += RatingRadioButtonsOnCheckedChange;
+                        ratingRadioButtons.Check(Resource.Id.btnSpammers);
+                        break;
+                }
+            }
+                
+            protected void InitializeValidation()
+            {
+                var validationList = tabHostContentFactory.ValidationListView;
+
+                validationList.Adapter = new ReportsAdapter(Activity, ViewModel.Reports);
+
+                validationList.ItemClick += ValidationListOnItemClick;
+            }
+
+            protected void InitializeSpamers()
+            {
+                ratingSpammersTabList = ratingTabView.FindViewById<ListView> (Resource.Id.spammersListView);
+
+                ratingSpammersTabList.Adapter = new SpammersAdapter (Activity, ViewModel.RatingTopSpammers);
+
+                //ratingSpammersTabList.ItemClick += RatingSpammersTabListViewOnItemClick;
+            }
+
+            protected void InitializeUsers()
+            {
+                ratingUsersTabList = ratingTabView.FindViewById<ListView> (Resource.Id.usersListView);
+
+                ratingUsersTabList.Adapter = new UsersAdapter (Activity, ViewModel.RatingTopUsers);;
+
+                //ratingUsersTabList.ItemClick += RatingUsersTabListViewOnItemClick;
+            }
+
+            protected void RatingRadioButtonsOnCheckedChange (object sender, RadioGroup.CheckedChangeEventArgs e)
+            {
+                switch (e.CheckedId)
+                {
+                    case (Resource.Id.btnSpammers):
+
+                        if (ratingsViewSwitcher.CurrentView != ratingSpammersTabList)
+                        {
+                            ratingsViewSwitcher.ShowPrevious();
+                        }
+
+                        break;
+
+                    case (Resource.Id.btnUsers):
+
+                        if (ratingsViewSwitcher.CurrentView != ratingUsersTabList)
+                        {
+                            ratingsViewSwitcher.ShowNext();
+                        }
+
+                        break;
+                }
+            }
+                
+            protected void RatingSpammersTabListViewOnItemClick (object sender, AdapterView.ItemClickEventArgs e)
+            {
+
+            }
+
+            protected void RatingUsersTabListViewOnItemClick (object sender, AdapterView.ItemClickEventArgs e)
+            {
+
+            }
+
+            protected void ValidationListOnItemClick (object sender, AdapterView.ItemClickEventArgs e)
+            {
+                ViewModel.InitializeReportValidation(ViewModel.Reports[e.Position], () => NavigationManager.Forward(typeof(ReportValidationFragment)));
+            }
+
+            private TabHostContentFactory tabHostContentFactory;
+
+            private View ratingTabView;
+
+            private RadioGroup ratingRadioButtons;
+
+            private ListView ratingUsersTabList;
+
+            private ListView ratingSpammersTabList;
+
+            private TabHost tabHost;
+
+            private AnimatedTabHostListener tabChangeListener;
+
+            private ViewSwitcher ratingsViewSwitcher;
+
+            private const string VALIDATION_TAB_TAG = "validationTab";
+
+            private const string RATING_TAB_TAG = "ratingTab";
         }
 
-		TabHostContentFactory tabHostContentFactory;
-		View ratingSpammersTabView;
-		LayoutInflater Inflater;
-
-        public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-        {
-			Inflater = inflater;
-            var view = inflater.Inflate(Resource.Layout.admin_main_layout, null);
-			var tabHost = view.FindViewById<TabHost> (Android.Resource.Id.tabHost);
-			tabHost.Setup ();
-
-			TabHost.TabSpec tabSpec;
-			tabHostContentFactory = new TabHostContentFactory (inflater);
-			tabHostContentFactory.SetContentCreatedListener(TabHostContentFactoryOnContentCreated);
-
-			tabSpec = tabHost.NewTabSpec ("validationTab");
-			tabSpec.SetContent (tabHostContentFactory);
-			var tab1view = inflater.Inflate (Resource.Layout.tab_indicator, null);
-			tab1view.FindViewById<TextView> (Resource.Id.indicatorTextView).Text = "Validation";
-			tabSpec.SetIndicator (tab1view);
-			tabHost.AddTab (tabSpec);
-
-			tabSpec = tabHost.NewTabSpec ("ratingTab");
-			tabSpec.SetContent (tabHostContentFactory);
-			var tab2view = inflater.Inflate (Resource.Layout.tab_indicator, null);
-			tab2view.FindViewById<TextView> (Resource.Id.indicatorTextView).Text = "Rating";
-			tabSpec.SetIndicator(tab2view);
-			tabHost.AddTab(tabSpec);
-
-			tabHost.TabChanged += TabHostOnTabChanged;
-			var tabChangeListener = new AnimatedTabHostListener (tabHost);
-
-            return view;
-        }
-
-        void TabHostContentFactoryOnContentCreated (string tag)
-        {
-//			switch (tag) {
-//			case "ratingTab":
-//				ratingSpammersTabView = tabHostContentFactory.RatingTabView;
-//				var ratingSpammersTabList = ratingSpammersTabView.FindViewById<ListView> (Resource.Id.spammersListView);
-//				var ratingSpammersTabListAdapter = new ListViewTwoAdapter (Inflater, ViewModel.RatingTopSpammers);
-//				ratingSpammersTabList.Adapter = ratingSpammersTabListAdapter;
-//				ratingSpammersTabList.ItemClick += RatingTabListViewOnItemClick;
-//				break;
-//
-//			case "validationTab":
-//				var validationList = tabHostContentFactory.ValidationListView;
-//				var validationListAdapter = new ListViewTwoAdapter (Inflater, ViewModel.Reports);
-//				validationList.Adapter = validationListAdapter;
-//				validationList.ItemClick += ValidationListOnItemClick;
-//				break;
-//			}
-        }
-
-        void RatingTabListViewOnItemClick (object sender, AdapterView.ItemClickEventArgs e)
-        {
-			
-        }
-
-        void ValidationListOnItemClick (object sender, AdapterView.ItemClickEventArgs e)
-        {
-			
-        }
-
-        void TabHostOnTabChanged (object sender, TabHost.TabChangeEventArgs e)
-        {
-			
-        }
-    }
-        
-	class TabHostContentFactory : Java.Lang.Object, TabHost.ITabContentFactory
+	public class TabHostContentFactory : Java.Lang.Object, TabHost.ITabContentFactory
 	{
 		private LayoutInflater inflater;
 		public ListView ValidationListView;
@@ -118,10 +254,11 @@ namespace Announcement.Android
 					contentCreatedAction.Invoke (tag);
 				return ModeratorsListView;
 
-			case "validationTab":
-				ValidationListView = new ListView (MainActivityInstance.Current){ LayoutParameters = new ViewGroup.LayoutParams (ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.MatchParent) };
-				ValidationListView.DividerHeight = 0;
-				ValidationListView.SetSelector (Resource.Drawable.list_item_selector);
+                case "validationTab":
+                    ValidationListView = new ListView(MainActivityInstance.Current){ LayoutParameters = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.MatchParent) };
+                    ValidationListView.DividerHeight = 0;
+                    ValidationListView.Divider = null;
+                    ValidationListView.SetSelector(Resource.Drawable.list_item_selector);
 				if (contentCreatedAction != null)
 					contentCreatedAction.Invoke (tag);
 				return ValidationListView;
@@ -145,7 +282,7 @@ namespace Announcement.Android
 
 	public class AnimatedTabHostListener : Java.Lang.Object, global::Android.Widget.TabHost.IOnTabChangeListener
 	{
-		private static int ANIMATION_TIME = 150;
+		public static int ANIMATION_TIME = 150;
 		private TabHost tabHost;
 		private View previousView;
 		private View currentView;
@@ -219,189 +356,4 @@ namespace Announcement.Android
 			return animation;
 		}
 	}
-
-	#region ListAdapters
-	class ListOneDataHolder
-	{
-		public string Title { get; set; }
-		public string Posts { get; set; }
-		public string Confirmed { get; set; }
-	}
-
-	class ListViewOneAdapter : BaseAdapter
-	{
-		LayoutInflater inflater;
-		List<ListOneDataHolder> list;
-
-		public ListViewOneAdapter(LayoutInflater inflater, List<ListOneDataHolder> list)
-		{
-			this.inflater = inflater;
-			this.list = list;
-		}
-
-		#region implemented abstract members of BaseAdapter
-		public override Java.Lang.Object GetItem (int position)
-		{
-			throw new System.NotImplementedException ();
-		}
-
-		public override long GetItemId (int position)
-		{
-			return position;
-		}
-
-		public override int Count {
-			get {
-				return list.Count;
-			}
-		}
-
-		public override View GetView (int position, View convertView, ViewGroup parent)
-		{
-			View view;
-			var data = list [position];
-			view = convertView;
-			ListViewOneItemHolder holder;
-			if (view == null) {
-				view = inflater.Inflate (Resource.Layout.list_one_item_view, null);
-				holder = new ListViewOneItemHolder ()
-				{
-					ScrollSection = (global::Announcement.Android.Controls.MagicHorizontalScrollView)view,
-					ItemTitle = view.FindViewById<TextView> (Resource.Id.itemTitle),
-					ItemPosts = view.FindViewById<TextView> (Resource.Id.itemPosts),
-					ItemConfirmed = view.FindViewById<TextView> (Resource.Id.itemConfirmed),
-					RowActionSection = view.FindViewById<RelativeLayout>(Resource.Id.rowActionSection)
-				};
-				holder.ScrollSection.Tag = holder;
-				holder.RowActionSection.Tag = holder;
-				holder.RowActionSection.Click += DeleteSectionClick;
-				view.Tag = holder;
-			} 
-			else 
-				holder = (ListViewOneItemHolder)view.Tag;
-
-			holder.ItemTitle.Text = data.Title;
-			holder.ItemPosts.Text = data.Posts;
-			holder.ItemConfirmed.Text = data.Confirmed;
-			holder.Position = position;
-
-			return view;
-		}
-		#endregion
-
-		private void DeleteSectionClick(object sender, EventArgs e)
-		{
-			var position = ((ListViewOneItemHolder)((View)sender).Tag).Position;
-		}
-
-		public void UpdateList(List<ListOneDataHolder> newList)
-		{
-			if (newList == null)
-				return;
-
-			list = newList;
-			NotifyDataSetChanged ();
-		}
-
-		class ListViewOneItemHolder : Java.Lang.Object, global::Announcement.Android.Controls.ICollectionItemHolder
-		{
-			public TextView ItemTitle { get; set; }
-			public TextView ItemPosts { get; set; }
-			public TextView ItemConfirmed { get; set; }
-			public global::Announcement.Android.Controls.MagicHorizontalScrollView ScrollSection;
-			public RelativeLayout RowActionSection;
-			public int Position { get ; set ; }
-		}
-	}
-
-	class ListTwoDataHolder
-	{
-		public string Title { get; set; }
-		public string Description { get; set; }
-	}
-
-	class ListViewTwoAdapter : BaseAdapter
-	{
-		LayoutInflater inflater;
-		List<ListTwoDataHolder> list;
-
-		public ListViewTwoAdapter(LayoutInflater inflater, List<ListTwoDataHolder> list)
-		{
-			this.inflater = inflater;
-			this.list = list;
-		}
-
-		#region implemented abstract members of BaseAdapter
-		public override Java.Lang.Object GetItem (int position)
-		{
-			throw new System.NotImplementedException ();
-		}
-
-		public override long GetItemId (int position)
-		{
-			return position;
-		}
-
-		public override int Count {
-			get {
-				return list.Count;
-			}
-		}
-
-		public override View GetView (int position, View convertView, ViewGroup parent)
-		{
-			View view;
-			var data = list [position];
-			view = convertView;
-			ListViewTwoItemHolder holder;
-			if (view == null) {
-				view = inflater.Inflate (Resource.Layout.list_two_item_view, null);
-				holder = new ListViewTwoItemHolder ()
-				{
-					ScrollSection = (global::Announcement.Android.Controls.MagicHorizontalScrollView)view,
-					ItemTitle = view.FindViewById<TextView> (Resource.Id.itemTitle),
-					ItemDescription = view.FindViewById<TextView> (Resource.Id.itemDescription),
-					RowActionSection = view.FindViewById<RelativeLayout>(Resource.Id.rowActionSection)
-				};
-
-				holder.ScrollSection.Tag = holder;
-				holder.RowActionSection.Tag = holder;
-				holder.RowActionSection.Click += DeleteSectionClick;
-				view.Tag = holder;
-			} 
-			else 
-				holder = (ListViewTwoItemHolder)view.Tag;
-
-			holder.ItemTitle.Text = data.Title;
-			holder.ItemDescription.Text = data.Description;
-			holder.Position = position;
-
-			return view;
-		}
-		#endregion
-
-		private void DeleteSectionClick(object sender, EventArgs e)
-		{
-			var position = ((ListViewTwoItemHolder)((View)sender).Tag).Position;
-		}
-
-		public void UpdateList(List<ListTwoDataHolder> newList)
-		{
-			if (newList == null)
-				return;
-			
-			list = newList;
-			NotifyDataSetChanged ();
-		}
-
-		class ListViewTwoItemHolder : Java.Lang.Object, global::Announcement.Android.Controls.ICollectionItemHolder
-		{
-			public TextView ItemTitle { get; set; }
-			public TextView ItemDescription { get; set; }
-			public global::Announcement.Android.Controls.MagicHorizontalScrollView ScrollSection;
-			public RelativeLayout RowActionSection;
-			public int Position { get ; set ; }
-		}
-  	}
-	#endregion
 }

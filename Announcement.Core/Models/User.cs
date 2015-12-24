@@ -10,6 +10,12 @@ namespace Announcement.Core
 
         [JsonProperty("username")]
         public String Username { get; set; }
+
+        [JsonProperty("reports")]
+        public int Reports { get; set; }
+
+        [JsonProperty("confirmedReports")]
+        public int ConfirmedReports { get; set; }
     }
 }
 

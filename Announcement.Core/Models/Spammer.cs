@@ -11,6 +11,9 @@ namespace Announcement.Core
         [JsonProperty("phoneNumber")]
         public String PhoneNumber { get; set; }
 
+        [JsonProperty("reportsCount")]
+        public int Complaints { get; set; }
+
         [JsonProperty("audioRecord")]
         public String AudioRecord { get; set; }
     }

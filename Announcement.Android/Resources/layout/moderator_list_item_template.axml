@@ -13,7 +13,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <FrameLayout
-                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="15dp"
@@ -30,7 +29,7 @@
                     android:textColor="@color/major_color" />
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="1px"
+                    android:layout_height="1dp"
                     android:layout_gravity="bottom"
                     android:background="@color/major_divider_color" />
             </FrameLayout>
@@ -43,7 +42,7 @@
             android:padding="15dp"
             android:layout_gravity="bottom"
             android:background="@drawable/button_selector"
-            android:src="@drawable/big_logo"
+            android:src="@drawable/delete_icon"
             android:layout_marginTop="15dp" />
     </Announcement.Android.Controls.MagicLinearLayoutForScroll>
 </Announcement.Android.Controls.MagicHorizontalScrollView>

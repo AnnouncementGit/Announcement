@@ -91,7 +91,7 @@
 
     <data name="list_one_confirmed_label" xml:space="preserve"><value>Confirmed:</value></data>
 
-    <data name="button_title_items" xml:space="preserve"><value>Items</value></data>
+    <data name="button_title_spammers" xml:space="preserve"><value>Spammers</value></data>
 
     <data name="button_title_users" xml:space="preserve"><value>Users</value></data>
 
@@ -121,6 +121,7 @@ Press Retry to retake photo.</value></data>
 
     <data name="label_enter_phone_number" xml:space="preserve"><value>Enter phone number</value></data>
 
+
     <data name="alert_incorrect_name_or_password" xml:space="preserve"><value>Incorrect Name or Password</value></data>
 
     <data name="alert_please_enter_name" xml:space="preserve"><value>Please enter Name. Minimum 5 characters.</value></data>
@@ -132,6 +133,15 @@ Press Retry to retake photo.</value></data>
     <data name="alert_please_enter_password" xml:space="preserve"><value>Please enter Password. Minimum 5 characters.</value></data>
 
     <data name="alert_password_too_short" xml:space="preserve"><value>Password is too short. Minimum 5 characters.</value></data>
+
+    <data name="title_phone_number_not_recognized" xml:space="preserve"><value>Phone number was not recognized.</value></data>
+
+    <data name="title_complaints" xml:space="preserve"><value>Complaints:</value></data>
+
+    <data name="title_reports" xml:space="preserve"><value>Reports:</value></data>
+
+    <data name="title_confirmeds" xml:space="preserve"><value>Confirmed:</value></data>
+
 
 
 </root>

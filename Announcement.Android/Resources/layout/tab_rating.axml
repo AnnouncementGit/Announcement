@@ -4,7 +4,8 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <FrameLayout
+    <ViewSwitcher
+        android:id="@+id/RatingsViewSwitcher"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
@@ -12,19 +13,17 @@
             android:id="@+id/spammersListView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone"
             android:dividerHeight="0dp"
-            android:divider="@android:color/transparent"
-            android:listSelector="@drawable/list_item_selector" />
+            android:divider="@null"
+            android:listSelector="@android:color/transparent" />
         <ListView
             android:id="@+id/usersListView"
             android:layout_width="match_parent"
-            android:visibility="gone"
             android:layout_height="match_parent"
             android:dividerHeight="0dp"
-            android:divider="@android:color/transparent"
-            android:listSelector="@drawable/list_item_selector" />
-    </FrameLayout>
+            android:divider="@null"
+            android:listSelector="@android:color/transparent" />
+    </ViewSwitcher>
     <RadioGroup
         android:id="@+id/ratingRadioGroup"
         android:layout_width="match_parent"
@@ -32,16 +31,16 @@
         android:orientation="horizontal">
         <Announcement.Android.Controls.RadioButton
             style="@style/text_view_normal_font_style"
-            android:id="@+id/btnItems"
+            android:id="@+id/btnSpammers"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:textSize="22sp"
+            android:textSize="32sp"
             android:gravity="center"
             android:textColor="@drawable/rating_radio_button_text_color"
             android:background="@drawable/rating_radio_button_selector"
             android:button="@android:color/transparent"
-            local:localizationKey="button_title_items" />
+            local:localizationKey="button_title_spammers" />
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent" />
@@ -51,7 +50,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:textSize="22sp"
+            android:textSize="32sp"
             android:gravity="center"
             android:textColor="@drawable/rating_radio_button_text_color"
             android:background="@drawable/rating_radio_button_selector"

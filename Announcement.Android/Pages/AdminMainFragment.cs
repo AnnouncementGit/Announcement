@@ -6,6 +6,7 @@ using Android.Widget;
 using System.Collections.Generic;
 using System.Linq;
 using System;
+using Android.Views.Animations;
 
 namespace Announcement.Android
 {
@@ -140,12 +141,18 @@ namespace Announcement.Android
                 case RATING_TAB_TAG:
                     ratingTabView = tabHostContentFactory.RatingTabView;
 
+                    ratingsViewSwitcher = ratingTabView.FindViewById<ViewSwitcher>(Resource.Id.RatingsViewSwitcher);
+
+                    ratingsViewSwitcher.SetInAnimation(Activity, Resource.Animation.fade_in_animation);
+
+                    ratingsViewSwitcher.SetOutAnimation(Activity, Resource.Animation.fade_out_animation);
+
                     InitializeSpamers();
                     InitializeUsers();
 
                     ratingRadioButtons = ratingTabView.FindViewById<RadioGroup>(Resource.Id.ratingRadioGroup);
                     ratingRadioButtons.CheckedChange += RatingRadioButtonsOnCheckedChange;
-                    ratingRadioButtons.Check(Resource.Id.btnItems);
+                    ratingRadioButtons.Check(Resource.Id.btnSpammers);
                     break;
             }
         }
@@ -156,54 +163,56 @@ namespace Announcement.Android
 
             moderatorsList.Adapter = new ModeratorsAdapter(Activity, ViewModel.Moderators);
 
-            moderatorsList.ItemClick += ModeratorsTabListViewOnItemClick;
+           // moderatorsList.ItemClick += ModeratorsTabListViewOnItemClick;
         }
 
         protected void InitializeValidation()
 		{
-            var source = ViewModel.Reports.Select(i => new ListTwoDataHolder { Title = i.PhoneNumber, Description = i.Id }).ToList();
-
             var validationList = tabHostContentFactory.ValidationListView;
 
-            validationList.Adapter = new ListViewTwoAdapter (Activity.LayoutInflater, source);
+            validationList.Adapter = new ReportsAdapter(Activity, ViewModel.Reports);
 
             validationList.ItemClick += ValidationListOnItemClick;
 		}
             
         protected void InitializeSpamers()
 		{
-            var	source = ViewModel.RatingTopSpammers.Select(i => new ListTwoDataHolder { Title = i.PhoneNumber, Description = i.Id }).ToList();
-
             ratingSpammersTabList = ratingTabView.FindViewById<ListView> (Resource.Id.spammersListView);
 
-            ratingSpammersTabList.Adapter = new ListViewTwoAdapter (Activity.LayoutInflater, source);
+            ratingSpammersTabList.Adapter = new SpammersAdapter (Activity, ViewModel.RatingTopSpammers);
 
-			ratingSpammersTabList.ItemClick += RatingSpammersTabListViewOnItemClick;
+			//ratingSpammersTabList.ItemClick += RatingSpammersTabListViewOnItemClick;
 		}
 
         protected void InitializeUsers()
 		{
-            var source = ViewModel.RatingTopSpammers.Select(i => new ListOneDataHolder { Title = i.PhoneNumber, Posts = "10234", Confirmed = "8566" }).ToList();
-
 			ratingUsersTabList = ratingTabView.FindViewById<ListView> (Resource.Id.usersListView);
 
-            ratingUsersTabList.Adapter = new ListViewOneAdapter (Activity.LayoutInflater, source);;
+            ratingUsersTabList.Adapter = new UsersAdapter (Activity, ViewModel.RatingTopUsers);;
 
-			ratingUsersTabList.ItemClick += RatingUsersTabListViewOnItemClick;
+			//ratingUsersTabList.ItemClick += RatingUsersTabListViewOnItemClick;
 		}
 
         protected void RatingRadioButtonsOnCheckedChange (object sender, RadioGroup.CheckedChangeEventArgs e)
         {
             switch (e.CheckedId)
             {
-                case (Resource.Id.btnItems):
-                    ratingUsersTabList.Visibility = ViewStates.Gone;
-                    ratingSpammersTabList.Visibility = ViewStates.Visible;
+                case (Resource.Id.btnSpammers):
+
+                    if (ratingsViewSwitcher.CurrentView != ratingSpammersTabList)
+                    {
+                        ratingsViewSwitcher.ShowPrevious();
+                    }
+
                     break;
 
                 case (Resource.Id.btnUsers):
-                    ratingSpammersTabList.Visibility = ViewStates.Gone;
-                    ratingUsersTabList.Visibility = ViewStates.Visible;
+
+                    if (ratingsViewSwitcher.CurrentView != ratingUsersTabList)
+                    {
+                        ratingsViewSwitcher.ShowNext();
+                    }
+
                     break;
             }
         }
@@ -241,6 +250,8 @@ namespace Announcement.Android
         private TabHost tabHost;
 
         private AnimatedTabHostListener tabChangeListener;
+
+        private ViewSwitcher ratingsViewSwitcher;
 
         private const string MODERATORS_TAB_TAG = "moderatorsTab";
 
