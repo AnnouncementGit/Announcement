@@ -10,39 +10,62 @@ using Android.Views;
 using Android.Widget;
 using Announcement.Core;
 using Android.Support.V4.App;
+using Android.Views.InputMethods;
+using Android.App;
 
 namespace Announcement.Android
 {
-	public class CreateModeratorFragment : global::Android.Support.V4.App.Fragment
+    public class CreateModeratorFragment : BaseFragment
 	{
-		private CreateModeratorViewModel viewmodel {get { return CreateModeratorViewModel.Instance; }} 
-		TextView LoginEditText;
-		TextView PasswordEditText;
-		Button btnAdd;
+        private CreateModeratorViewModel ViewModel 
+        { 
+            get 
+            { 
+                return CreateModeratorViewModel.Instance; 
+            }
+        }
+          
+
 		public override View OnCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 		{
 			var view = inflater.Inflate (Resource.Layout.add_new_moderator_layout, null);
 
 			LoginEditText = view.FindViewById<TextView> (Resource.Id.LoginEditText);
+
 			PasswordEditText = view.FindViewById<TextView> (Resource.Id.PasswordEditText);
+
 			btnAdd = view.FindViewById<Button> (Resource.Id.btnAdd);
+
 			btnAdd.Click += BtnAddOnClick;
+
+            view.SetOnTouchListener(this);
 
 			return view;
 		}
 
-		void BtnAddOnClick (object sender, EventArgs e)
+        protected void BtnAddOnClick (object sender, EventArgs e)
 		{
-			if(!string.IsNullOrWhiteSpace(LoginEditText.Text) && !string.IsNullOrWhiteSpace(PasswordEditText.Text))
-				viewmodel.PushModerator (LoginEditText.Text, PasswordEditText.Text, AddModeratorCallback);
-			else
-				AlertModule.ShowInformation("Please fill all data.", null);
+            if (!string.IsNullOrWhiteSpace(LoginEditText.Text) && !string.IsNullOrWhiteSpace(PasswordEditText.Text))
+            {
+                ViewModel.PushModerator(LoginEditText.Text, PasswordEditText.Text, AddModeratorCallback);
+            }
+            else
+            {
+                AlertModule.ShowInformation("Please fill all data.", null);
+            }
 		}
 
-		void AddModeratorCallback()
+		protected void AddModeratorCallback()
 		{
 			
 		}
+            
+
+        private TextView LoginEditText;
+
+        private TextView PasswordEditText;
+
+        private Button btnAdd;
 	}
 }
 

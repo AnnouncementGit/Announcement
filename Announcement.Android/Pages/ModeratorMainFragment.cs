@@ -7,6 +7,8 @@ using Android.Graphics;
 using System.Collections.Generic;
 using Android.Views.Animations;
 using System;
+using Android.Graphics.Drawables;
+using Android.Animation;
 
 namespace Announcement.Android
 {
@@ -90,8 +92,7 @@ namespace Announcement.Android
 			
         }
     }
-
-	#region TabHostFactory
+        
 	class TabHostContentFactory : Java.Lang.Object, TabHost.ITabContentFactory
 	{
 		private LayoutInflater inflater;
@@ -108,10 +109,11 @@ namespace Announcement.Android
 		public View CreateTabContent (string tag)
 		{
 			switch (tag) {
-			case "moderatorsTab":
-				ModeratorsListView = new ListView (MainActivityInstance.Current){ LayoutParameters = new ViewGroup.LayoutParams (ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.MatchParent) };
-				ModeratorsListView.DividerHeight = 0;
-				ModeratorsListView.SetSelector (Resource.Drawable.list_item_selector);
+                case "moderatorsTab":
+                    ModeratorsListView = new ListView(MainActivityInstance.Current){ LayoutParameters = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.MatchParent) };
+                    ModeratorsListView.DividerHeight = 0;
+                    ModeratorsListView.Divider = null;
+                    ModeratorsListView.Selector = new ColorDrawable(Color.Transparent);
 				if (contentCreatedAction != null)
 					contentCreatedAction.Invoke (tag);
 				return ModeratorsListView;
@@ -152,65 +154,71 @@ namespace Announcement.Android
 		public AnimatedTabHostListener(TabHost tabHost)
 		{
 			this.tabHost = tabHost;
+
 			this.previousView = tabHost.CurrentView;
 
-			tabHost.TabChanged += (sender, e) => {OnTabChanged(e.TabId);};
+            tabHost.TabChanged += (sender, e) => OnTabChanged(e.TabId);
 		}
 
 		public void OnTabChanged(string tabId)
 		{
 			currentView = tabHost.CurrentView;
+
 			if (tabHost.CurrentTab > currentTab)
 			{
 				previousView.Animation = (outToLeftAnimation());
+
 				currentView.Animation = (inFromRightAnimation());
 			}
 			else
 			{
 				previousView.Animation = (outToRightAnimation());
+
 				currentView.Animation = (inFromLeftAnimation());
 			}
-			previousView = currentView;
-			currentTab = tabHost.CurrentTab;
 
+			previousView = currentView;
+
+			currentTab = tabHost.CurrentTab;
 		}
 
 		private Animation inFromRightAnimation()
 		{
-			Animation inFromRight = new TranslateAnimation(Dimension.RelativeToParent, 1.0f, Dimension.RelativeToParent, 0.0f,
-				Dimension.RelativeToParent, 0.0f, Dimension.RelativeToParent, 0.0f);
-			return setProperties(inFromRight);
+            var animation = new TranslateAnimation(Dimension.RelativeToParent, 1.0f, Dimension.RelativeToParent, 0.0f, Dimension.RelativeToParent, 0.0f, Dimension.RelativeToParent, 0.0f);
+
+            return setProperties(animation);
 		}
 
 		private Animation outToRightAnimation()
 		{
-			Animation outToRight = new TranslateAnimation(Dimension.RelativeToParent, 0.0f, Dimension.RelativeToParent, 1.0f,
-				Dimension.RelativeToParent, 0.0f, Dimension.RelativeToParent, 0.0f);
-			return setProperties(outToRight);
+            var animation = new TranslateAnimation(Dimension.RelativeToParent, 0.0f, Dimension.RelativeToParent, 1.0f, Dimension.RelativeToParent, 0.0f, Dimension.RelativeToParent, 0.0f);
+
+            return setProperties(animation);
 		}
 
 		private Animation inFromLeftAnimation()
 		{
-			Animation inFromLeft = new TranslateAnimation(Dimension.RelativeToParent, -1.0f, Dimension.RelativeToParent, 0.0f,
-				Dimension.RelativeToParent, 0.0f, Dimension.RelativeToParent, 0.0f);
-			return setProperties(inFromLeft);
-		}
+			var animation = new TranslateAnimation(Dimension.RelativeToParent, -1.0f, Dimension.RelativeToParent, 0.0f, Dimension.RelativeToParent, 0.0f, Dimension.RelativeToParent, 0.0f);
 
+            return setProperties(animation);
+		}
+            
 		private Animation outToLeftAnimation()
 		{
-			Animation outtoLeft = new TranslateAnimation(Dimension.RelativeToParent, 0.0f, Dimension.RelativeToParent, -1.0f,
-				Dimension.RelativeToParent, 0.0f, Dimension.RelativeToParent, 0.0f);
-			return setProperties(outtoLeft);
+            var animation = new TranslateAnimation(Dimension.RelativeToParent, 0.0f, Dimension.RelativeToParent, -1.0f, Dimension.RelativeToParent, 0.0f, Dimension.RelativeToParent, 0.0f);
+
+            return setProperties(animation);
 		}
 
 		private Animation setProperties(Animation animation)
 		{
 			animation.Duration = (ANIMATION_TIME);
+
 			animation.Interpolator = (new AccelerateInterpolator());
+
 			return animation;
 		}
 	}
-	#endregion
 
 	#region ListAdapters
 	class ListOneDataHolder

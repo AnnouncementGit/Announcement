@@ -65,9 +65,11 @@
 
     <data name="button_title_moderator" xml:space="preserve"><value>Are you moderator?</value></data>
 
-    <data name="button_title_moderators" xml:space="preserve"><value>Moderators</value></data>
+    <data name="tab_title_moderators" xml:space="preserve"><value>Moderators</value></data>
 
-    <data name="button_title_validations" xml:space="preserve"><value>Validations</value></data>
+    <data name="tab_title_validation" xml:space="preserve"><value>Validation</value></data>
+
+    <data name="tab_title_ratings" xml:space="preserve"><value>Ratings</value></data>
 
     <data name="button_title_login" xml:space="preserve"><value>Login</value></data>
 

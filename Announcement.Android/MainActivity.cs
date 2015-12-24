@@ -5,18 +5,20 @@ using Android.Content.PM;
 using Android.Support.V4.App;
 using LocationProvider = Announcement.Android.Services.Location.LocationProvider;
 using Android.Content;
+using Android.Views;
 
 namespace Announcement.Android
 {
     [Activity(ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.ScreenSize, Label = "Announcement", MainLauncher = true, Icon = "@drawable/icon", Theme="@style/splash_theme")]
-	public class MainActivity : FragmentActivity, ILocationListener
+    public class MainActivity : FragmentActivity, ILocationListener
 	{
 		public Location lastKnownLocation;
+
 		public LocationProvider locationProvider;
 
         protected override void OnCreate(Bundle bundle)
         {
-            FontsManager.Load(); //temp
+            FontsManager.Load();
             
             base.OnCreate(bundle);
 
@@ -58,21 +60,25 @@ namespace Announcement.Android
 		}
 
 		protected override void OnResume ()
-		{
-			base.OnResume ();
-			if(locationProvider!=null)
-				locationProvider.OnResume ();
-		}
+        {
+            base.OnResume();
+
+            if (locationProvider != null)
+            {
+                locationProvider.OnResume();
+            }
+        }
 
 		protected override void OnPause ()
-		{
-			base.OnPause ();
-			if(locationProvider!=null)
-				locationProvider.OnPause ();
-		}
+        {
+            base.OnPause();
 
-		#region ILocationListener implementation
-
+            if (locationProvider != null)
+            {
+                locationProvider.OnPause();
+            }
+        }
+            
 		public void OnLocationChanged (Location location)
 		{
 			if (location == null)
@@ -82,36 +88,53 @@ namespace Announcement.Android
 		}
 
 		public void OnProviderDisabled (string provider)
-		{
-			if(locationProvider!=null)
-				locationProvider.OnResume ();
-		}
+        {
+            if (locationProvider != null)
+            {
+                locationProvider.OnResume();
+            }
+        }
 
 		public void OnProviderEnabled (string provider)
 		{
-			if(locationProvider!=null)
-				locationProvider.OnResume ();
+            if (locationProvider != null)
+            {
+                locationProvider.OnResume();
+            }
 		}
 
 		public void OnStatusChanged (string provider, Availability status, Bundle extras)
 		{
+            
 		}
-
-		#endregion
     }
 
-	public class MainActivityInstance {
-		public static MainActivity Current{
-			get { return current; }
-			set{ if (current == value)
-					return;
+	public class MainActivityInstance 
+    {
+		public static MainActivity Current
+        {
+			get 
+            { 
+                return current; 
+            }
+			set
+            { 
+                if (current == value)
+                {
+                    return;
+                }
 			
-				if (value == null)
-					Previous = current;
+                if (value == null)
+                {
+                    Previous = current;
+                }
 			
-				current = value;}
+				current = value;
+            }
 		}
+
 		public static MainActivity Previous { get; set;}
+
 		private static MainActivity current;
 	}
 }

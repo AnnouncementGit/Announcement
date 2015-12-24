@@ -10,7 +10,7 @@ using Android.Support.V4.View;
 
 namespace Announcement.Android
 {
-	public class ReportValidationFragment : Fragment
+	public class ReportValidationFragment : BaseFragment
 	{
 		private ReportValidationViewModel viewModel { get { return ReportValidationViewModel.Instance; } }
 		private ViewPager reportViewPager;
@@ -26,6 +26,10 @@ namespace Announcement.Android
 				reportViewPager.LayoutParameters = new LinearLayout.LayoutParams (LinearLayout.LayoutParams.WrapContent, MainActivityInstance.Current.Resources.DisplayMetrics.WidthPixels);
 			else
 				reportViewPager.LayoutParameters = new LinearLayout.LayoutParams (LinearLayout.LayoutParams.WrapContent, MainActivityInstance.Current.Resources.DisplayMetrics.HeightPixels);
+
+	
+            reportViewPager.SetOnTouchListener(this);
+
 			reportViewPager.PageScrolled += ReportViewPagerOnPageScrolled;
 			reportViewPagerAdapter = new CustomViewPagerAdapter (MainActivityInstance.Current.SupportFragmentManager, viewModel.Photos);
 			reportViewPager.Adapter = reportViewPagerAdapter;

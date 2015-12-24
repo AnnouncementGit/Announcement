@@ -5,6 +5,7 @@ using Announcement.Core;
 using Android.Widget;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 namespace Announcement.Android
 {
@@ -17,198 +18,235 @@ namespace Announcement.Android
 				return AdminMainViewModel.Instance; 
             }
 		}
-
-		TabHostContentFactory tabHostContentFactory;
-		View ratingTabView;
-		LayoutInflater Inflater;
-		RadioGroup ratingRadioButtons;
-		ListView ratingUsersTabList;
-		ListView ratingSpammersTabList;
-
+            
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
-			//ViewModel.Initialize ();
-			Inflater = inflater;
             var view = inflater.Inflate(Resource.Layout.admin_main_layout, null);
 
-			var tabHost = view.FindViewById<TabHost> (Android.Resource.Id.tabHost);
+
+			tabHost = view.FindViewById<TabHost> (Android.Resource.Id.tabHost);
+
 			tabHost.Setup ();
 
-			TabHost.TabSpec tabSpec;
 			tabHostContentFactory = new TabHostContentFactory (inflater);
+
 			tabHostContentFactory.SetContentCreatedListener(TabHostContentFactoryOnContentCreated);
 
-			tabSpec = tabHost.NewTabSpec ("moderatorsTab");
-			tabSpec.SetContent (tabHostContentFactory);
-			var tab0view = inflater.Inflate (Resource.Layout.tab_indicator, null);
-			tab0view.FindViewById<TextView> (Resource.Id.indicatorTextView).Text = "Moderators";
-			tabSpec.SetIndicator (tab0view);
-			tabHost.AddTab (tabSpec);
+            tabHost.TabChanged += TabHost_TabChanged;
 
-			tabSpec = tabHost.NewTabSpec ("validationTab");
-			tabSpec.SetContent (tabHostContentFactory);
-			var tab1view = inflater.Inflate (Resource.Layout.tab_indicator, null);
-			tab1view.FindViewById<TextView> (Resource.Id.indicatorTextView).Text = "Validation";
-			tabSpec.SetIndicator (tab1view);
-			tabHost.AddTab (tabSpec);
 
-			tabSpec = tabHost.NewTabSpec ("ratingTab");
-			tabSpec.SetContent (tabHostContentFactory);
-			var tab2view = inflater.Inflate (Resource.Layout.tab_indicator, null);
-			tab2view.FindViewById<TextView> (Resource.Id.indicatorTextView).Text = "Rating";
-			tabSpec.SetIndicator(tab2view);
-			tabHost.AddTab(tabSpec);
+            AddTab(LocalizationModule.Translate("tab_title_moderators"), MODERATORS_TAB_TAG);
 
-			var tabChangeListener = new AnimatedTabHostListener (tabHost);
+            AddTab(LocalizationModule.Translate("tab_title_validation"), VALIDATION_TAB_TAG);
+
+            AddTab(LocalizationModule.Translate("tab_title_ratings"), RATING_TAB_TAG);
+
+
+			tabChangeListener = new AnimatedTabHostListener (tabHost);
 
             return view;
 		}
+              
+        protected void AddTab(string title, string tag)
+        {
+            var tabSpec = tabHost.NewTabSpec (tag);
 
-		void OnMenuItemClick (object sender, PopupMenu.MenuItemClickEventArgs e)
+            tabSpec.SetContent (tabHostContentFactory);
+
+            var view = Activity.LayoutInflater.Inflate (Resource.Layout.tab_indicator, null);
+
+            view.FindViewById<TextView> (Resource.Id.indicatorTextView).Text = title;
+
+            tabSpec.SetIndicator(view);
+
+            tabHost.AddTab(tabSpec); 
+        }
+
+        protected void TabHost_TabChanged (object sender, TabHost.TabChangeEventArgs e)
+        {
+            var view = tabHostContentFactory.ModeratorsListView;
+
+            if (view != null)
+            {
+                view.ScrollStateChanged -= View_ScrollStateChanged;
+
+                view.ScrollStateChanged += View_ScrollStateChanged;
+
+                view.VerticalScrollBarEnabled = false;
+            }
+
+            view = tabHostContentFactory.ValidationListView;
+
+            if (view != null)
+            {
+                view.ScrollStateChanged -= View_ScrollStateChanged;
+
+                view.ScrollStateChanged += View_ScrollStateChanged;
+                
+                view.VerticalScrollBarEnabled = false;
+            }
+
+            view = ratingUsersTabList;
+
+            if (view != null)
+            {
+                view.ScrollStateChanged -= View_ScrollStateChanged;
+
+                view.ScrollStateChanged += View_ScrollStateChanged;
+                
+                view.VerticalScrollBarEnabled = false;
+            }
+
+            view = ratingSpammersTabList;
+
+            if (view != null)
+            {
+                view.ScrollStateChanged -= View_ScrollStateChanged;
+
+                view.ScrollStateChanged += View_ScrollStateChanged;
+                
+                view.VerticalScrollBarEnabled = false;
+            }
+        }
+
+        protected void View_ScrollStateChanged (object sender, AbsListView.ScrollStateChangedEventArgs e)
+        {
+            var view = sender as View;
+            
+            switch (e.ScrollState)
+            {
+                case ScrollState.TouchScroll:
+                    
+                    if (!view.VerticalScrollBarEnabled)
+                    {
+                        view.VerticalScrollBarEnabled = true;
+                    }
+                    break;
+            }
+        }
+                 
+        protected void TabHostContentFactoryOnContentCreated (string tag)
+        {
+            switch (tag)
+            {
+                case MODERATORS_TAB_TAG:
+                    InitializeModerators();
+                    break;
+
+                case VALIDATION_TAB_TAG:
+                    InitializeValidation();
+                    break;
+
+                case RATING_TAB_TAG:
+                    ratingTabView = tabHostContentFactory.RatingTabView;
+
+                    InitializeSpamers();
+                    InitializeUsers();
+
+                    ratingRadioButtons = ratingTabView.FindViewById<RadioGroup>(Resource.Id.ratingRadioGroup);
+                    ratingRadioButtons.CheckedChange += RatingRadioButtonsOnCheckedChange;
+                    ratingRadioButtons.Check(Resource.Id.btnItems);
+                    break;
+            }
+        }
+
+        protected void InitializeModerators()
+        {
+            var moderatorsList = tabHostContentFactory.ModeratorsListView;
+
+            moderatorsList.Adapter = new ModeratorsAdapter(Activity, ViewModel.Moderators);
+
+            moderatorsList.ItemClick += ModeratorsTabListViewOnItemClick;
+        }
+
+        protected void InitializeValidation()
 		{
-			switch (e.Item.ItemId) {
+            var source = ViewModel.Reports.Select(i => new ListTwoDataHolder { Title = i.PhoneNumber, Description = i.Id }).ToList();
 
-			case 0:
-				NavigationManager.Forward(typeof(CreateModeratorFragment));
-				break;
-			case 1:
-				NavigationManager.Forward (typeof(LoginFragment));
-				break;
-			}
+            var validationList = tabHostContentFactory.ValidationListView;
+
+            validationList.Adapter = new ListViewTwoAdapter (Activity.LayoutInflater, source);
+
+            validationList.ItemClick += ValidationListOnItemClick;
 		}
-
-		void TabHostContentFactoryOnContentCreated (string tag)
+            
+        protected void InitializeSpamers()
 		{
-    		switch (tag) {
-			case "moderatorsTab":
-				CreateModeratorsList ();
-				break;
+            var	source = ViewModel.RatingTopSpammers.Select(i => new ListTwoDataHolder { Title = i.PhoneNumber, Description = i.Id }).ToList();
 
-			case "ratingTab":
-				ratingTabView = tabHostContentFactory.RatingTabView;
+            ratingSpammersTabList = ratingTabView.FindViewById<ListView> (Resource.Id.spammersListView);
 
-				CreateSpamersList ();
-				CreateUsersList ();
+            ratingSpammersTabList.Adapter = new ListViewTwoAdapter (Activity.LayoutInflater, source);
 
-				ratingRadioButtons = ratingTabView.FindViewById<RadioGroup> (Resource.Id.ratingRadioGroup);
-				ratingRadioButtons.CheckedChange += RatingRadioButtonsOnCheckedChange;
-				ratingRadioButtons.Check (Resource.Id.btnItems);
-
-				break;
-
-			case "validationTab":
-				CreateValidationList();
-				break;
-			}
-		}
-
-		void CreateValidationList()
-		{
-			var validationList = tabHostContentFactory.ValidationListView;
-
-			List<ListTwoDataHolder> valList;
-			if (ViewModel.Moderators != null)
-				valList = ViewModel.Reports.Select (i => new ListTwoDataHolder () {
-					Title = i.PhoneNumber,
-					Description = i.Id
-				}).ToList ();
-			else {
-				valList = new List<ListTwoDataHolder> ();
-			}
-
-			var validationListAdapter = new ListViewTwoAdapter (Inflater, valList);
-			validationList.Adapter = validationListAdapter;
-			validationList.ItemClick += ValidationListOnItemClick;
-		}
-
-		void CreateModeratorsList()
-		{
-			var moderatorsList = tabHostContentFactory.ModeratorsListView;
-			List<ListTwoDataHolder> modList;
-			if (ViewModel.Moderators != null)
-				modList = ViewModel.Moderators.Select (i => new ListTwoDataHolder () {
-					Title = i.Username,
-					Description = i.Id
-				}).ToList ();
-			else
-				modList = new List<ListTwoDataHolder> ();
-			
-			var moderatorsTabListAdapter = new ListViewTwoAdapter (Inflater, modList);
-			moderatorsList.Adapter = moderatorsTabListAdapter;
-			moderatorsList.ItemClick += ModeratorsTabListViewOnItemClick;
-		}
-
-		void CreateSpamersList()
-		{
-			ratingSpammersTabList = ratingTabView.FindViewById<ListView> (Resource.Id.spammersListView);
-			List<ListTwoDataHolder> spammersList;
-			if (ViewModel.RatingTopSpammers != null)
-				spammersList = ViewModel.RatingTopSpammers.Select (i => new ListTwoDataHolder () {
-					Title = i.PhoneNumber,
-					Description = i.Id
-				}).ToList ();
-			else 
-				spammersList = new List<ListTwoDataHolder> ();
-
-			var ratingSpammersTabListAdapter = new ListViewTwoAdapter (Inflater, spammersList);
-			ratingSpammersTabList.Adapter = ratingSpammersTabListAdapter;
 			ratingSpammersTabList.ItemClick += RatingSpammersTabListViewOnItemClick;
 		}
 
-		void CreateUsersList()
+        protected void InitializeUsers()
 		{
+            var source = ViewModel.RatingTopSpammers.Select(i => new ListOneDataHolder { Title = i.PhoneNumber, Posts = "10234", Confirmed = "8566" }).ToList();
+
 			ratingUsersTabList = ratingTabView.FindViewById<ListView> (Resource.Id.usersListView);
-			List<ListOneDataHolder> usersList;
-			if (ViewModel.RatingTopUsers != null)
-				usersList = ViewModel.RatingTopSpammers.Select (i => new ListOneDataHolder () {
-					Title = i.PhoneNumber,
-					Posts = "10234",
-					Confirmed = "8566"
-				}).ToList ();
-			else 
-				usersList = new List<ListOneDataHolder> ();
-			
-			var ratingUsersTabListAdapter = new ListViewOneAdapter (Inflater, usersList);
-			ratingUsersTabList.Adapter = ratingUsersTabListAdapter;
+
+            ratingUsersTabList.Adapter = new ListViewOneAdapter (Activity.LayoutInflater, source);;
+
 			ratingUsersTabList.ItemClick += RatingUsersTabListViewOnItemClick;
 		}
 
-		void RatingRadioButtonsOnCheckedChange (object sender, RadioGroup.CheckedChangeEventArgs e)
-		{
-			switch (e.CheckedId) 
-			{
-			case (Resource.Id.btnItems):
-				ratingUsersTabList.Visibility = ViewStates.Gone;
-				ratingSpammersTabList.Visibility = ViewStates.Visible;
-				break;
+        protected void RatingRadioButtonsOnCheckedChange (object sender, RadioGroup.CheckedChangeEventArgs e)
+        {
+            switch (e.CheckedId)
+            {
+                case (Resource.Id.btnItems):
+                    ratingUsersTabList.Visibility = ViewStates.Gone;
+                    ratingSpammersTabList.Visibility = ViewStates.Visible;
+                    break;
 
-			case (Resource.Id.btnUsers):
-				ratingSpammersTabList.Visibility = ViewStates.Gone;
-				ratingUsersTabList.Visibility = ViewStates.Visible;
-				break;
-			}
+                case (Resource.Id.btnUsers):
+                    ratingSpammersTabList.Visibility = ViewStates.Gone;
+                    ratingUsersTabList.Visibility = ViewStates.Visible;
+                    break;
+            }
+        }
+
+        protected void ModeratorsTabListViewOnItemClick (object sender, AdapterView.ItemClickEventArgs e)
+		{
+            
 		}
 
-		void ModeratorsTabListViewOnItemClick (object sender, AdapterView.ItemClickEventArgs e)
-		{
-		}
-
-		void RatingSpammersTabListViewOnItemClick (object sender, AdapterView.ItemClickEventArgs e)
-		{
-
-		}
-
-		void RatingUsersTabListViewOnItemClick (object sender, AdapterView.ItemClickEventArgs e)
+        protected void RatingSpammersTabListViewOnItemClick (object sender, AdapterView.ItemClickEventArgs e)
 		{
 
 		}
 
-		void ValidationListOnItemClick (object sender, AdapterView.ItemClickEventArgs e)
+        protected void RatingUsersTabListViewOnItemClick (object sender, AdapterView.ItemClickEventArgs e)
 		{
-			ViewModel.InitializeReportValidation (ViewModel.Reports [e.Position], () => {
-				NavigationManager.Forward (typeof(ReportValidationFragment));
-			});
+
 		}
+
+        protected void ValidationListOnItemClick (object sender, AdapterView.ItemClickEventArgs e)
+		{
+            ViewModel.InitializeReportValidation(ViewModel.Reports[e.Position], () => NavigationManager.Forward(typeof(ReportValidationFragment)));
+		}
+
+        private TabHostContentFactory tabHostContentFactory;
+
+        private View ratingTabView;
+
+        private RadioGroup ratingRadioButtons;
+
+        private ListView ratingUsersTabList;
+
+        private ListView ratingSpammersTabList;
+
+        private TabHost tabHost;
+
+        private AnimatedTabHostListener tabChangeListener;
+
+        private const string MODERATORS_TAB_TAG = "moderatorsTab";
+
+        private const string VALIDATION_TAB_TAG = "validationTab";
+
+        private const string RATING_TAB_TAG = "ratingTab";
     }
 }
 

@@ -144,6 +144,10 @@
     <Compile Include="Controls\MagicLinearLayoutForScroll.cs" />
     <Compile Include="Controls\AnimatedLinearLayout.cs" />
     <Compile Include="Controls\ScaleImageView.cs" />
+    <Compile Include="Controls\SquareViewPager.cs" />
+    <Compile Include="Pages\BaseFragment.cs" />
+    <Compile Include="Adapters\ModeratorsAdapter.cs" />
+    <Compile Include="Adapters\BaseAdapter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -262,6 +266,7 @@
     <AndroidResource Include="Resources\drawable-xhdpi\delete_icon.png" />
     <AndroidResource Include="Resources\drawable-mdpi\delete_icon.png" />
     <AndroidResource Include="Resources\drawable-hdpi\delete_icon.png" />
+    <AndroidResource Include="Resources\layout\moderator_list_item_template.axml" />
   </ItemGroup>
   <Import Project="..\Announcement.Core\Announcement.Core.projitems" Label="Shared" Condition="Exists('..\Announcement.Core\Announcement.Core.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
@@ -274,6 +279,7 @@
     <Folder Include="Managers\" />
     <Folder Include="Headers\" />
     <Folder Include="Assets\fonts\" />
+    <Folder Include="Adapters\" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="xamarin.auth">

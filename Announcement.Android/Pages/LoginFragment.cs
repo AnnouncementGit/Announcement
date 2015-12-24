@@ -1,12 +1,19 @@
-﻿using Android.OS;
+﻿using System;
+using Android.Util;
+using Android.Runtime;
+using Android.Content;
+using Android.Graphics;
 using Android.Views;
+using Android.Content.Res;
+using Android.Views.InputMethods;
+using Android.App;
 using Android.Widget;
 using Announcement.Core;
-using Android.Support.V4.App;
+using Android.OS;
 
 namespace Announcement.Android
 {
-    public class LoginFragment : Fragment
+    public class LoginFragment : BaseFragment
     {
         private LoginViewModel ViewModel 
         { 
@@ -68,6 +75,8 @@ namespace Announcement.Android
             };
 
 			NavigationManager.ShowHeader (false);
+
+            view.SetOnTouchListener(this);
 
             return view;
         }
