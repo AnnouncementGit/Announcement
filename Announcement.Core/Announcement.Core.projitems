@@ -38,6 +38,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Models\SingleContinueReport.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\MenuViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Modules\DispatcherModule.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Modules\ValidationModule.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Language.resx">

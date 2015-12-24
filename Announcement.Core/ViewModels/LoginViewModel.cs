@@ -38,6 +38,9 @@ namespace Announcement.Core
             
         public async void LoginForAdminStuff(string username, string password, Action callback)
         {
+			if (!EnteredDataValid (username, password))
+				return;
+			
             ProgressModule.Message(LocalizationModule.Translate("progress_authentication"));
 
             var viewModel = AdminMainViewModel.Instance;
@@ -83,6 +86,23 @@ namespace Announcement.Core
                 }
             }
         }
+
+		private bool EnteredDataValid(string username, string password)
+		{
+			if (string.IsNullOrWhiteSpace (username) || username.Length < 5 || !ValidationModule.ValidateUserName(username)) 
+			{
+				AlertModule.ShowInformation (LocalizationModule.Translate("alert_incorrect_name_or_password"));
+				return false;
+			}
+
+			if (string.IsNullOrWhiteSpace (password) || password.Length < 5) 
+			{
+				AlertModule.ShowInformation (LocalizationModule.Translate("alert_incorrect_name_or_password"));
+				return false;
+			}
+
+			return true;
+		}
 
         private static LoginViewModel instance;
     }

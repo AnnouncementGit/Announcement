@@ -25,7 +25,11 @@ namespace Announcement.Android
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
-            var view = inflater.Inflate(Resource.Layout.login_layout, null);
+			var view = inflater.Inflate(Resource.Layout.login_layout, null);
+
+			var loginEditText = view.FindViewById<TextView> (Resource.Id.LoginEditText);
+
+			var passwordEditText = view.FindViewById<TextView> (Resource.Id.PasswordEditText);
 
             var loginButton = view.FindViewById<Button>(Resource.Id.LoginButton);
 
@@ -37,9 +41,13 @@ namespace Announcement.Android
 
 			var linkedInButton = view.FindViewById<ImageView>(Resource.Id.LinkedInButton);
 
+			// mock data. need to delete
+			loginEditText.Text = "username";
+			passwordEditText.Text = "password";
+
             loginButton.Click += (sender, e) => 
                 {
-                    ViewModel.LoginForAdminStuff("username", "password", LoginForAdminStuffCallback);
+					ViewModel.LoginForAdminStuff(loginEditText.Text, passwordEditText.Text, LoginForAdminStuffCallback);
                 };
 
             facebookButton.Click += (sender, e) =>

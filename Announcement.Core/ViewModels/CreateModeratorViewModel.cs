@@ -17,6 +17,9 @@ namespace Announcement.Core
 
         public async void PushModerator(string username, string password, Action callback)
         {
+			if (!EnteredDataValid (username, password))
+				return;
+			
             var result = await Task.Run<Result<string>>(() => SourceManager.PushModerator(username, password));
 
             ProgressModule.End();
@@ -37,6 +40,41 @@ namespace Announcement.Core
                 }
             }
         }
+
+		private bool EnteredDataValid(string username, string password)
+		{
+			if (string.IsNullOrWhiteSpace (username)) 
+			{
+				AlertModule.ShowInformation (LocalizationModule.Translate("alert_please_enter_name"));
+				return false;
+			}
+
+			if (string.IsNullOrWhiteSpace (username) || username.Length < 5) 
+			{
+				AlertModule.ShowInformation (LocalizationModule.Translate("alert_name_too_short"));
+				return false;
+			}
+
+			if (string.IsNullOrWhiteSpace (username) || username.Length < 5 || !ValidationModule.ValidateUserName (username)) 
+			{
+				AlertModule.ShowInformation (LocalizationModule.Translate("alert_name_can_have_only_letters_or_numbers"));
+				return false;
+			}
+
+			if (string.IsNullOrWhiteSpace (password)) 
+			{
+				AlertModule.ShowInformation (LocalizationModule.Translate("alert_please_enter_password"));
+				return false;
+			}
+
+			if (string.IsNullOrWhiteSpace (password) || password.Length < 5) 
+			{
+				AlertModule.ShowInformation (LocalizationModule.Translate("alert_password_too_short"));
+				return false;
+			}
+
+			return true;
+		}
 
         private static CreateModeratorViewModel instance;
     }

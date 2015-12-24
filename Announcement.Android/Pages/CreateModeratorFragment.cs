@@ -45,14 +45,7 @@ namespace Announcement.Android
 
         protected void BtnAddOnClick (object sender, EventArgs e)
 		{
-            if (!string.IsNullOrWhiteSpace(LoginEditText.Text) && !string.IsNullOrWhiteSpace(PasswordEditText.Text))
-            {
-                ViewModel.PushModerator(LoginEditText.Text, PasswordEditText.Text, AddModeratorCallback);
-            }
-            else
-            {
-                AlertModule.ShowInformation("Please fill all data.", null);
-            }
+            ViewModel.PushModerator(LoginEditText.Text, PasswordEditText.Text, AddModeratorCallback);
 		}
 
 		protected void AddModeratorCallback()
