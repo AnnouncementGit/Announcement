@@ -148,6 +148,8 @@ namespace Announcement.Android
 
         protected void LogoutCallback()
         {
+			SocialServices.Instance.LogOut ();
+
             NavigationManager.EraseBackStack();
 
             NavigationManager.Forward(typeof(LoginFragment)); 
