@@ -7,12 +7,18 @@ using Android.Widget;
 using Android.Views;
 using Android.OS;
 using Android.Support.V4.View;
+using Square.Picasso;
+using Android.App;
+using Android.Content;
+using Javax.Net.Ssl;
+using Square.OkHttp;
 
 namespace Announcement.Android
 {
 	public class ReportValidationFragment : BaseFragment
 	{
 		private ReportValidationViewModel viewModel { get { return ReportValidationViewModel.Instance; } }
+
 		private ViewPager reportViewPager;
 		private CustomViewPagerAdapter reportViewPagerAdapter;
 		private Announcement.Android.Controls.EditText txtPhone;
@@ -22,50 +28,71 @@ namespace Announcement.Android
 			var view = inflater.Inflate (Resource.Layout.report_validation_view, null);
 
 			reportViewPager = view.FindViewById<ViewPager> (Resource.Id.reportViewPager);
-			if(MainActivityInstance.Current.Resources.DisplayMetrics.WidthPixels < MainActivityInstance.Current.Resources.DisplayMetrics.HeightPixels)
-				reportViewPager.LayoutParameters = new LinearLayout.LayoutParams (LinearLayout.LayoutParams.WrapContent, MainActivityInstance.Current.Resources.DisplayMetrics.WidthPixels);
-			else
-				reportViewPager.LayoutParameters = new LinearLayout.LayoutParams (LinearLayout.LayoutParams.WrapContent, MainActivityInstance.Current.Resources.DisplayMetrics.HeightPixels);
+
+            if (MainActivityInstance.Current.Resources.DisplayMetrics.WidthPixels < MainActivityInstance.Current.Resources.DisplayMetrics.HeightPixels)
+            {
+                reportViewPager.LayoutParameters = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WrapContent, MainActivityInstance.Current.Resources.DisplayMetrics.WidthPixels);
+            }
+            else
+            {
+                reportViewPager.LayoutParameters = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WrapContent, MainActivityInstance.Current.Resources.DisplayMetrics.HeightPixels);
+            }
 
 	
             reportViewPager.SetOnTouchListener(this);
 
 			reportViewPager.PageScrolled += ReportViewPagerOnPageScrolled;
+
 			reportViewPagerAdapter = new CustomViewPagerAdapter (MainActivityInstance.Current.SupportFragmentManager, viewModel.Photos);
+
 			reportViewPager.Adapter = reportViewPagerAdapter;
+
 			txtPhone = view.FindViewById<Announcement.Android.Controls.EditText> (Resource.Id.reportPhoneNumber);
 
-			view.FindViewById<Announcement.Android.Controls.Button> (Resource.Id.btnConfirm).Click += OnConfirmClick;;
-			view.FindViewById<Announcement.Android.Controls.Button> (Resource.Id.btnCancel).Click += OnCancelClick;
+			view.FindViewById<Announcement.Android.Controls.Button> (Resource.Id.btnConfirm).Click += OnConfirmClick;
+
+            view.FindViewById<Announcement.Android.Controls.Button> (Resource.Id.btnReject).Click += OnCancelClick;
 
 
-			if (!string.IsNullOrWhiteSpace (viewModel.PhoneNumber))
-				txtPhone.Text = viewModel.PhoneNumber;
+            if (!string.IsNullOrWhiteSpace(viewModel.PhoneNumber))
+            {
+                txtPhone.Text = viewModel.PhoneNumber;
+            }
 
 			return view;
 		}
 
-		void ReportViewPagerOnPageScrolled (object sender, global::Android.Support.V4.View.ViewPager.PageScrolledEventArgs e)
+		protected void ReportViewPagerOnPageScrolled (object sender, global::Android.Support.V4.View.ViewPager.PageScrolledEventArgs e)
 		{
 			
 		}
 
-		void OnConfirmClick(object sender, EventArgs e)
+        protected void OnConfirmClick(object sender, EventArgs e)
 		{
-			viewModel.ConfirmReport (() => MainActivityInstance.Current.OnBackPressed ());
+            viewModel.ConfirmReport (ConfirmReportCallback);
 		}
 
-		void OnCancelClick(object sender, EventArgs e)
+        protected void OnCancelClick(object sender, EventArgs e)
 		{
-			viewModel.RejectReport (() => MainActivityInstance.Current.OnBackPressed ());
+            viewModel.RejectReport (RejectReportCallback);
 		}
+
+        protected void ConfirmReportCallback()
+        {
+            NavigationManager.Backward();
+        }
+
+        protected void RejectReportCallback()
+        {
+            NavigationManager.Backward();
+        }
 	}
 
 	public class CustomViewPagerAdapter : FragmentStatePagerAdapter
 	{
 		private List<string> list;
 
-		public CustomViewPagerAdapter(FragmentManager fm, List<string> list): base(fm)
+		public CustomViewPagerAdapter(global::Android.Support.V4.App.FragmentManager fm, List<string> list): base(fm)
 		{
 			this.list = list;
 		}
@@ -76,31 +103,41 @@ namespace Announcement.Android
 			}
 		}
 
-		public override Fragment GetItem (int position)
+        public override global::Android.Support.V4.App.Fragment GetItem (int position)
 		{
 			var item = list [position];
-			return new PagerImageView(){imageUrl = item};
+
+            var url = "https://s3-eu-west-1.amazonaws.com/stop-spam/reports/" + item;
+
+            return new PagerImageView() { imageUrl = url };
 		}
 	}
 
-	class PagerImageView : Fragment
+    public class PagerImageView : global::Android.Support.V4.App.Fragment
 	{
-		private View view;
-		public string imageUrl;
-
 		public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstance)
 		{
 			view = inflater.Inflate (Resource.Layout.validation_images_pager_view, null);
 
-			try {
+			try 
+            {
+                var image = view.FindViewById<ScaleImageView> (Resource.Id.pagerImageView);
+
+                Picasso.With(Application.Context).Load(imageUrl).Into(image);
+
 //				var uri = global::Android.Net.Uri.Parse (imageUrl);
 //				view.FindViewById<ScaleImageView> (Resource.Id.pagerImageView).SetImageURI (uri);
-			} catch (Exception ex) {
+			} catch (Exception ex)
+            {
 				Console.WriteLine (ex.Message);
 			}
 
 			return view;
 		}
+
+        private View view;
+
+        public string imageUrl;
 	}
 }
 

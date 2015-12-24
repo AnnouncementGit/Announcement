@@ -102,7 +102,7 @@ namespace Announcement.Core
 
         public static void ShowWarning(string message, Action okCallback = null, Action cancelCallback = null)
         {
-            Show(LocalizationModule.Translate("alert_title_type_warning"), message, LocalizationModule.Translate("alert_button_try_again"), LocalizationModule.Translate("alert_button_cancel"), okCallback, cancelCallback);
+            Show(LocalizationModule.Translate("alert_title_type_warning"), message, LocalizationModule.Translate("alert_button_retry"), LocalizationModule.Translate("alert_button_cancel"), okCallback, cancelCallback);
         }
     }
 

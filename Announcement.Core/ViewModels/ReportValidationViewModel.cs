@@ -57,11 +57,11 @@ namespace Announcement.Core
             {
                 if (result.IsSuccess)
                 {
-                    AlertModule.ShowInformation("Report successfully confirmed. Thanks", callback);
+                    AlertModule.ShowInformation(LocalizationModule.Translate("alert_message_report_confirmed"), callback);
                 }
                 else
                 {
-                    AlertModule.ShowWarning("Report not confirmed", () => ConfirmReport(callback));
+                    AlertModule.ShowWarning(LocalizationModule.Translate("alert_message_report_not_confirmed"), () => ConfirmReport(callback));
                 }
             }
         }
@@ -80,11 +80,11 @@ namespace Announcement.Core
             {
                 if (result.IsSuccess)
                 {
-                    AlertModule.ShowInformation("Report successfully rejected. Thanks", callback);
+                    AlertModule.ShowInformation(LocalizationModule.Translate("alert_message_report_rejected"), callback);
                 }
                 else
                 {
-                    AlertModule.ShowWarning("Report not rejected", () => RejectReport(callback));
+                    AlertModule.ShowWarning(LocalizationModule.Translate("alert_message_report_not_rejected"), () => RejectReport(callback));
                 }
             }
         }

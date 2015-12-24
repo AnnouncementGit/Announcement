@@ -84,7 +84,7 @@ namespace Announcement.Core
 
         public Result<string> ConfirmReport(string id, string phoneNumber)
         {
-            ProgressModule.Message(LocalizationModule.Translate("progress_report_rejecting"));
+            ProgressModule.Message(LocalizationModule.Translate("progress_report_confirming"));
 
             var report = new Report() { Id = id, PhoneNumber = phoneNumber };
 

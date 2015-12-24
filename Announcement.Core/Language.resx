@@ -81,6 +81,8 @@
 
     <data name="progress_report_rejecting" xml:space="preserve"><value>Report is rejecting...</value></data>
 
+    <data name="progress_report_confirming" xml:space="preserve"><value>Report is confirming...</value></data>
+
     <data name="stop_spam_header_title" xml:space="preserve"><value>Stop Spam</value></data>
 
     <data name="add_new_moderator_label" xml:space="preserve"><value>Add new moderator</value></data>
@@ -142,6 +144,24 @@ Press Retry to retake photo.</value></data>
 
     <data name="title_confirmeds" xml:space="preserve"><value>Confirmed:</value></data>
 
+    <data name="button_title_reject" xml:space="preserve"><value>Reject</value></data>
 
+     <data name="alert_message_report_confirmed" xml:space="preserve"><value>Report successfully confirmed. Thanks.
+
+Press OK to validation more.</value></data>
+
+     <data name="alert_message_report_not_confirmed" xml:space="preserve"><value>Report not confirmed.
+
+Press Retry to try again.</value></data>
+
+       <data name="alert_message_report_rejected" xml:space="preserve"><value>Report successfully rejected. Thanks.
+
+Press OK to validation more.</value></data>
+
+     <data name="alert_message_report_not_rejected" xml:space="preserve"><value>Report not rejected.
+
+Press Retry to try again.</value></data>
+
+    
 
 </root>
