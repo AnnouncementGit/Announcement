@@ -42,8 +42,8 @@ namespace Announcement.Android
 			var linkedInButton = view.FindViewById<ImageView>(Resource.Id.LinkedInButton);
 
 			// mock data. need to delete
-			loginEditText.Text = "username";
-			passwordEditText.Text = "password";
+			//loginEditText.Text = "username";
+			//passwordEditText.Text = "password";
 
             loginButton.Click += (sender, e) => 
                 {
@@ -93,7 +93,14 @@ namespace Announcement.Android
         {
             NavigationManager.EraseBackStack();
 
-            NavigationManager.Forward(typeof(AdminMainFragment));
+            if (ViewModel.IsAdmin)
+            {
+                NavigationManager.Forward(typeof(AdminMainFragment));
+            }
+            else
+            {
+                NavigationManager.Forward(typeof(ModeratorMainFragment));
+            }
         }
 
 		protected void LoginViaSocialCallback()

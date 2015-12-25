@@ -162,6 +162,10 @@ Press OK to validation more.</value></data>
 
 Press Retry to try again.</value></data>
 
-    
+ <data name="alert_title_authorization" xml:space="preserve"><value>Authorization</value></data>
+
+ <data name="alert_message_wrong_credentials" xml:space="preserve"><value>Wrong credentials. Please input correct data.</value></data>
+
+     
 
 </root>

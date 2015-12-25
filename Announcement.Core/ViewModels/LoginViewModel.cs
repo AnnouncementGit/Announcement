@@ -8,6 +8,8 @@ namespace Announcement.Core
 {
     public class LoginViewModel : BaseViewModel
     {
+        public bool IsAdmin { get; set; }
+        
         public static LoginViewModel Instance
         {
             get
@@ -43,7 +45,32 @@ namespace Announcement.Core
 			
             ProgressModule.Message(LocalizationModule.Translate("progress_authentication"));
 
-            var viewModel = AdminMainViewModel.Instance;
+            BaseViewModel viewModel = null;
+
+            //tmp
+            if (username == "admin" && password == "admin")
+            {
+                viewModel = AdminMainViewModel.Instance;
+
+                IsAdmin = true;
+            }
+            else if (username == "moderator" && password == "moderator")
+            {
+                viewModel = ModeratorMainViewModel.Instance;
+
+                IsAdmin = false;
+            }
+            else
+            {
+                IsAdmin = false;
+                
+                ProgressModule.End();
+
+                AlertModule.Show(LocalizationModule.Translate("alert_title_authorization"), LocalizationModule.Translate("alert_message_wrong_credentials"), LocalizationModule.Translate("alert_button_ok"));
+
+                return;
+            }
+            //
 
             var result = await Task.Run<Result>(() => viewModel.Initialize());
 
