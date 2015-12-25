@@ -293,10 +293,15 @@ namespace Announcement.Android
 
 		public void LogOut()
 		{
-			LoginManager.Instance.LogOut ();
+            if (FacebookSdk.IsInitialized)
+            {
+                LoginManager.Instance.LogOut();
+            }
 			
-			if (googleApiClient != null && googleApiClient.IsConnected)
-				PlusClass.AccountApi.RevokeAccessAndDisconnect (googleApiClient);
+            if (googleApiClient != null && googleApiClient.IsConnected)
+            {
+                PlusClass.AccountApi.RevokeAccessAndDisconnect(googleApiClient);
+            }
 		}
 
         private MainActivity activity;
