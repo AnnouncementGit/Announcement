@@ -12,6 +12,7 @@ using Android.App;
 using Android.Content;
 using Javax.Net.Ssl;
 using Square.OkHttp;
+using Android.Runtime;
 
 namespace Announcement.Android
 {
@@ -121,13 +122,11 @@ namespace Announcement.Android
 
 			try 
             {
-                var image = view.FindViewById<ScaleImageView> (Resource.Id.pagerImageView);
+                var viewImageWithProgress = view.FindViewById<ScaleImageWithProgress> (Resource.Id.pagerImageView);
 
-                Picasso.With(Application.Context).Load(imageUrl).Into(image);
-
-//				var uri = global::Android.Net.Uri.Parse (imageUrl);
-//				view.FindViewById<ScaleImageView> (Resource.Id.pagerImageView).SetImageURI (uri);
-			} catch (Exception ex)
+                Picasso.With(Application.Context).Load(imageUrl).Into(new Target(viewImageWithProgress));
+			} 
+            catch(Exception ex)
             {
 				Console.WriteLine (ex.Message);
 			}
@@ -139,5 +138,36 @@ namespace Announcement.Android
 
         public string imageUrl;
 	}
+        
+    public class Target : Java.Lang.Object, ITarget
+    {
+        public Target(ScaleImageWithProgress view)
+        {
+            this.view = view;
+        }
+        
+        public void OnBitmapFailed(global::Android.Graphics.Drawables.Drawable drawable)
+        {
+            view.Image.SetImageDrawable(null);
+
+            view.IsShowProgress = false;
+        }
+
+        public void OnBitmapLoaded(global::Android.Graphics.Bitmap bitmap, Picasso.LoadedFrom loadFrom)
+        {
+            view.IsShowProgress = false;
+
+            view.Image.SetImageBitmap(bitmap);
+        }
+
+        public void OnPrepareLoad(global::Android.Graphics.Drawables.Drawable drawable)
+        {
+            view.Image.SetImageDrawable(null);
+            
+            view.IsShowProgress = true;
+        }
+
+        private ScaleImageWithProgress view;
+    }
 }
 

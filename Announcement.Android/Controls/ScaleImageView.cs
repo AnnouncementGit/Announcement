@@ -24,6 +24,8 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using System.Linq;
+using Android.Graphics.Drawables;
+using Android.Runtime;
 
 namespace Announcement.Android.Controls
 {
@@ -70,6 +72,17 @@ namespace Announcement.Android.Controls
 		private bool m_IsScaling;
 		private GestureDetector m_GestureDetector;
 
+        public ScaleImageView(Context context) : base(context)
+        {
+            m_Context = context;
+            Initialize();
+        }
+
+        public ScaleImageView(IntPtr javaReference, JniHandleOwnership transfer) : base(javaReference, transfer)
+        {
+            Initialize();
+        }
+
 		public ScaleImageView(Context context, IAttributeSet attrs) :
 		base(context, attrs)
 		{
@@ -90,6 +103,12 @@ namespace Announcement.Android.Controls
 			this.Initialize();
 		}
 
+        public override void SetImageDrawable(Drawable drawable)
+        {
+            base.SetImageDrawable(drawable);
+            this.Initialize();
+        }
+
 		public override void SetImageResource(int resId)
 		{
 			base.SetImageResource(resId);
@@ -97,7 +116,7 @@ namespace Announcement.Android.Controls
 		}
 
 		private void Initialize()
-		{
+        {
 			this.SetScaleType(ScaleType.Matrix);
 			m_Matrix = new Matrix();
 

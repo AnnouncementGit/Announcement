@@ -159,6 +159,7 @@
     <Compile Include="Adapters\ReportsAdapter.cs" />
     <Compile Include="Adapters\SpammersAdapter.cs" />
     <Compile Include="Adapters\UsersAdapter.cs" />
+    <Compile Include="Controls\ScaleImageWithProgress.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
