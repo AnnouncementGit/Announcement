@@ -44,6 +44,13 @@ namespace Announcement.Android
 				if (!FacebookSdk.IsInitialized) {
 					FacebookSdk.SdkInitialize (activity.ApplicationContext);
 
+					if (callback != null && AccessToken.CurrentAccessToken != null && !string.IsNullOrWhiteSpace (AccessToken.CurrentAccessToken.Token)) {
+						isSocailServiceInProcess = false;
+						callback.Invoke (AccessToken.CurrentAccessToken.Token);
+
+						return;
+					}
+
 					var facebookCallback = new FacebookCallback ();
 
 					facebookCallback.Cancel += (sender, e) => {
@@ -286,6 +293,8 @@ namespace Announcement.Android
 
 		public void LogOut()
 		{
+			LoginManager.Instance.LogOut ();
+			
 			if (googleApiClient != null && googleApiClient.IsConnected)
 				PlusClass.AccountApi.RevokeAccessAndDisconnect (googleApiClient);
 		}
