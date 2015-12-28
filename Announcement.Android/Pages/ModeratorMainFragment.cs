@@ -142,32 +142,66 @@ namespace Announcement.Android
                 }
             }
                 
-            protected void InitializeValidation()
-            {
-                var validationList = tabHostContentFactory.ValidationListView;
+        protected void InitializeValidation()
+        {
+            var validationList = tabHostContentFactory.ValidationListView;
 
-                validationList.Adapter = new ReportsAdapter(Activity, ViewModel.Reports);
+            validationList.Adapter = new ReportsAdapter(Activity, ViewModel.Reports);
 
-                validationList.ItemClick += ValidationListOnItemClick;
-            }
+            tabHostContentFactory.reportsSwipeRefresh.Refresh += ReportsSwipeRefresh_Refresh;
 
-            protected void InitializeSpamers()
-            {
-                ratingSpammersTabList = ratingTabView.FindViewById<ListView> (Resource.Id.spammersListView);
+            validationList.ItemClick += ValidationListOnItemClick;
+        }
 
-                ratingSpammersTabList.Adapter = new SpammersAdapter (Activity, ViewModel.RatingTopSpammers);
+        protected void ReportsSwipeRefresh_Refresh (object sender, EventArgs e)
+        {
+            ViewModel.RefreshReports(RefreshReportsCallback);
+        }
+
+        protected void RefreshReportsCallback ()
+        {
+            tabHostContentFactory.reportsSwipeRefresh.Refreshing = false;
+
+            ((ReportsAdapter)tabHostContentFactory.ValidationListView.Adapter).UpdateAll(ViewModel.Reports);
+        }
+
+        protected void InitializeSpamers()
+        {
+            ratingSpammersTabList = ratingTabView.FindViewById<ListView> (Resource.Id.spammersListView);
+
+            ratingSpammersTabList.Adapter = new SpammersAdapter (Activity, ViewModel.RatingTopSpammers);
+
+            tabHostContentFactory.spammersSwipeRefresh.Refresh += RatingSwipeRefresh_Refresh;
 
                 //ratingSpammersTabList.ItemClick += RatingSpammersTabListViewOnItemClick;
-            }
+        }
 
-            protected void InitializeUsers()
-            {
-                ratingUsersTabList = ratingTabView.FindViewById<ListView> (Resource.Id.usersListView);
+        protected void InitializeUsers()
+        {
+            ratingUsersTabList = ratingTabView.FindViewById<ListView> (Resource.Id.usersListView);
 
-                ratingUsersTabList.Adapter = new UsersAdapter (Activity, ViewModel.RatingTopUsers);;
+            ratingUsersTabList.Adapter = new UsersAdapter (Activity, ViewModel.RatingTopUsers);;
+
+            tabHostContentFactory.usersSwipeRefresh.Refresh += RatingSwipeRefresh_Refresh;
 
                 //ratingUsersTabList.ItemClick += RatingUsersTabListViewOnItemClick;
-            }
+        }
+
+        protected void RatingSwipeRefresh_Refresh (object sender, EventArgs e)
+        {
+            ViewModel.RefreshRatings(RefreshRatingsCallback);
+        }
+
+        protected void RefreshRatingsCallback ()
+        {
+            tabHostContentFactory.spammersSwipeRefresh.Refreshing = false;
+
+            tabHostContentFactory.usersSwipeRefresh.Refreshing = false;
+
+            ((SpammersAdapter)ratingSpammersTabList.Adapter).UpdateAll(ViewModel.RatingTopSpammers);
+
+            ((UsersAdapter)ratingUsersTabList.Adapter).UpdateAll(ViewModel.RatingTopUsers);
+        }
 
             protected void RatingRadioButtonsOnCheckedChange (object sender, RadioGroup.CheckedChangeEventArgs e)
             {
@@ -234,6 +268,10 @@ namespace Announcement.Android
 		private LayoutInflater inflater;
 		public ListView ValidationListView;
 		public ListView ModeratorsListView;
+        public Announcement.Android.Controls.InterceptedSwipeRefreshLayout moderatorsSwipeRefresh;
+        public global::Android.Support.V4.Widget.SwipeRefreshLayout reportsSwipeRefresh;
+        public global::Android.Support.V4.Widget.SwipeRefreshLayout spammersSwipeRefresh;
+        public global::Android.Support.V4.Widget.SwipeRefreshLayout usersSwipeRefresh;
 		public View RatingTabView;
 		private Action<string> contentCreatedAction;
 
@@ -246,27 +284,54 @@ namespace Announcement.Android
 		{
 			switch (tag) {
                 case "moderatorsTab":
+
+                    moderatorsSwipeRefresh = new Announcement.Android.Controls.InterceptedSwipeRefreshLayout(MainActivityInstance.Current) { LayoutParameters = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.MatchParent) };
+
                     ModeratorsListView = new ListView(MainActivityInstance.Current){ LayoutParameters = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.MatchParent) };
                     ModeratorsListView.DividerHeight = 0;
                     ModeratorsListView.Divider = null;
                     ModeratorsListView.Selector = new ColorDrawable(Color.Transparent);
-				if (contentCreatedAction != null)
-					contentCreatedAction.Invoke (tag);
-				return ModeratorsListView;
+
+                    if (contentCreatedAction != null)
+                    {
+                        contentCreatedAction.Invoke(tag);
+                    }
+
+                    moderatorsSwipeRefresh.AddView(ModeratorsListView);
+
+                    return moderatorsSwipeRefresh;
 
                 case "validationTab":
+
+                    reportsSwipeRefresh = new global::Android.Support.V4.Widget.SwipeRefreshLayout(MainActivityInstance.Current) { LayoutParameters = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.MatchParent) };
+
                     ValidationListView = new ListView(MainActivityInstance.Current){ LayoutParameters = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.MatchParent) };
                     ValidationListView.DividerHeight = 0;
                     ValidationListView.Divider = null;
                     ValidationListView.SetSelector(Resource.Drawable.list_item_selector);
-				if (contentCreatedAction != null)
-					contentCreatedAction.Invoke (tag);
-				return ValidationListView;
 
-			case "ratingTab":
-				RatingTabView =  inflater.Inflate (Resource.Layout.tab_rating, null);
-				if (contentCreatedAction != null)
-					contentCreatedAction.Invoke (tag);
+                    if (contentCreatedAction != null)
+                    {
+                        contentCreatedAction.Invoke(tag);
+                    }
+
+                    reportsSwipeRefresh.AddView(ValidationListView);
+
+                    return reportsSwipeRefresh;
+
+                case "ratingTab":
+                    
+                    RatingTabView = inflater.Inflate(Resource.Layout.tab_rating, null);
+
+                    spammersSwipeRefresh = RatingTabView.FindViewById<global::Android.Support.V4.Widget.SwipeRefreshLayout>(Resource.Id.SpammersSwipeRefresh);
+
+                    usersSwipeRefresh = RatingTabView.FindViewById<global::Android.Support.V4.Widget.SwipeRefreshLayout>(Resource.Id.UsersSwipeRefresh);
+
+                    if (contentCreatedAction != null)
+                    {
+                        contentCreatedAction.Invoke(tag);
+                    }
+
 				return RatingTabView;
 
 			default:

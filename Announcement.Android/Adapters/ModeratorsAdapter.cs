@@ -11,9 +11,9 @@ namespace Announcement.Android
 {
     public class ModeratorsAdapter : MonoAdapter<Moderator>
     {
-        public ModeratorsAdapter(Context context, List<Moderator> objects) : base(context, objects)
+        public ModeratorsAdapter(Context context, List<Moderator> objects, InterceptedSwipeRefreshLayout swipeRefreshLayout) : base(context, objects)
         {
-            
+            this.swipeRefreshLayout = swipeRefreshLayout;
         }
 
         public override View GetView(int position, View convertView, ViewGroup parent)
@@ -29,6 +29,8 @@ namespace Announcement.Android
                 holder = new ModeratorsAdapterItemHolder();
 
                 holder.scrlSlider = (MagicHorizontalScrollView)convertView;
+
+                holder.scrlSlider.SwipeRefreshLayout = swipeRefreshLayout;
 
                 holder.txtTitle = convertView.FindViewById<TextView>(Resource.Id.Title);
 
@@ -67,8 +69,6 @@ namespace Announcement.Android
                 if (row != null)
                 {
                     var holder = row.Tag as ModeratorsAdapterItemHolder;
-
-                    //animatorSet.SetInterpolator(new AccelerateInterpolator());
 
                     var animatorAlpha = ValueAnimator.OfFloat(new[] { 1.0f, 0.0f });
 
@@ -110,6 +110,8 @@ namespace Announcement.Android
                 }
             }
         }
+
+        private InterceptedSwipeRefreshLayout swipeRefreshLayout;
     }
 
     public class ModeratorsAdapterItemHolder : Java.Lang.Object

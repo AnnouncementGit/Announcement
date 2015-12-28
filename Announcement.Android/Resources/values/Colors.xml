@@ -35,4 +35,6 @@
      <color name="text_selector_normal_color">#F95F5F</color>
      <color name="text_selector_not_focused_color">#55F95F5F</color>
 
+     <color name="hint_major_color">#55F95F5F</color>
+
 </resources>

@@ -113,6 +113,77 @@ namespace Announcement.Core
             }
         }
 
+        public async void RefreshModerators(Action callback)
+        {
+            var result = await Task.Run<Result<List<Moderator>>>(() => SourceManager.PullModerators());
+
+            ProgressModule.End();
+
+            if (result.HasError)
+            {
+                AlertModule.ShowError(result.Message, () => RefreshModerators(callback));
+            }
+            else
+            {
+                Moderators = result.Value;
+                
+                if (callback != null)
+                {
+                    DispatcherModule.Invoke(callback);
+                }
+            }
+        }
+
+        public async void RefreshReports(Action callback)
+        {
+            var result = await Task.Run<Result<List<Report>>>(() => SourceManager.PullReports());
+
+            ProgressModule.End();
+
+            if (result.HasError)
+            {
+                AlertModule.ShowError(result.Message, () => RefreshReports(callback));
+            }
+            else
+            {
+                Reports = result.Value;
+
+                if (callback != null)
+                {
+                    DispatcherModule.Invoke(callback);
+                }
+            }
+        }
+
+        public async void RefreshRatings(Action callback)
+        {
+            var result = await Task.Run<Result<Ratings>>(() => SourceManager.PullRatings());
+
+            ProgressModule.End();
+
+            if (result.HasError)
+            {
+                AlertModule.ShowError(result.Message, () => RefreshRatings(callback));
+            }
+            else
+            {
+                var ratings = result.Value;
+
+                if (ratings != null)
+                {
+                    RatingTopUsers = ratings.TopUsers;
+
+                    RatingTopSpammers = ratings.TopSpammers;
+                }
+
+                if (callback != null)
+                {
+                    DispatcherModule.Invoke(callback);
+                }
+            }
+        }
+
+
         private static AdminMainViewModel instance;
     }
 }

@@ -82,7 +82,7 @@ namespace Announcement.Android
         {
             objects.Clear();
 
-            objects.AddRange(collection);
+            objects = collection;
 
             NotifyDataSetChanged();
         }

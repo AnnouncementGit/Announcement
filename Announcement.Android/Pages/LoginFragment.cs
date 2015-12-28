@@ -42,8 +42,8 @@ namespace Announcement.Android
 			var linkedInButton = view.FindViewById<ImageView>(Resource.Id.LinkedInButton);
 
 			// mock data. need to delete
-			//loginEditText.Text = "username";
-			//passwordEditText.Text = "password";
+			loginEditText.Text = "admin";
+		    passwordEditText.Text = "admin";
 
             loginButton.Click += (sender, e) => 
                 {

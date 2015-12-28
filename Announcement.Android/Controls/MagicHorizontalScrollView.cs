@@ -10,7 +10,7 @@ namespace Announcement.Android.Controls
 {
 	public class MagicHorizontalScrollView : HorizontalScrollView, IWidthOnScreen
 	{
-		//public MagicSwipeRefreshLayout SwipeRefreshLayout { get; set; }
+        public InterceptedSwipeRefreshLayout SwipeRefreshLayout { get; set; }
 
 		public SlideStates SlideState { get; set; }
 
@@ -72,10 +72,10 @@ namespace Announcement.Android.Controls
 				{
 					isInSliding = false;
 
-//					if (SwipeRefreshLayout != null)
-//					{
-//						SwipeRefreshLayout.IsIntercept = false;
-//					}
+					if (SwipeRefreshLayout != null)
+					{
+						SwipeRefreshLayout.IsIntercept = false;
+					}
 
 					if ((e.GetX() - pressedX) > 0)
 					{
@@ -104,10 +104,10 @@ namespace Announcement.Android.Controls
 				{
 					isInSliding = false;
 
-//					if (SwipeRefreshLayout != null)
-//					{
-//						SwipeRefreshLayout.IsIntercept = false;
-//					}
+					if (SwipeRefreshLayout != null)
+					{
+						SwipeRefreshLayout.IsIntercept = false;
+					}
 
 					var listView = Parent as ListView;
 
@@ -138,10 +138,10 @@ namespace Announcement.Android.Controls
 			{
 				isInSliding = true;
 
-//				if (SwipeRefreshLayout != null)
-//				{
-//					SwipeRefreshLayout.IsIntercept = true;
-//				}
+				if (SwipeRefreshLayout != null)
+				{
+					SwipeRefreshLayout.IsIntercept = true;
+				}
 			}
 		}
 

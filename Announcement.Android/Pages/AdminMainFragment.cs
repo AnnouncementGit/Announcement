@@ -161,9 +161,23 @@ namespace Announcement.Android
         {
             var moderatorsList = tabHostContentFactory.ModeratorsListView;
 
-            moderatorsList.Adapter = new ModeratorsAdapter(Activity, ViewModel.Moderators);
+            moderatorsList.Adapter = new ModeratorsAdapter(Activity, ViewModel.Moderators, (Announcement.Android.Controls.InterceptedSwipeRefreshLayout)moderatorsList.Parent);
+
+            tabHostContentFactory.moderatorsSwipeRefresh.Refresh += ModeratorsSwipeRefresh_Refresh;
 
            // moderatorsList.ItemClick += ModeratorsTabListViewOnItemClick;
+        }
+
+        protected void ModeratorsSwipeRefresh_Refresh (object sender, EventArgs e)
+        {
+            ViewModel.RefreshModerators(RefreshModeratorsCallback);
+        }
+
+        protected void RefreshModeratorsCallback ()
+        {
+            tabHostContentFactory.moderatorsSwipeRefresh.Refreshing = false;
+            
+            ((ModeratorsAdapter)tabHostContentFactory.ModeratorsListView.Adapter).UpdateAll(ViewModel.Moderators);
         }
 
         protected void InitializeValidation()
@@ -172,14 +186,30 @@ namespace Announcement.Android
 
             validationList.Adapter = new ReportsAdapter(Activity, ViewModel.Reports);
 
+            tabHostContentFactory.reportsSwipeRefresh.Refresh += ReportsSwipeRefresh_Refresh;
+
             validationList.ItemClick += ValidationListOnItemClick;
 		}
+
+        protected void ReportsSwipeRefresh_Refresh (object sender, EventArgs e)
+        {
+            ViewModel.RefreshReports(RefreshReportsCallback);
+        }
+
+        protected void RefreshReportsCallback ()
+        {
+            tabHostContentFactory.reportsSwipeRefresh.Refreshing = false;
+
+            ((ReportsAdapter)tabHostContentFactory.ValidationListView.Adapter).UpdateAll(ViewModel.Reports);
+        }
             
         protected void InitializeSpamers()
 		{
             ratingSpammersTabList = ratingTabView.FindViewById<ListView> (Resource.Id.spammersListView);
 
             ratingSpammersTabList.Adapter = new SpammersAdapter (Activity, ViewModel.RatingTopSpammers);
+
+            tabHostContentFactory.spammersSwipeRefresh.Refresh += RatingSwipeRefresh_Refresh;
 
 			//ratingSpammersTabList.ItemClick += RatingSpammersTabListViewOnItemClick;
 		}
@@ -188,18 +218,45 @@ namespace Announcement.Android
 		{
 			ratingUsersTabList = ratingTabView.FindViewById<ListView> (Resource.Id.usersListView);
 
-            ratingUsersTabList.Adapter = new UsersAdapter (Activity, ViewModel.RatingTopUsers);;
+            ratingUsersTabList.Adapter = new UsersAdapter (Activity, ViewModel.RatingTopUsers);
+
+            tabHostContentFactory.usersSwipeRefresh.Refresh += RatingSwipeRefresh_Refresh;
 
 			//ratingUsersTabList.ItemClick += RatingUsersTabListViewOnItemClick;
 		}
 
+        protected void RatingSwipeRefresh_Refresh (object sender, EventArgs e)
+        {
+            ViewModel.RefreshRatings(RefreshRatingsCallback);
+        }
+
+        protected void RefreshRatingsCallback ()
+        {
+            tabHostContentFactory.spammersSwipeRefresh.Refreshing = false;
+
+            tabHostContentFactory.usersSwipeRefresh.Refreshing = false;
+
+            ((SpammersAdapter)ratingSpammersTabList.Adapter).UpdateAll(ViewModel.RatingTopSpammers);
+
+            ((UsersAdapter)ratingUsersTabList.Adapter).UpdateAll(ViewModel.RatingTopUsers);
+        }
+
         protected void RatingRadioButtonsOnCheckedChange (object sender, RadioGroup.CheckedChangeEventArgs e)
         {
+            var swipeRefreshLayout = ratingsViewSwitcher.CurrentView as global::Android.Support.V4.Widget.SwipeRefreshLayout;
+
+            View currentView = null;
+
+            if (swipeRefreshLayout != null && swipeRefreshLayout.ChildCount > 0)
+            {
+                currentView = swipeRefreshLayout.GetChildAt(0);
+            }
+
             switch (e.CheckedId)
             {
                 case (Resource.Id.btnSpammers):
 
-                    if (ratingsViewSwitcher.CurrentView != ratingSpammersTabList)
+                    if (currentView != ratingSpammersTabList)
                     {
                         ratingsViewSwitcher.ShowPrevious();
                     }
@@ -208,7 +265,7 @@ namespace Announcement.Android
 
                 case (Resource.Id.btnUsers):
 
-                    if (ratingsViewSwitcher.CurrentView != ratingUsersTabList)
+                    if (currentView != ratingUsersTabList)
                     {
                         ratingsViewSwitcher.ShowNext();
                     }

@@ -9,20 +9,30 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
-        <ListView
-            android:id="@+id/spammersListView"
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/SpammersSwipeRefresh"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:dividerHeight="0dp"
-            android:divider="@null"
-            android:listSelector="@android:color/transparent" />
-        <ListView
-            android:id="@+id/usersListView"
+            android:layout_height="match_parent">
+            <ListView
+                android:id="@+id/spammersListView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:dividerHeight="0dp"
+                android:divider="@null"
+                android:listSelector="@android:color/transparent" />
+        </android.support.v4.widget.SwipeRefreshLayout>
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/UsersSwipeRefresh"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:dividerHeight="0dp"
-            android:divider="@null"
-            android:listSelector="@android:color/transparent" />
+            android:layout_height="match_parent">
+            <ListView
+                android:id="@+id/usersListView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:dividerHeight="0dp"
+                android:divider="@null"
+                android:listSelector="@android:color/transparent" />
+        </android.support.v4.widget.SwipeRefreshLayout>
     </ViewSwitcher>
     <RadioGroup
         android:id="@+id/ratingRadioGroup"

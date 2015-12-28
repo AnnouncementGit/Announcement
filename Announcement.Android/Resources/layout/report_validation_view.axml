@@ -27,7 +27,7 @@
                 android:layout_height="42dp"
                 android:layout_margin="20dp"
                 android:textColor="@color/major_color"
-                android:textColorHint="@color/major_color"
+                android:textColorHint="@color/hint_major_color"
                 android:inputType="number"
                 android:singleLine="true"
                 android:ellipsize="end"

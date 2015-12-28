@@ -13,7 +13,7 @@ namespace Announcement.Android
     {
         public ReportsAdapter(Context context, List<Report> objects) : base(context, objects)
         {
-            
+          
         }
 
         public override View GetView(int position, View convertView, ViewGroup parent)

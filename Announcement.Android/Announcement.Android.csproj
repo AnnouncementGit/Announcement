@@ -160,6 +160,7 @@
     <Compile Include="Adapters\SpammersAdapter.cs" />
     <Compile Include="Adapters\UsersAdapter.cs" />
     <Compile Include="Controls\ScaleImageWithProgress.cs" />
+    <Compile Include="Controls\InterceptedSwipeRefreshLayout.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
