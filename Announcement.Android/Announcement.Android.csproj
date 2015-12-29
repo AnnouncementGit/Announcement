@@ -161,6 +161,7 @@
     <Compile Include="Adapters\UsersAdapter.cs" />
     <Compile Include="Controls\ScaleImageWithProgress.cs" />
     <Compile Include="Controls\InterceptedSwipeRefreshLayout.cs" />
+    <Compile Include="Pages\AddAudioFileFragment.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -281,6 +282,12 @@
     <AndroidResource Include="Resources\layout\validation_list_item_template.axml" />
     <AndroidResource Include="Resources\layout\spammers_list_item_template.axml" />
     <AndroidResource Include="Resources\layout\users_list_item_template.axml" />
+    <AndroidResource Include="Resources\layout\add_audiofile_view.axml" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\icon_play_small.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\icon_play_small.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\icon_play_small.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\icon_play_small.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\icon_play_small.png" />
   </ItemGroup>
   <Import Project="..\Announcement.Core\Announcement.Core.projitems" Label="Shared" Condition="Exists('..\Announcement.Core\Announcement.Core.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
