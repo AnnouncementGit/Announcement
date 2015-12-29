@@ -138,6 +138,12 @@ Press Retry to retake photo.</value></data>
 
     <data name="title_phone_number_not_recognized" xml:space="preserve"><value>Phone number was not recognized.</value></data>
 
+    <data name="label_audio_record" xml:space="preserve"><value>Audio Record:</value></data>
+
+    <data name="label_select_audio_record" xml:space="preserve"><value>Select Audio Record</value></data>
+
+    <data name="button_title_upload" xml:space="preserve"><value>Upload</value></data>
+
     <data name="title_complaints" xml:space="preserve"><value>Complaints:</value></data>
 
     <data name="title_reports" xml:space="preserve"><value>Reports:</value></data>
