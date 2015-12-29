@@ -11,6 +11,8 @@ namespace Announcement.Android
 {
     public class ModeratorsAdapter : MonoAdapter<Moderator>
     {
+        public Action<Moderator, View> ItemDeleteClick { get; set; }
+        
         public ModeratorsAdapter(Context context, List<Moderator> objects, InterceptedSwipeRefreshLayout swipeRefreshLayout) : base(context, objects)
         {
             this.swipeRefreshLayout = swipeRefreshLayout;
@@ -46,7 +48,7 @@ namespace Announcement.Android
             {
                 holder = (ModeratorsAdapterItemHolder)convertView.Tag;
             }
-
+                
             holder.txtTitle.Text = item.Username;
 
             holder.scrlSlider.ScrollX = 0;
@@ -57,6 +59,59 @@ namespace Announcement.Android
 
             return convertView;
         }
+
+//        protected void Holder_imgDelete_Click (object sender, EventArgs e)
+//        {
+//            var view = sender as View;
+//
+//            if (view != null)
+//            {
+//                var row = view.Tag as View;
+//
+//                if (row != null)
+//                {
+//                    var holder = row.Tag as ModeratorsAdapterItemHolder;
+//
+//                    var animatorAlpha = ValueAnimator.OfFloat(new[] { 1.0f, 0.0f });
+//
+//                    animatorAlpha.SetDuration(200);
+//
+//                    animatorAlpha.Update += (o, animatorUpdateEventArgs) =>
+//                        {
+//                            row.Alpha = (float)animatorUpdateEventArgs.Animation.AnimatedValue;
+//                        };
+//
+//                    animatorAlpha.AnimationEnd += (obj, args) =>
+//                    {
+//                        var originalHeight = row.Height;
+//
+//                        var animatorHeight = ValueAnimator.OfInt(new[] { originalHeight, 0 });
+//
+//                        animatorHeight.SetDuration(200);
+//
+//                        animatorHeight.Update += (o, animatorUpdateEventArgs) =>
+//                        {
+//                            row.LayoutParameters.Height = (int)animatorUpdateEventArgs.Animation.AnimatedValue;
+//
+//                            row.RequestLayout();
+//                        };
+//
+//                        animatorHeight.AnimationEnd += (o, eventArgs) =>
+//                        { 
+//                            Remove(objects[holder.position]);
+//
+//                            row.LayoutParameters.Height = originalHeight;
+//
+//                            row.Alpha = 1.0f;                                    
+//                        };
+//
+//                        animatorHeight.Start();
+//                    };
+//
+//                    animatorAlpha.Start();
+//                }
+//            }
+//        }
 
         protected void Holder_imgDelete_Click (object sender, EventArgs e)
         {
@@ -70,44 +125,62 @@ namespace Announcement.Android
                 {
                     var holder = row.Tag as ModeratorsAdapterItemHolder;
 
-                    var animatorAlpha = ValueAnimator.OfFloat(new[] { 1.0f, 0.0f });
-
-                    animatorAlpha.SetDuration(200);
-
-                    animatorAlpha.Update += (o, animatorUpdateEventArgs) =>
-                        {
-                            row.Alpha = (float)animatorUpdateEventArgs.Animation.AnimatedValue;
-                        };
-
-                    animatorAlpha.AnimationEnd += (obj, args) =>
+                    if (ItemDeleteClick != null)
                     {
-                        var originalHeight = row.Height;
-
-                        var animatorHeight = ValueAnimator.OfInt(new[] { originalHeight, 0 });
-
-                        animatorHeight.SetDuration(200);
-
-                        animatorHeight.Update += (o, animatorUpdateEventArgs) =>
-                        {
-                            row.LayoutParameters.Height = (int)animatorUpdateEventArgs.Animation.AnimatedValue;
-
-                            row.RequestLayout();
-                        };
-
-                        animatorHeight.AnimationEnd += (o, eventArgs) =>
-                        { 
-                            Remove(objects[holder.position]);
-
-                            row.LayoutParameters.Height = originalHeight;
-
-                            row.Alpha = 1.0f;                                    
-                        };
-
-                        animatorHeight.Start();
-                    };
-
-                    animatorAlpha.Start();
+                        ItemDeleteClick.Invoke(objects[holder.position], row);
+                    }
                 }
+            }
+        }
+
+        public int GetPosition(Moderator item)
+        {
+            return objects.IndexOf(item);
+        }
+
+        public void Remove(Moderator item, View row)
+        {
+            if (row != null)
+            {
+                var holder = row.Tag as ModeratorsAdapterItemHolder;
+                
+                var animatorAlpha = ValueAnimator.OfFloat(new[] { 1.0f, 0.0f });
+                
+                animatorAlpha.SetDuration(200);
+                
+                animatorAlpha.Update += (o, animatorUpdateEventArgs) =>
+                {
+                    row.Alpha = (float)animatorUpdateEventArgs.Animation.AnimatedValue;
+                };
+                
+                animatorAlpha.AnimationEnd += (obj, args) =>
+                {
+                    var originalHeight = row.Height;
+                
+                    var animatorHeight = ValueAnimator.OfInt(new[] { originalHeight, 0 });
+                
+                    animatorHeight.SetDuration(200);
+                
+                    animatorHeight.Update += (o, animatorUpdateEventArgs) =>
+                    {
+                        row.LayoutParameters.Height = (int)animatorUpdateEventArgs.Animation.AnimatedValue;
+                
+                        row.RequestLayout();
+                    };
+                
+                    animatorHeight.AnimationEnd += (o, eventArgs) =>
+                    { 
+                                Remove(item);
+                
+                        row.LayoutParameters.Height = originalHeight;
+                
+                        row.Alpha = 1.0f;                                    
+                    };
+                
+                    animatorHeight.Start();
+                };
+                
+                animatorAlpha.Start();
             }
         }
 

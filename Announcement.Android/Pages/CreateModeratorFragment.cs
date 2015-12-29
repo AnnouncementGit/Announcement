@@ -50,7 +50,9 @@ namespace Announcement.Android
 
 		protected void AddModeratorCallback()
 		{
-			
+            LoginEditText.Text = string.Empty;
+
+            PasswordEditText.Text = string.Empty;
 		}
             
 

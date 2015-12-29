@@ -130,7 +130,7 @@ namespace Announcement.Android.Controls
 
 			return base.OnTouchEvent(e);
 		}
-
+            
 		protected override void OnScrollChanged(int l, int t, int oldl, int oldt)
 		{
 			base.OnScrollChanged(l, t, oldl, oldt);
@@ -144,8 +144,7 @@ namespace Announcement.Android.Controls
 				}
 			}
 		}
-
-
+            
 		private bool isFromFullScroll;
 
 		private bool isInSliding;

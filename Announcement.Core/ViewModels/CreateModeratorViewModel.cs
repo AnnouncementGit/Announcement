@@ -32,11 +32,11 @@ namespace Announcement.Core
             {
                 if (result.IsSuccess)
                 {
-                    AlertModule.ShowInformation("Moderator successfully created. Thanks", callback);
+                    AlertModule.ShowInformation(LocalizationModule.Translate("alert_moderator_successfully_created"), callback);
                 }
                 else
                 {
-                    AlertModule.ShowWarning("Can't create moderator. Retry", () => PushModerator(username, password, callback));
+                    AlertModule.ShowWarning(LocalizationModule.Translate("alert_moderator_creation_fail"), () => PushModerator(username, password, callback));
                 }
             }
         }

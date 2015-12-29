@@ -75,6 +75,13 @@ namespace Announcement.Core
             return AmazonModule.InvokeLambda<string>("PushModerator", moderator);
         }
 
+        public Result<string> DeleteModerator(string id)
+        {
+            ProgressModule.Message(LocalizationModule.Translate("progress_deleting_moderator"));
+            
+            return AmazonModule.InvokeLambda<string>("RemoveModerator", id);
+        }
+
         public Result<string> RejectReport(string id)
         {
             ProgressModule.Message(LocalizationModule.Translate("progress_report_rejecting"));

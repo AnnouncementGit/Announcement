@@ -70,7 +70,23 @@ namespace Announcement.Core
 
             return result;
         }
-            
+
+        public async void DeleteModerator(Moderator moderator, Action<Moderator, bool> callback)
+        {
+            var result = await Task.Run<Result<string>>(() => SourceManager.DeleteModerator(moderator.Id));
+
+            ProgressModule.End();
+
+            if (!result.HasError && result.IsSuccess)
+            {
+                DispatcherModule.Invoke<Moderator, bool>(callback, moderator, true);
+            }
+            else
+            {
+                DispatcherModule.Invoke<Moderator, bool>(callback, moderator, false);
+            }
+        }
+
         public async void InitializeCreateModerator(Action callback)
         {
             var viewModel = CreateModeratorViewModel.Instance;

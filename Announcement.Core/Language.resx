@@ -166,6 +166,12 @@ Press Retry to try again.</value></data>
 
  <data name="alert_message_wrong_credentials" xml:space="preserve"><value>Wrong credentials. Please input correct data.</value></data>
 
-     
+  <data name="alert_moderator_successfully_created" xml:space="preserve"><value>Moderator successfully created. Thanks.</value></data>
+
+     <data name="alert_moderator_creation_fail" xml:space="preserve"><value>Moderator creation failed.
+
+Press Retry to try again.</value></data>
+
+<data name="progress_deleting_moderator" xml:space="preserve"><value>Deleting moderator...</value></data>
 
 </root>

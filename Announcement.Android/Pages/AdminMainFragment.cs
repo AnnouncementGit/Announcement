@@ -161,7 +161,20 @@ namespace Announcement.Android
         {
             var moderatorsList = tabHostContentFactory.ModeratorsListView;
 
-            moderatorsList.Adapter = new ModeratorsAdapter(Activity, ViewModel.Moderators, (Announcement.Android.Controls.InterceptedSwipeRefreshLayout)moderatorsList.Parent);
+            var adapter = new ModeratorsAdapter(Activity, ViewModel.Moderators, tabHostContentFactory.moderatorsSwipeRefresh);;
+
+            adapter.ItemDeleteClick = (item, view) =>
+            {
+                ViewModel.DeleteModerator(item, (moderator, result) =>
+                    {
+                        if (result)
+                        {
+                            adapter.Remove(item, view);
+                        }
+                    });
+            };
+
+            moderatorsList.Adapter = adapter;
 
             tabHostContentFactory.moderatorsSwipeRefresh.Refresh += ModeratorsSwipeRefresh_Refresh;
 
