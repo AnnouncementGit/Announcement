@@ -93,9 +93,7 @@ namespace Announcement.Android
 			try {
 				StartActivityForResult(Intent.CreateChooser(intent, "Select a File to Upload"), FileSelectCode);
 			} catch (global::Android.Content.ActivityNotFoundException ex) {
-				// Potentially direct the user to the Market with a Dialog
-				Toast.MakeText(MainActivityInstance.Current, "Please install a File Manager.", 
-					ToastLength.Short).Show();
+				AlertModule.ShowInformation ("Please install a File Manager.");
 			}
 		}
 
@@ -106,7 +104,7 @@ namespace Announcement.Android
 			if (requestCode == FileSelectCode) 
 			{
 				if (data == null || data.Data == null) {
-					System.Console.WriteLine("File Error");
+					AlertModule.ShowInformation ("File error!");
 					return;
 				}
 
