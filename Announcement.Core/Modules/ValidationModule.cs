@@ -17,6 +17,15 @@ namespace Announcement.Core
 
 			return match.Success;
 		}
+
+		public static bool ValidatePassword(string password)
+		{
+			const string regexPattern = @"^[\x00-\x7F]+$";
+
+			var match = Regex.Match (password, regexPattern);
+
+			return match.Success;
+		}
 	}
 }
 

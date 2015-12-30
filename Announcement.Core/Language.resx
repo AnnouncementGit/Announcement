@@ -136,6 +136,8 @@ Press Retry to retake photo.</value></data>
 
     <data name="alert_password_too_short" xml:space="preserve"><value>Password is too short. Minimum 5 characters.</value></data>
 
+    <data name="alert_password_unsupported_character" xml:space="preserve"><value>Password contains unsupported characters.</value></data>
+
     <data name="title_phone_number_not_recognized" xml:space="preserve"><value>Phone number was not recognized.</value></data>
 
     <data name="label_audio_record" xml:space="preserve"><value>Audio Record:</value></data>

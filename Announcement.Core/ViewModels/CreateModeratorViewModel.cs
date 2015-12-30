@@ -73,6 +73,12 @@ namespace Announcement.Core
 				return false;
 			}
 
+			if (string.IsNullOrWhiteSpace (password) || password.Length < 5 || !ValidationModule.ValidatePassword (password)) 
+			{
+				AlertModule.ShowInformation (LocalizationModule.Translate("alert_password_unsupported_character"));
+				return false;
+			}
+
 			return true;
 		}
 

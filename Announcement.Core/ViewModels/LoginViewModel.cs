@@ -122,7 +122,7 @@ namespace Announcement.Core
 				return false;
 			}
 
-			if (string.IsNullOrWhiteSpace (password) || password.Length < 5) 
+			if (string.IsNullOrWhiteSpace (password) || password.Length < 5 || !ValidationModule.ValidatePassword(password)) 
 			{
 				AlertModule.ShowInformation (LocalizationModule.Translate("alert_incorrect_name_or_password"));
 				return false;
