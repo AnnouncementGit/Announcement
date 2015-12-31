@@ -40,51 +40,52 @@ namespace Announcement.Core
             
         public async void LoginForAdminStuff(string username, string password, Action callback)
         {
-			if (!EnteredDataValid (username, password))
-				return;
+            if (!EnteredDataValid(username, password))
+            {
+                return;
+            }
 			
-            ProgressModule.Message(LocalizationModule.Translate("progress_authentication"));
+            var loginResult = await Task.Run<Result<UserCredentials>>(() => SourceManager.Login(username, EncryptorModule.Encrypt(password)));
 
             BaseViewModel viewModel = null;
 
-            //tmp
-            if (username == "admin" && password == "admin")
-            {
-                viewModel = AdminMainViewModel.Instance;
-
-                IsAdmin = true;
-            }
-            else if (username == "moderator" && password == "moderator")
-            {
-                viewModel = ModeratorMainViewModel.Instance;
-
-                IsAdmin = false;
-            }
-            else
+            if (loginResult.HasError || !loginResult.IsSuccess)
             {
                 IsAdmin = false;
-                
+
                 ProgressModule.End();
 
                 AlertModule.Show(LocalizationModule.Translate("alert_title_authorization"), LocalizationModule.Translate("alert_message_wrong_credentials"), LocalizationModule.Translate("alert_button_ok"));
-
-                return;
-            }
-            //
-
-            var result = await Task.Run<Result>(() => viewModel.Initialize());
-
-            ProgressModule.End();
-
-            if (result.HasError)
-            {
-                AlertModule.ShowError(result.Message, () => LoginForAdminStuff(username, password, callback));
             }
             else
             {
-                if (callback != null)
-                {                   
-                    DispatcherModule.Invoke(callback);
+                if (loginResult.Value != null && loginResult.Value.Role == 1)
+                {
+                    viewModel = ModeratorMainViewModel.Instance;
+
+                    IsAdmin = false;
+                }
+                else
+                {
+                    viewModel = AdminMainViewModel.Instance;
+
+                    IsAdmin = true;
+                }
+
+                var result = await Task.Run<Result>(() => viewModel.Initialize());
+
+                ProgressModule.End();
+
+                if (result.HasError)
+                {
+                    AlertModule.ShowError(result.Message, () => LoginForAdminStuff(username, password, callback));
+                }
+                else
+                {
+                    if (callback != null)
+                    {                   
+                        DispatcherModule.Invoke(callback);
+                    }
                 }
             }
         }

@@ -7,6 +7,8 @@ namespace Announcement.Core
         public bool HasError { get; set; }
 
         public string Message { get; set; }
+
+        public int ErrorCode { get; set; }
     }
         
     public class Result<T> : Result

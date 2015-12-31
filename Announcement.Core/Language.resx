@@ -182,4 +182,10 @@ Press Retry to try again.</value></data>
 
 <data name="progress_deleting_moderator" xml:space="preserve"><value>Deleting moderator...</value></data>
 
+<data name="alert_message_username_already_exists" xml:space="preserve"><value>This username already exists.
+
+Press OK to choose another one. </value></data>
+
+<data name="alert_message_moderator_creation" xml:space="preserve"><value>Moderator creation.</value></data>
+
 </root>

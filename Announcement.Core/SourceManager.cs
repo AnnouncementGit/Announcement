@@ -39,6 +39,11 @@ namespace Announcement.Core
 
             var ratings = result.Value;
 
+            if (ratings == null)
+            {
+                ratings = new Ratings();
+            }
+
             if (ratings.TopUsers == null)
             {
                 ratings.TopUsers = new List<User>();
@@ -114,6 +119,19 @@ namespace Announcement.Core
             var report = new SingleContinueReport() { id = id, Latitude = latitude, Longitude = longitude, Photo = photo  };
 
             return AmazonModule.InvokeLambda<string>("PushReportContinue", report);
+        }
+
+        public Result<UserCredentials> Login(string username, string password)
+        {
+            ProgressModule.Message(LocalizationModule.Translate("progress_authentication"));
+
+            var user = new User();
+
+            user.Username = username;
+
+            user.Password = password;
+
+            return AmazonModule.InvokeLambda<UserCredentials>("Login", user);
         }
 
 

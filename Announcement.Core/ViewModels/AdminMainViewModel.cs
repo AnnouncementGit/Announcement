@@ -73,7 +73,7 @@ namespace Announcement.Core
 
         public async void DeleteModerator(Moderator moderator, Action<Moderator, bool> callback)
         {
-            var result = await Task.Run<Result<string>>(() => SourceManager.DeleteModerator(moderator.Id));
+            var result = await Task.Run<Result<string>>(() => SourceManager.DeleteModerator(moderator.Username));
 
             ProgressModule.End();
 

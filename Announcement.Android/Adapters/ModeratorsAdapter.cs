@@ -59,60 +59,7 @@ namespace Announcement.Android
 
             return convertView;
         }
-
-//        protected void Holder_imgDelete_Click (object sender, EventArgs e)
-//        {
-//            var view = sender as View;
-//
-//            if (view != null)
-//            {
-//                var row = view.Tag as View;
-//
-//                if (row != null)
-//                {
-//                    var holder = row.Tag as ModeratorsAdapterItemHolder;
-//
-//                    var animatorAlpha = ValueAnimator.OfFloat(new[] { 1.0f, 0.0f });
-//
-//                    animatorAlpha.SetDuration(200);
-//
-//                    animatorAlpha.Update += (o, animatorUpdateEventArgs) =>
-//                        {
-//                            row.Alpha = (float)animatorUpdateEventArgs.Animation.AnimatedValue;
-//                        };
-//
-//                    animatorAlpha.AnimationEnd += (obj, args) =>
-//                    {
-//                        var originalHeight = row.Height;
-//
-//                        var animatorHeight = ValueAnimator.OfInt(new[] { originalHeight, 0 });
-//
-//                        animatorHeight.SetDuration(200);
-//
-//                        animatorHeight.Update += (o, animatorUpdateEventArgs) =>
-//                        {
-//                            row.LayoutParameters.Height = (int)animatorUpdateEventArgs.Animation.AnimatedValue;
-//
-//                            row.RequestLayout();
-//                        };
-//
-//                        animatorHeight.AnimationEnd += (o, eventArgs) =>
-//                        { 
-//                            Remove(objects[holder.position]);
-//
-//                            row.LayoutParameters.Height = originalHeight;
-//
-//                            row.Alpha = 1.0f;                                    
-//                        };
-//
-//                        animatorHeight.Start();
-//                    };
-//
-//                    animatorAlpha.Start();
-//                }
-//            }
-//        }
-
+            
         protected void Holder_imgDelete_Click (object sender, EventArgs e)
         {
             var view = sender as View;
@@ -174,7 +121,9 @@ namespace Announcement.Android
                 
                         row.LayoutParameters.Height = originalHeight;
                 
-                        row.Alpha = 1.0f;                                    
+                        row.Alpha = 1.0f;   
+
+                        swipeRefreshLayout.IsIntercept = false;
                     };
                 
                     animatorHeight.Start();

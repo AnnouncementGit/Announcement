@@ -17,16 +17,25 @@ namespace Announcement.Core
 
         public async void PushModerator(string username, string password, Action callback)
         {
-			if (!EnteredDataValid (username, password))
-				return;
+            if (!EnteredDataValid(username, password))
+            {
+                return;
+            }
 			
-            var result = await Task.Run<Result<string>>(() => SourceManager.PushModerator(username, password));
+            var result = await Task.Run<Result<string>>(() => SourceManager.PushModerator(username, EncryptorModule.Encrypt(password)));
 
             ProgressModule.End();
 
             if (result.HasError)
             {
-                AlertModule.ShowError(result.Message, () => PushModerator(username, password, callback));
+                if(result.ErrorCode == ErrorCodes.UserAlreadyExists)
+                {
+                    AlertModule.Show(LocalizationModule.Translate("alert_message_moderator_creation"), LocalizationModule.Translate("alert_message_username_already_exists"), LocalizationModule.Translate("alert_button_ok"));
+                }
+                else
+                {
+                   AlertModule.ShowError(result.Message, () => PushModerator(username, password, callback));
+                }
             }
             else
             {

@@ -39,6 +39,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\MenuViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Modules\DispatcherModule.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Modules\ValidationModule.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Modules\EncryptorModule.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ErrorCodes.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\UserCredentials.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Language.resx">
