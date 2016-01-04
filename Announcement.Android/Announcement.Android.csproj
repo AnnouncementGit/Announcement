@@ -196,19 +196,14 @@
     <AndroidResource Include="Resources\drawable\report_spam_button_selector.xml" />
     <AndroidResource Include="Resources\drawable-hdpi\login_background.png" />
     <AndroidResource Include="Resources\drawable-hdpi\logo.png" />
-    <AndroidResource Include="Resources\drawable-hdpi\splash.png" />
     <AndroidResource Include="Resources\drawable-mdpi\login_background.png" />
     <AndroidResource Include="Resources\drawable-mdpi\logo.png" />
-    <AndroidResource Include="Resources\drawable-mdpi\splash.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\login_background.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\logo.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\splash.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\login_background.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\logo.png" />
-    <AndroidResource Include="Resources\drawable-xxhdpi\splash.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\login_background.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\logo.png" />
-    <AndroidResource Include="Resources\drawable-xxxhdpi\splash.png" />
     <AndroidResource Include="Resources\drawable\login_fields_background.xml" />
     <AndroidResource Include="Resources\drawable-hdpi\fb_login_icon.png" />
     <AndroidResource Include="Resources\drawable-hdpi\google_login_icon.png" />
@@ -288,6 +283,16 @@
     <AndroidResource Include="Resources\drawable-xhdpi\icon_play_small.png" />
     <AndroidResource Include="Resources\drawable-mdpi\icon_play_small.png" />
     <AndroidResource Include="Resources\drawable-hdpi\icon_play_small.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\splash_background.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\splash_logo.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\splash_background.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\splash_logo.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\splash_background.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\splash_logo.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\splash_background.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\splash_logo.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\splash_background.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\splash_logo.png" />
   </ItemGroup>
   <Import Project="..\Announcement.Core\Announcement.Core.projitems" Label="Shared" Condition="Exists('..\Announcement.Core\Announcement.Core.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />

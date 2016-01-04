@@ -20,7 +20,6 @@ namespace Announcement.Android
             }
         }
 
-
         public override View OnCreateView(global::Android.Views.LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
             var view = inflater.Inflate(Resource.Layout.header_view, null);
