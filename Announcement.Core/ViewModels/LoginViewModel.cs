@@ -8,8 +8,6 @@ namespace Announcement.Core
 {
     public class LoginViewModel : BaseViewModel
     {
-        public bool IsAdmin { get; set; }
-        
         public static LoginViewModel Instance
         {
             get
@@ -18,24 +16,24 @@ namespace Announcement.Core
             }
         }
              
-        public async void LoginViaFacebook(string token, Action callback)
+        public async void LoginViaFacebook(string userId, string token, Action callback)
         {
-            await SocialLogin(token, callback);
+            await SocialLogin(userId, token, callback);
         }
 
-        public async void LoginViaGooglePlus(string token, Action callback)
+        public async void LoginViaGooglePlus(string userId, string token, Action callback)
         {
-            await SocialLogin(token, callback);
+            await SocialLogin(userId, token, callback);
         }
 
-        public async void LoginViaVK(string token, Action callback)
+        public async void LoginViaVK(string userId, string token, Action callback)
         {
-            await SocialLogin(token, callback);
+            await SocialLogin(userId, token, callback);
         }
 
-        public async void LoginViaLinkedIn(string token, Action callback)
+        public async void LoginViaLinkedIn(string userId, string token, Action callback)
         {
-            await SocialLogin(token, callback);
+            await SocialLogin(userId, token, callback);
         }
             
         public async void LoginForAdminStuff(string username, string password, Action callback)
@@ -51,25 +49,32 @@ namespace Announcement.Core
 
             if (loginResult.HasError || !loginResult.IsSuccess)
             {
-                IsAdmin = false;
-
                 ProgressModule.End();
 
-                AlertModule.Show(LocalizationModule.Translate("alert_title_authorization"), LocalizationModule.Translate("alert_message_wrong_credentials"), LocalizationModule.Translate("alert_button_ok"));
-            }
-            else
-            {
-                if (loginResult.Value != null && loginResult.Value.Role == 1)
+                if(loginResult.ErrorCode == ErrorCodes.UserWrongCredentials)
                 {
-                    viewModel = ModeratorMainViewModel.Instance;
-
-                    IsAdmin = false;
+                    AlertModule.Show(LocalizationModule.Translate("alert_title_authorization"), LocalizationModule.Translate("alert_message_wrong_credentials"), LocalizationModule.Translate("alert_button_ok"));
                 }
                 else
                 {
-                    viewModel = AdminMainViewModel.Instance;
-
-                    IsAdmin = true;
+                    AlertModule.ShowError(loginResult.Message, () => LoginForAdminStuff(username, password, callback));
+                }
+            }
+            else
+            {
+                UserInfo = loginResult.Value;
+                
+                if (UserInfo != null)
+                {
+                    switch(UserInfo.Role)
+                    {
+                        case UserRoles.Admin:
+                            viewModel = AdminMainViewModel.Instance; 
+                            break;
+                        default:
+                            viewModel = ModeratorMainViewModel.Instance; 
+                            break;
+                    }
                 }
 
                 var result = await Task.Run<Result>(() => viewModel.Initialize());
@@ -82,6 +87,12 @@ namespace Announcement.Core
                 }
                 else
                 {
+                    SettingsModule.Save(Constants.USER_ID, UserInfo.Username);
+
+                    SettingsModule.Save(Constants.USER_ROLE, UserInfo.Role);
+
+                    SettingsModule.Save(Constants.USER_ACCESS_TOKEN, UserInfo.AccessToken);
+                    
                     if (callback != null)
                     {                   
                         DispatcherModule.Invoke(callback);
@@ -90,27 +101,49 @@ namespace Announcement.Core
             }
         }
 
-        protected async Task SocialLogin(string token, Action callback)
+        protected async Task SocialLogin(string userId, string token, Action callback)
         {
             var viewModel = UserMainViewModel.Instance;
+            
+            var loginResult = await Task.Run<Result<UserCredentials>>(() => SourceManager.LoginViaSocial(userId, EncryptorModule.Encrypt("dsdsdsds")));
 
-            ProgressModule.Message(LocalizationModule.Translate("progress_authentication"));
-
-            await Task.Delay(2000);
-
-            var result = await Task.Run<Result>(() => viewModel.Initialize());
-
-            ProgressModule.End();
-
-            if (result.HasError)
+            if (loginResult.HasError || !loginResult.IsSuccess)
             {
-                AlertModule.ShowError(result.Message, async () => await SocialLogin(token, callback));
+                ProgressModule.End();
+
+                if(loginResult.ErrorCode == ErrorCodes.UserWrongCredentials)
+                {
+                    AlertModule.Show(LocalizationModule.Translate("alert_title_authorization"), LocalizationModule.Translate("alert_message_wrong_credentials"), LocalizationModule.Translate("alert_button_ok"));
+                }
+                else
+                {
+                    AlertModule.ShowError(loginResult.Message, () => SocialLogin(userId, token, callback));
+                }
             }
             else
             {
-                if (callback != null)
+                UserInfo = loginResult.Value;
+
+                var result = await Task.Run<Result>(() => viewModel.Initialize());
+
+                ProgressModule.End();
+
+                if (result.HasError)
                 {
-                    DispatcherModule.Invoke(callback);
+                    AlertModule.ShowError(result.Message, () => SocialLogin(userId, token, callback));
+                }
+                else
+                {
+                    SettingsModule.Save(Constants.USER_ID, UserInfo.Username);
+
+                    SettingsModule.Save(Constants.USER_ROLE, UserInfo.Role);
+
+                    SettingsModule.Save(Constants.USER_ACCESS_TOKEN, UserInfo.AccessToken);
+                    
+                    if (callback != null)
+                    {                   
+                        DispatcherModule.Invoke(callback);
+                    }
                 }
             }
         }

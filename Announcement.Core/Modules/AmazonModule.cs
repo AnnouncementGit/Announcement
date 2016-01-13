@@ -83,7 +83,14 @@ namespace Announcement.Core
 
                     if(result)
                     {
-                        return JsonConvert.DeserializeObject<Result<T>>(Encoding.UTF8.GetString(task.Result.Payload.ToArray()));
+                        var deserializeObject = JsonConvert.DeserializeObject<Result<T>>(Encoding.UTF8.GetString(task.Result.Payload.ToArray()));
+
+                        if(deserializeObject.HasError && deserializeObject.ErrorCode == ErrorCodes.UserWrongAccessToken)
+                        {
+                            deserializeObject.Message = LocalizationModule.Translate("alert_message_wrong_token");
+                        }
+
+                        return deserializeObject;
                     }
                     else
                     {

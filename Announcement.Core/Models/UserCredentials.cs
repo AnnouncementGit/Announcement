@@ -9,10 +9,11 @@ namespace Announcement.Core
         public string Username { get; set; }
 
         [JsonProperty("role")]
-        public int Role { get; set; }
+        public UserRoles Role { get; set; }
 
         [JsonProperty("accessToken")]
         public string AccessToken { get; set; }
     }
+
 }
 

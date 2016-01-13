@@ -21,7 +21,7 @@ namespace Announcement.Core
         {
             ProgressModule.Message(LocalizationModule.Translate("progress_receiving_moderators"));
 
-            var result = AmazonModule.InvokeLambda<List<Moderator>>("PullModerators", null);
+            var result = AmazonModule.InvokeLambda<List<Moderator>>("PullModerators", BaseViewModel.UserInfo);
 
             if (result.Value == null)
             {
@@ -61,7 +61,7 @@ namespace Announcement.Core
         {
             ProgressModule.Message(LocalizationModule.Translate("progress_receiving_reports"));
 
-            var result = AmazonModule.InvokeLambda<List<Report>>("PullReports", null);
+            var result = AmazonModule.InvokeLambda<List<Report>>("PullReports", BaseViewModel.UserInfo);
 
             if (result.Value == null)
             {
@@ -75,7 +75,7 @@ namespace Announcement.Core
         {
             ProgressModule.Message(LocalizationModule.Translate("progress_creating_moderator"));
 
-            var moderator = new ModeratorRegistration() { Username = username, Password = password };
+            var moderator = new ModeratorRegistration(BaseViewModel.UserInfo) { ModeratorUsername = username, ModeratorPassword = password };
 
             return AmazonModule.InvokeLambda<string>("PushModerator", moderator);
         }
@@ -83,22 +83,26 @@ namespace Announcement.Core
         public Result<string> DeleteModerator(string id)
         {
             ProgressModule.Message(LocalizationModule.Translate("progress_deleting_moderator"));
-            
-            return AmazonModule.InvokeLambda<string>("RemoveModerator", id);
+
+            var optionId = new OptionId(BaseViewModel.UserInfo) { Id = id }; 
+
+            return AmazonModule.InvokeLambda<string>("RemoveModerator", optionId);
         }
 
         public Result<string> RejectReport(string id)
         {
             ProgressModule.Message(LocalizationModule.Translate("progress_report_rejecting"));
 
-            return AmazonModule.InvokeLambda<string>("RejectReport", id);
+            var optionId = new OptionId(BaseViewModel.UserInfo) { Id = id }; 
+
+            return AmazonModule.InvokeLambda<string>("RejectReport", optionId);
         }
 
         public Result<string> ConfirmReport(string id, string phoneNumber)
         {
             ProgressModule.Message(LocalizationModule.Translate("progress_report_confirming"));
 
-            var report = new Report() { Id = id, PhoneNumber = phoneNumber };
+            var report = new OptionReport(BaseViewModel.UserInfo) { Id = id, PhoneNumber = phoneNumber };
 
             return AmazonModule.InvokeLambda<string>("ConfirmReport", report);
         }
@@ -107,7 +111,7 @@ namespace Announcement.Core
         {
             ProgressModule.Message(LocalizationModule.Translate("progress_send_report_spam"), true);
 
-            var report = new SingleReport() { Latitude = latitude, Longitude = longitude, Photo = photo  };
+            var report = new OptionReport(BaseViewModel.UserInfo) { Latitude = latitude, Longitude = longitude, Photo = photo  };
 
             return AmazonModule.InvokeLambda<string>("PushReport", report);
         }
@@ -116,7 +120,7 @@ namespace Announcement.Core
         {
             ProgressModule.Message(LocalizationModule.Translate("progress_send_report_spam"), true);
 
-            var report = new SingleContinueReport() { id = id, Latitude = latitude, Longitude = longitude, Photo = photo  };
+            var report = new OptionReport(BaseViewModel.UserInfo) { Id = id, Latitude = latitude, Longitude = longitude, Photo = photo  };
 
             return AmazonModule.InvokeLambda<string>("PushReportContinue", report);
         }
@@ -132,6 +136,19 @@ namespace Announcement.Core
             user.Password = password;
 
             return AmazonModule.InvokeLambda<UserCredentials>("Login", user);
+        }
+
+        public Result<UserCredentials> LoginViaSocial(string userId, string token)
+        {
+            ProgressModule.Message(LocalizationModule.Translate("progress_authentication"));
+
+            var user = new SocialUser();
+
+            user.UserId = userId;
+
+            user.Token = token;
+
+            return AmazonModule.InvokeLambda<UserCredentials>("LoginViaSocial", user);
         }
 
 

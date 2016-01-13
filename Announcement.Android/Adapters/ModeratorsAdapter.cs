@@ -123,7 +123,9 @@ namespace Announcement.Android
                 
                         row.Alpha = 1.0f;   
 
-                        swipeRefreshLayout.IsIntercept = false;
+                                holder.scrlSlider.IsFromFullScroll = true;
+
+                                swipeRefreshLayout.IsIntercept = false;
                     };
                 
                     animatorHeight.Start();

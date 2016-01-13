@@ -10,6 +10,8 @@ namespace Announcement.Android.Controls
 {
 	public class MagicHorizontalScrollView : HorizontalScrollView, IWidthOnScreen
 	{
+        public bool IsFromFullScroll { get; set; }
+
         public InterceptedSwipeRefreshLayout SwipeRefreshLayout { get; set; }
 
 		public SlideStates SlideState { get; set; }
@@ -59,7 +61,7 @@ namespace Announcement.Android.Controls
 
 		public override bool OnTouchEvent(MotionEvent e)
 		{
-			isFromFullScroll = false;
+            IsFromFullScroll = false;
 
 			switch (e.Action)
 			{    
@@ -83,7 +85,7 @@ namespace Announcement.Android.Controls
 						{
 							FullScroll(FocusSearchDirection.Left);
 
-							isFromFullScroll = true;
+                                IsFromFullScroll = true;
 
 							return true;
 						}
@@ -94,7 +96,7 @@ namespace Announcement.Android.Controls
 						{
 							FullScroll(FocusSearchDirection.Right);
 
-							isFromFullScroll = true;
+                                IsFromFullScroll = true;
 
 							return true;
 						}
@@ -134,7 +136,8 @@ namespace Announcement.Android.Controls
 		protected override void OnScrollChanged(int l, int t, int oldl, int oldt)
 		{
 			base.OnScrollChanged(l, t, oldl, oldt);
-			if (!isFromFullScroll)
+
+            if (!IsFromFullScroll)
 			{
 				isInSliding = true;
 
@@ -144,8 +147,6 @@ namespace Announcement.Android.Controls
 				}
 			}
 		}
-            
-		private bool isFromFullScroll;
 
 		private bool isInSliding;
 

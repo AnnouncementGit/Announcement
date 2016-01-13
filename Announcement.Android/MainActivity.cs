@@ -6,12 +6,22 @@ using Android.Support.V4.App;
 using LocationProvider = Announcement.Android.Services.Location.LocationProvider;
 using Android.Content;
 using Android.Views;
+using Announcement.Core;
+using Android.Widget;
 
 namespace Announcement.Android
 {
     [Activity(ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.ScreenSize, Label = "Announcement", MainLauncher = true, Icon = "@drawable/icon", Theme="@style/splash_theme")]
-    public class MainActivity : FragmentActivity, ILocationListener
+    public class MainActivity : FragmentActivity, ILocationListener, ViewTreeObserver.IOnGlobalLayoutListener
 	{
+        private MainViewModel ViewModel 
+        { 
+            get 
+            { 
+                return MainViewModel.Instance; 
+            }
+        }
+
 		public Location lastKnownLocation;
 
 		public LocationProvider locationProvider;
@@ -29,13 +39,48 @@ namespace Announcement.Android
 			MainActivityInstance.Current = this;
 
             NavigationManager.Initialize(this);
-			NavigationManager.AddHeader(typeof(HeaderFragment));
-			NavigationManager.Forward(typeof(LoginFragment));
-			//NavigationManager.Forward(typeof(UserMainFragment));
-			//NavigationManager.Forward(typeof(AdminMainFragment));
-			//NavigationManager.Forward(typeof(ModeratorMainFragment));
 
-			locationProvider = new LocationProvider (this, this);
+            locationProvider = new LocationProvider (this, this);
+
+            var mainContent = FindViewById<LinearLayout>(Resource.Id.MainContent);
+
+            mainContent.ViewTreeObserver.AddOnGlobalLayoutListener(this);
+        }
+            
+        public void OnGlobalLayout()
+        {
+            var mainContent = FindViewById<LinearLayout>(Resource.Id.MainContent);
+            
+            mainContent.ViewTreeObserver.RemoveOnGlobalLayoutListener(this);
+
+            ViewModel.AutoLogin(AutoLoginSuccessCallback, AutoLoginFailCallback);
+        }
+            
+        protected void AutoLoginSuccessCallback()
+        {
+            NavigationManager.AddHeader(typeof(HeaderFragment));
+            
+            switch (BaseViewModel.UserInfo.Role)
+            {
+                case UserRoles.User:
+                    NavigationManager.Forward(typeof(UserMainFragment));
+                    break;
+
+                case UserRoles.Admin:
+                    NavigationManager.Forward(typeof(AdminMainFragment));
+                    break;
+
+                case UserRoles.Moderator:
+                    NavigationManager.Forward(typeof(ModeratorMainFragment));
+                    break;
+            }
+        }
+
+        protected void AutoLoginFailCallback()
+        {
+            NavigationManager.AddHeader(typeof(HeaderFragment));
+
+            NavigationManager.Forward(typeof(LoginFragment));
         }
 
         public override void OnBackPressed()
@@ -52,7 +97,7 @@ namespace Announcement.Android
             }
         }
 
-		protected override void OnActivityResult (int requestCode, Result resultCode, global::Android.Content.Intent data)
+		protected override void OnActivityResult (int requestCode, global::Android.App.Result resultCode, global::Android.Content.Intent data)
 		{
 			base.OnActivityResult (requestCode, resultCode, data);
 

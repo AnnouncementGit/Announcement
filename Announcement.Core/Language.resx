@@ -188,4 +188,6 @@ Press OK to choose another one. </value></data>
 
 <data name="alert_message_moderator_creation" xml:space="preserve"><value>Moderator creation.</value></data>
 
+<data name="alert_message_wrong_token" xml:space="preserve"><value>Wrong access token.</value></data>
+
 </root>

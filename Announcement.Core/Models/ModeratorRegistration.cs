@@ -3,13 +3,30 @@ using Newtonsoft.Json;
 
 namespace Announcement.Core
 {
-    public class ModeratorRegistration
+    public class ModeratorRegistration : UserCredentials
     {
-        [JsonProperty("username")]
-        public string Username { get; set; }
+        [JsonProperty("moderatorUsername")]
+        public String ModeratorUsername { get; set; }
 
-        [JsonProperty("password")]
-        public string Password { get; set; }
+        [JsonProperty("moderatorPassword")]
+        public String ModeratorPassword { get; set; }
+
+        public ModeratorRegistration()
+        {
+
+        }
+
+        public ModeratorRegistration(UserCredentials credentials)
+        {
+            if (credentials != null)
+            {
+                Username = credentials.Username;
+
+                Role = credentials.Role;
+
+                AccessToken = credentials.AccessToken;
+            }
+        }
     }
 }
 

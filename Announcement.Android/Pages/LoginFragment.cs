@@ -54,7 +54,7 @@ namespace Announcement.Android
             {
                 SocialServices.Instance.FacebookLogin((token) =>
                     { 
-                            ViewModel.LoginViaFacebook(token, LoginViaSocialCallback);
+                            ViewModel.LoginViaFacebook("someUserId", token, LoginViaSocialCallback);
                     });
             };
 
@@ -62,7 +62,7 @@ namespace Announcement.Android
             {
                 SocialServices.Instance.GoogleLogin((token) =>
                     { 
-                        ViewModel.LoginViaGooglePlus(token, LoginViaSocialCallback);
+                            ViewModel.LoginViaGooglePlus("someUserId", token, LoginViaSocialCallback);
                     });
             };
 
@@ -70,7 +70,7 @@ namespace Announcement.Android
             {
                 SocialServices.Instance.VKLogin((token) =>
                     { 
-                        ViewModel.LoginViaVK(token, LoginViaSocialCallback);
+                            ViewModel.LoginViaVK("someUserId", token, LoginViaSocialCallback);
                     });
             };
 
@@ -78,7 +78,7 @@ namespace Announcement.Android
             {
                 SocialServices.Instance.LinkedInLogin((token) =>
                     { 
-                        ViewModel.LoginViaLinkedIn(token, LoginViaSocialCallback);
+                            ViewModel.LoginViaLinkedIn("someUserId", token, LoginViaSocialCallback);
                     });
             };
 
@@ -93,13 +93,16 @@ namespace Announcement.Android
         {
             NavigationManager.EraseBackStack();
 
-            if (ViewModel.IsAdmin)
+            if (BaseViewModel.UserInfo != null)
             {
-                NavigationManager.Forward(typeof(AdminMainFragment));
-            }
-            else
-            {
-                NavigationManager.Forward(typeof(ModeratorMainFragment));
+                if (BaseViewModel.UserInfo.Role == UserRoles.Admin)
+                {
+                    NavigationManager.Forward(typeof(AdminMainFragment));
+                }
+                else
+                {
+                    NavigationManager.Forward(typeof(ModeratorMainFragment));
+                }
             }
         }
 

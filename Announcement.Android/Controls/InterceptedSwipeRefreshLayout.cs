@@ -14,6 +14,7 @@ namespace Announcement.Android.Controls
 {
     public class InterceptedSwipeRefreshLayout : SwipeRefreshLayout 
     {
+        
         public bool IsIntercept { get; set; }
 
         public InterceptedSwipeRefreshLayout(IntPtr javaReference, JniHandleOwnership transfer) : base(javaReference, transfer)

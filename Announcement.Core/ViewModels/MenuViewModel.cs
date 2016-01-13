@@ -17,6 +17,14 @@ namespace Announcement.Core
              
         public async void Logout( Action callback)
         {
+            UserInfo = null;
+
+            SettingsModule.Remove(Constants.USER_ID);
+
+            SettingsModule.Remove(Constants.USER_ACCESS_TOKEN);
+
+            SettingsModule.Remove(Constants.USER_ROLE);
+            
             ProgressModule.Message(LocalizationModule.Translate("progress_logout"));
 
             await Task.Delay(1000);

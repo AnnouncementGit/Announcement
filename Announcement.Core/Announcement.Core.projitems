@@ -42,6 +42,13 @@
     <Compile Include="$(MSBuildThisFileDirectory)Modules\EncryptorModule.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ErrorCodes.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\UserCredentials.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\UserRoles.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\OptionId.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\OptionReport.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\SocialUser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Modules\SettingsModule.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Constants.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\MainViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Language.resx">

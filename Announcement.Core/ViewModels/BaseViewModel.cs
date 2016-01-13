@@ -5,6 +5,8 @@ namespace Announcement.Core
 {
     public abstract class BaseViewModel
     {
+        public static UserCredentials UserInfo { get; set; }
+        
         public SourceManager SourceManager
         {
             get
