@@ -14,6 +14,9 @@ using Amazon.CognitoIdentity;
 using System.Threading.Tasks;
 using Amazon.CognitoSync.SyncManager;
 using System.Threading;
+using Amazon.S3;
+using Amazon.S3.Model;
+using System.IO;
 
 namespace Announcement.Core
 {
@@ -57,6 +60,27 @@ namespace Announcement.Core
                 }
 
                 return lambdaClient;
+            }
+        }
+
+        private static AmazonS3Client AmazonS3Client
+        {
+            get
+            {
+                if (amazonS3Client == null)
+                {
+                    var config = new AmazonS3Config();
+
+                    config.ServiceURL = "s3.amazonaws.com";
+
+                    config.UseHttp = true;
+
+                    config.RegionEndpoint = regionEndpoint;
+
+                    amazonS3Client = new AmazonS3Client(Credentials, config);
+                }
+
+                return amazonS3Client;
             }
         }
 
@@ -112,6 +136,33 @@ namespace Announcement.Core
 			}
         }
 
+        public static async Task<bool> UploadAudioFile(string filePath, string fileName)
+        {
+            try
+            {
+                var request = new PutObjectRequest();
+
+                request.BucketName = BUCKET_FOR_AUDIO_FILES;
+
+                request.Key = fileName;
+
+                request.FilePath = filePath;
+
+                var response = await AmazonS3Client.PutObjectAsync(request);
+
+                if (response.HttpStatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    return true;
+                }
+            }
+            catch (Exception)
+            {
+                
+            }
+
+            return false;
+        }
+
 		private static bool NetworkAvailability()
 		{
 			var connectivityManager = (ConnectivityManager)Application.Context.GetSystemService(Context.ConnectivityService);
@@ -127,9 +178,13 @@ namespace Announcement.Core
 
         private static AmazonLambdaClient lambdaClient;
 
+        private static AmazonS3Client amazonS3Client;
+
         private static RegionEndpoint regionEndpoint = RegionEndpoint.EUWest1;
 
         private const int CONNECTION_TIMEOUT_MS = 20000;
+
+        private const string BUCKET_FOR_AUDIO_FILES = "stop-spam/audio_records";
 
         private const string IDENTITY_POOL_ID = "eu-west-1:7e2559ad-767f-41bf-9372-bcfd7b9cd8c6";
     }

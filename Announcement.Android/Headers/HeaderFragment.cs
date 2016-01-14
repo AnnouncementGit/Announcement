@@ -102,11 +102,31 @@ namespace Announcement.Android
         {
             var menuItems = new List<string>();
 
-            if (NavigationManager.CurrentFragment == typeof(AdminMainFragment))
+            switch (BaseViewModel.UserInfo.Role)
             {
-                menuItems.Add(LocalizationModule.Translate("label_add_moderator"));
-            }
+                case UserRoles.User:
+                    break;
 
+                case UserRoles.Moderator:
+                    if(NavigationManager.CurrentFragment != typeof(SpammersFragment))
+                    {
+                        menuItems.Add(LocalizationModule.Translate("label_spammers"));
+                    }
+                    break;
+
+                case UserRoles.Admin:
+                    if (NavigationManager.CurrentFragment != typeof(CreateModeratorFragment))
+                    {
+                        menuItems.Add(LocalizationModule.Translate("label_add_moderator"));
+                    }
+
+                    if(NavigationManager.CurrentFragment != typeof(SpammersFragment))
+                    {
+                        menuItems.Add(LocalizationModule.Translate("label_spammers"));
+                    }
+                    break;
+            }
+                    
             menuItems.Add(LocalizationModule.Translate("label_logout"));
 
             popupListView.Adapter = new ArrayAdapter(MainActivityInstance.Current, Resource.Layout.popup_menu_item, menuItems);
@@ -123,25 +143,25 @@ namespace Announcement.Android
         {
             popupWindow.Dismiss();
 
-            switch (e.Position)
-            {
-                case 0:
-                    if (((ListView)sender).Count > 1)
-                    {
-                        AdminMainViewModel.Instance.InitializeCreateModerator(() =>
-                            {
-                                NavigationManager.Forward(typeof(CreateModeratorFragment));
-                            });
-                    }
-                    else
-                    {
-                        ViewModel.Logout(LogoutCallback);
-                    }
-                    break;
+            var title = (string)((ArrayAdapter)popupListView.Adapter).GetItem(e.Position);
 
-                case 1:
-                    ViewModel.Logout(LogoutCallback);
-                    break;
+            if (title == LocalizationModule.Translate("label_add_moderator"))
+            {
+                AdminMainViewModel.Instance.InitializeCreateModerator(() =>
+                    {
+                        NavigationManager.Forward(typeof(CreateModeratorFragment));
+                    });
+            }
+            else if (title == LocalizationModule.Translate("label_spammers"))
+            {
+                AdminMainViewModel.Instance.InitializeSpammers(() =>
+                    {
+                        NavigationManager.Forward(typeof(SpammersFragment));
+                    });
+            }
+            else if (title == LocalizationModule.Translate("label_logout"))
+            {
+                ViewModel.Logout(LogoutCallback);
             }
         }
 

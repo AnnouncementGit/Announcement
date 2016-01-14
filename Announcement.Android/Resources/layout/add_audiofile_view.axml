@@ -33,8 +33,8 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
                 android:paddingTop="5dp"
                 android:paddingBottom="5dp"
                 android:paddingLeft="10dp"
@@ -48,25 +48,28 @@
                 android:textCursorDrawable="@null"
                 android:background="@drawable/login_fields_background"
                 local:localizationKey="label_select_audio_record" />
-            <ImageView
+            <Button
                 android:id="@+id/btnPlay"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:layout_marginRight="30dp"
-                android:scaleType="centerInside"
-                android:src="@drawable/icon_play_small"
-                android:background="@drawable/button_selector" />
+                android:layout_marginRight="15dp"
+                android:background="@drawable/player_button_selector" />
         </LinearLayout>
         <Announcement.Android.Controls.Button
             style="@style/text_view_normal_font_style"
             android:id="@+id/btnUpload"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="30dp"
             android:textSize="32sp"
             android:layout_gravity="right"
             android:background="@drawable/button_selector"
             local:localizationKey="button_title_upload"
-            android:padding="10dp" />
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="30dp" />
     </LinearLayout>
 </ScrollView>

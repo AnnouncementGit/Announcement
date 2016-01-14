@@ -151,7 +151,43 @@ namespace Announcement.Core
             return AmazonModule.InvokeLambda<UserCredentials>("LoginViaSocial", user);
         }
 
+        public Result<List<Spammer>> PullSpammers()
+        {
+            ProgressModule.Message(LocalizationModule.Translate("progress_receiving_spammers"));
 
+            var result = AmazonModule.InvokeLambda<List<Spammer>>("PullSpammers", BaseViewModel.UserInfo);
+
+            if (result.Value == null)
+            {
+                result.Value = new List<Spammer>();
+            }
+
+            return result;
+        }
+            
+        public Result<Object> PushAudioRecord(string filePath, Spammer spammer)
+        {
+            ProgressModule.Message(LocalizationModule.Translate("progress_uploading_audio_record"));
+
+            var fileName = string.Format("{0}.mp3", spammer.Id);
+
+            if (AmazonModule.UploadAudioFile(filePath, fileName).Result)
+            {
+                var result = AmazonModule.InvokeLambda<Object>("AssignAudioRecordWithSpammer", new OptionSpammer(BaseViewModel.UserInfo) { Id = spammer.Id, AudioRecord = fileName });
+
+                if (result.IsSuccess)
+                {
+                    spammer.AudioRecord = fileName;
+                }
+
+                return result;
+            }
+            else
+            {
+                return new Result<Object>() { HasError = true };
+            }
+        }
+            
         private static SourceManager instance;
     }
 }

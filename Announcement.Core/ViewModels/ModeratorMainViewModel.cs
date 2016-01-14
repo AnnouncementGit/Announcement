@@ -80,6 +80,27 @@ namespace Announcement.Core
             }
         }
 
+        public async void InitializeSpammers(Action callback)
+        {
+            var viewModel = SpammersMainViewModel.Instance;
+
+            var result = await Task.Run<Result>(() => viewModel.Initialize());
+
+            ProgressModule.End();
+
+            if (result.HasError)
+            {
+                AlertModule.ShowError(result.Message, () => InitializeSpammers(callback));
+            }
+            else
+            {
+                if (callback != null)
+                {
+                    DispatcherModule.Invoke(callback);
+                }
+            }
+        }
+
         public async void RefreshReports(Action callback)
         {
             var result = await Task.Run<Result<List<Report>>>(() => SourceManager.PullReports());

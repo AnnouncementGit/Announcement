@@ -8,15 +8,19 @@ using Java.Lang;
 using Java.IO;
 using Announcement.Core;
 using Android.Media;
+using System.Threading.Tasks;
 
 namespace Announcement.Android
 {
 	public class AddAudioFileFragment : BaseFragment
 	{
-		MediaPlayer mp;
-		private Announcement.Android.Controls.TextView audioFileTextView;
-		byte[] fileByte;
-		string filePath;
+        private SpammerAudioRecordInfoViewModel ViewModel 
+        { 
+            get 
+            { 
+                return SpammerAudioRecordInfoViewModel.Instance; 
+            }
+        }
 
 		public override View OnCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 		{
@@ -28,74 +32,98 @@ namespace Announcement.Android
 			var btnUpload = view.FindViewById<Announcement.Android.Controls.Button> (Resource.Id.btnUpload);
 			btnUpload.Click += BtnUploadOnClick;
 
-			var btnPlay = view.FindViewById<ImageView> (Resource.Id.btnPlay);
+            btnPlay = view.FindViewById<global::Android.Widget.Button> (Resource.Id.btnPlay);
 			btnPlay.Click += BtnPlayOnClick;
 
-			filePath = "http://www.ex.ua/load/9768738";
+            filePath = ViewModel.CurrentAudioRecordPath;
 
-			mp = new MediaPlayer ();
+			audioPlayer = new MediaPlayer ();
 
 			return view;
 		}
 
-		void BtnPlayOnClick (object sender, System.EventArgs e)
+		protected void BtnPlayOnClick (object sender, System.EventArgs e)
 		{
-			if (!string.IsNullOrWhiteSpace (filePath))
-				PlayAudioByPath (filePath);
-			else
-				AlertModule.ShowInformation ("No audio on server. Please upload or choose file to play!");
+            if (!string.IsNullOrWhiteSpace(filePath))
+            {
+                PlayAudioByPath(filePath);
+            }
+            else
+            {
+                AlertModule.ShowInformation(LocalizationModule.Translate("alert_message_no_audio"));
+            }
 		}
 
-		private void PlayAudioByPath(string path)
-		{
-			try
-			{
-				mp.SetDataSource(path);
-				mp.Prepare();
-			}
-			catch (Exception ex)
-			{
-				ex.PrintStackTrace ();
-			}
+        protected void PlayAudioByPath(string path)
+        {
+            btnPlay.Selected = !btnPlay.Selected;
 
-			if (mp.IsPlaying)
-				mp.Reset();
-			else
-				mp.Start();
-		}
+            Task.Run(() =>
+                {
+                    try
+                    {
+                        audioPlayer.SetDataSource(path);
 
-		void AudioFileTextViewOnClick (object sender, System.EventArgs e)
+                        audioPlayer.Prepare();
+                    }
+                    catch (Exception ex)
+                    {
+                        ex.PrintStackTrace();
+                    }
+
+                    if (audioPlayer.IsPlaying)
+                    {
+                        audioPlayer.Reset();
+                    }
+                    else
+                    {
+                        audioPlayer.Start();
+                    }
+                });       
+        }
+
+        protected void AudioFileTextViewOnClick (object sender, System.EventArgs e)
 		{
 			ShowFileChooser ();
 		}
 
-		void BtnUploadOnClick (object sender, System.EventArgs e)
+        protected void BtnUploadOnClick (object sender, System.EventArgs e)
 		{
-			if (fileByte != null && fileByte.Length != 0)
-				AlertModule.ShowInformation ("File Uploaded");
-			else
-				AlertModule.ShowInformation ("Please choose file to upload!");
+            if (!string.IsNullOrEmpty(filePath))
+            {
+                ViewModel.PushAudioRecord(filePath, null);
+            }
+            else
+            {
+                AlertModule.ShowInformation("Please choose file to upload!");
+            }
 		}
-
+            
 		public override void OnPause ()
 		{
 			base.OnPause ();
 
-			mp.Stop ();
+			audioPlayer.Stop ();
 		}
 
-		private static int FileSelectCode = 123;
-		private void ShowFileChooser() {
-			Intent intent = new Intent(Intent.ActionGetContent); 
-			intent.SetType("audio/*"); 
-			intent.AddCategory(Intent.CategoryOpenable);
+	
+		private void ShowFileChooser()
+        {
+            Intent intent = new Intent(Intent.ActionGetContent); 
 
-			try {
-				StartActivityForResult(Intent.CreateChooser(intent, "Select a File to Upload"), FileSelectCode);
-			} catch (global::Android.Content.ActivityNotFoundException ex) {
-				AlertModule.ShowInformation ("Please install a File Manager.");
-			}
-		}
+            intent.SetType("audio/*"); 
+
+            intent.AddCategory(Intent.CategoryOpenable);
+
+            try
+            {
+                StartActivityForResult(Intent.CreateChooser(intent, "Select a File to Upload"), FileSelectCode);
+            }
+            catch (global::Android.Content.ActivityNotFoundException ex)
+            {
+                AlertModule.ShowInformation("Please install a File Manager.");
+            }
+        }
 
 		public override void OnActivityResult (int requestCode, int resultCode, Intent data)
 		{
@@ -103,63 +131,83 @@ namespace Announcement.Android
 
 			if (requestCode == FileSelectCode) 
 			{
-				if (data == null || data.Data == null) {
+				if (data == null || data.Data == null) 
+                {
 					AlertModule.ShowInformation ("File error!");
+
 					return;
 				}
 
 				Uri uri = data.Data;
-				System.Console.WriteLine("File Uri: " + uri.ToString());
-				var path = GetPath (MainActivityInstance.Current, uri);
-				System.Console.WriteLine("File Path: " + path);
 
-				var file = new File (path);
-				fileByte = new byte[(int)file.Length()];
-				audioFileTextView.Text = file.Name;
+                filePath = GetPath (MainActivityInstance.Current, uri);
 
-				try
-				{
-					ProgressModule.Message("Please Wait");
-					var fileInputStream = new FileInputStream(file);
-					fileInputStream.ReadAsync(fileByte);
-					fileInputStream.Close();
-					filePath = path;
-				}
-				catch (Exception) 
-				{
-					
-				}
-				ProgressModule.End ();
+                using (var file = new File(filePath))
+                {
+                    if (file.Length() > AUDIO_FILE_MAX_SIZE)
+                    {
+                        filePath = null;
+
+                        AlertModule.ShowInformation (LocalizationModule.Translate("alert_message_audio_file_too_large"));
+                    }
+                    
+                    audioFileTextView.Text = file.Name;
+                }
+
+				ProgressModule.End();
 			}
 		}
 
-		private static string GetPath(Context context, Uri uri) {
-			var content = new Java.Lang.String ("content");
-			var file = new Java.Lang.String ("file");
-			if (content.EqualsIgnoreCase(uri.Scheme)) {
-				string[] projection = { "_data" };
+		private static string GetPath(Context context, Uri uri)
+        {
+            var content = new Java.Lang.String("content");
 
-				try {
-					var cursor = MainActivityInstance.Current.ContentResolver.Query(uri, projection, null, null, null);
-					int column_index = cursor.GetColumnIndexOrThrow("_data");
-					if (cursor.MoveToFirst()) {
-						return cursor.GetString(column_index);
-					}
-				} catch (Exception) {
-					// ignore
-				}
-			}
-			else if (file.EqualsIgnoreCase(uri.Scheme)) {
-				return uri.Path;
-			}
+            var file = new Java.Lang.String("file");
 
-			return null;
-		}
+            if (content.EqualsIgnoreCase(uri.Scheme))
+            {
+                string[] projection = { "_data" };
+
+                try
+                {
+                    var cursor = MainActivityInstance.Current.ContentResolver.Query(uri, projection, null, null, null);
+
+                    int column_index = cursor.GetColumnIndexOrThrow("_data");
+
+                    if (cursor.MoveToFirst())
+                    {
+                        return cursor.GetString(column_index);
+                    }
+                }
+                catch (Exception)
+                {
+  
+                }
+            }
+            else if (file.EqualsIgnoreCase(uri.Scheme))
+            {
+                return uri.Path;
+            }
+
+            return null;
+        }
 
 		private void ConvertFile(string path)
 		{
 			
 		}
+
+        private MediaPlayer audioPlayer;
+
+        private Announcement.Android.Controls.TextView audioFileTextView;
+
+        private string filePath;
+
+        private global::Android.Widget.Button btnPlay;
+
+        private static int FileSelectCode = 123;
+
+        private const int AUDIO_FILE_MAX_SIZE = 20971520;
 	}
 }
 

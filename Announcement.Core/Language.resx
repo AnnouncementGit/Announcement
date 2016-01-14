@@ -19,6 +19,8 @@
 
     <data name="progress_receiving_moderators" xml:space="preserve"><value>Receiving list of moderators...</value></data>
 
+       <data name="progress_receiving_spammers" xml:space="preserve"><value>Receiving list of spammers...</value></data>
+
     <data name="progress_logout" xml:space="preserve"><value>Logout...</value></data>
 
     <data name="progress_getting_photo" xml:space="preserve"><value>Getting photo...</value></data>
@@ -98,6 +100,8 @@
     <data name="button_title_users" xml:space="preserve"><value>Users</value></data>
 
     <data name="label_add_moderator" xml:space="preserve"><value>Add Moderator</value></data>
+
+     <data name="label_spammers" xml:space="preserve"><value>Spammers</value></data>
 
     <data name="label_logout" xml:space="preserve"><value>Logout</value></data>
 
@@ -189,5 +193,13 @@ Press OK to choose another one. </value></data>
 <data name="alert_message_moderator_creation" xml:space="preserve"><value>Moderator creation.</value></data>
 
 <data name="alert_message_wrong_token" xml:space="preserve"><value>Wrong access token.</value></data>
+
+<data name="alert_message_no_audio" xml:space="preserve"><value>No audio on server. Please upload or choose file to play!</value></data>
+
+<data name="progress_uploading_audio_record" xml:space="preserve"><value>Uploading audio file. Please wait...</value></data>
+
+ <data name="alert_message_upload_audio_file_completed" xml:space="preserve"><value>Your audio file has been successfully uploaded.</value></data>
+
+  <data name="alert_message_audio_file_too_large" xml:space="preserve"><value>This file is too big. The maximum upload size for your audio file is 20MB.</value></data>
 
 </root>
