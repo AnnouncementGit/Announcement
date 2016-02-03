@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Threading;
 using Announcement.Android;
+using System.Linq;
 
 namespace Announcement.Core
 {
@@ -51,7 +52,11 @@ namespace Announcement.Core
 
             if (ratings.TopSpammers == null)
             {
-                ratings.TopSpammers = new List<Spammer>();
+                ratings.TopSpammers = new List<SpammerShort>();
+            }
+            else
+            {
+                ratings.TopSpammers = ratings.TopSpammers.OrderByDescending(s => s.SpamCount).ToList();
             }
 
             return result;
@@ -169,11 +174,11 @@ namespace Announcement.Core
         {
             ProgressModule.Message(LocalizationModule.Translate("progress_uploading_audio_record"));
 
-            var fileName = string.Format("{0}.mp3", spammer.Id);
+            var fileName = string.Format("{0}.mp3", spammer.PhoneNumber);
 
             if (AmazonModule.UploadAudioFile(filePath, fileName).Result)
             {
-                var result = AmazonModule.InvokeLambda<Object>("AssignAudioRecordWithSpammer", new OptionSpammer(BaseViewModel.UserInfo) { Id = spammer.Id, AudioRecord = fileName });
+                var result = AmazonModule.InvokeLambda<Object>("AssignAudioRecordWithSpammer", new OptionSpammer(BaseViewModel.UserInfo) { Id = spammer.PhoneNumber, AudioRecord = fileName });
 
                 if (result.IsSuccess)
                 {

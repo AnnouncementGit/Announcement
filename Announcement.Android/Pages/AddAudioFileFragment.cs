@@ -89,13 +89,13 @@ namespace Announcement.Android
 
         protected void BtnUploadOnClick (object sender, System.EventArgs e)
 		{
-            if (!string.IsNullOrEmpty(filePath))
+            if (!string.IsNullOrEmpty(filePath) && !filePath.Equals(ViewModel.CurrentAudioRecordPath))
             {
                 ViewModel.PushAudioRecord(filePath, null);
             }
             else
             {
-                AlertModule.ShowInformation("Please choose file to upload!");
+                AlertModule.ShowInformation(LocalizationModule.Translate("alert_message_choose_file_upload"));
             }
 		}
             

@@ -11,7 +11,7 @@ using Android.Widget;
 
 namespace Announcement.Android
 {
-    [Activity(ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.ScreenSize, Label = "Announcement", MainLauncher = true, Icon = "@drawable/icon", Theme="@style/splash_theme")]
+    [Activity(ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.ScreenSize, Label = "Announcement", MainLauncher = true, Icon = "@drawable/icon", Theme="@style/splash_theme", WindowSoftInputMode = SoftInput.AdjustResize )]
     public class MainActivity : FragmentActivity, ILocationListener, ViewTreeObserver.IOnGlobalLayoutListener
 	{
         private MainViewModel ViewModel 

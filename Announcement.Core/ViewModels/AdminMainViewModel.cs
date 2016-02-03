@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Announcement.Android;
 using System.Threading.Tasks;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ namespace Announcement.Core
 
         public List<User> RatingTopUsers { get; private set; }
 
-        public List<Spammer> RatingTopSpammers { get; private set; }
+        public List<SpammerShort> RatingTopSpammers { get; private set; }
 
         public List<Report> Reports { get; private set; }
         
@@ -60,11 +61,18 @@ namespace Announcement.Core
             {
                 var ratings = resultRatings.Value;
 
+
                 if (ratings != null)
                 {
                     RatingTopUsers = ratings.TopUsers;
 
                     RatingTopSpammers = ratings.TopSpammers;
+                }
+                else
+                {
+                    RatingTopUsers = new List<User>();
+
+                    RatingTopSpammers = new List<SpammerShort>();
                 }
             }
 
@@ -73,18 +81,29 @@ namespace Announcement.Core
 
         public async void DeleteModerator(Moderator moderator, Action<Moderator, bool> callback)
         {
-            var result = await Task.Run<Result<string>>(() => SourceManager.DeleteModerator(moderator.Username));
+            AlertModule.Show(LocalizationModule.Translate("alert_title_type_information"), LocalizationModule.Translate("alert_message_delete_question"), LocalizationModule.Translate("alert_button_delete"), LocalizationModule.Translate("button_title_cancel"), async () =>
+                {
+                    var result = await Task.Run<Result<string>>(() => SourceManager.DeleteModerator(moderator.Username));
 
-            ProgressModule.End();
+                    ProgressModule.End();
 
-            if (!result.HasError && result.IsSuccess)
-            {
-                DispatcherModule.Invoke<Moderator, bool>(callback, moderator, true);
-            }
-            else
-            {
-                DispatcherModule.Invoke<Moderator, bool>(callback, moderator, false);
-            }
+                    if (result.HasError || !result.IsSuccess)
+                    {
+                        AlertModule.ShowError(result.Message, () => DeleteModerator(moderator, callback), () => DispatcherModule.Invoke<Moderator, bool>(callback, moderator, false));
+                    }
+                    else
+                    {
+                        AlertModule.Show(LocalizationModule.Translate("alert_title_type_information"), LocalizationModule.Translate("alert_message_moderator_delete_completed"), LocalizationModule.Translate("alert_button_ok"),
+                            () =>
+                            { 
+                                DispatcherModule.Invoke<Moderator, bool>(callback, moderator, true);
+                            });
+                    }
+                },
+                () =>
+                {
+                    DispatcherModule.Invoke<Moderator, bool>(callback, moderator, false);
+                });
         }
 
         public async void InitializeCreateModerator(Action callback)

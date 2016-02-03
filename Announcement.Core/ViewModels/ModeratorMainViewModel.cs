@@ -9,7 +9,7 @@ namespace Announcement.Core
     {
         public List<User> RatingTopUsers { get; private set; }
 
-        public List<Spammer> RatingTopSpammers { get; private set; }
+        public List<SpammerShort> RatingTopSpammers { get; private set; }
 
         public List<Report> Reports { get; private set; }
 

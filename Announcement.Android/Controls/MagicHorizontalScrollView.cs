@@ -10,11 +10,36 @@ namespace Announcement.Android.Controls
 {
 	public class MagicHorizontalScrollView : HorizontalScrollView, IWidthOnScreen
 	{
+        public event EventHandler SlideStateChanged;
+        
         public bool IsFromFullScroll { get; set; }
 
         public InterceptedSwipeRefreshLayout SwipeRefreshLayout { get; set; }
 
-		public SlideStates SlideState { get; set; }
+		public SlideStates SlideState
+        {
+            get
+            {
+                return slideState;
+            }
+            set
+            {
+                slideState = value;
+
+                if (slideState == SlideStates.Right)
+                {
+                    FullScroll(FocusSearchDirection.Left);
+                }
+                else
+                {
+                    FullScroll(FocusSearchDirection.Right);
+                }
+                    
+                OnSlideStateChanged();
+            }
+        }
+
+        private SlideStates slideState;
 
 		public int WidthOnScreen { get; set; }
 
@@ -83,7 +108,7 @@ namespace Announcement.Android.Controls
 					{
 						if (CanScrollHorizontally(-1))
 						{
-							FullScroll(FocusSearchDirection.Left);
+                                SlideState = SlideStates.Right;
 
                                 IsFromFullScroll = true;
 
@@ -94,7 +119,7 @@ namespace Announcement.Android.Controls
 					{
 						if (CanScrollHorizontally(1))
 						{
-							FullScroll(FocusSearchDirection.Right);
+                                SlideState = SlideStates.Left;
 
                                 IsFromFullScroll = true;
 
@@ -147,6 +172,30 @@ namespace Announcement.Android.Controls
 				}
 			}
 		}
+
+        protected void OnSlideStateChanged()
+        {
+            var handler = SlideStateChanged;
+
+            if (handler != null)
+            {
+                handler(this, EventArgs.Empty);
+            }
+        }
+
+        public void UpdateState(SlideStates state)
+        {
+            slideState = state;
+
+            if (slideState == SlideStates.Right)
+            {
+                ScrollX = 0;
+            }
+            else
+            {
+                ScrollX = MeasuredWidth;
+            }
+        }
 
 		private bool isInSliding;
 

@@ -202,4 +202,14 @@ Press OK to choose another one. </value></data>
 
   <data name="alert_message_audio_file_too_large" xml:space="preserve"><value>This file is too big. The maximum upload size for your audio file is 20MB.</value></data>
 
+  <data name="alert_button_delete" xml:space="preserve"><value>Delete</value></data>
+
+  <data name="alert_message_delete_question" xml:space="preserve"><value>Are you sure you want to delete this moderator?</value></data>
+
+  <data name="alert_message_moderator_delete_completed" xml:space="preserve"><value>Moderator has been successfully deleted. Thanks</value></data>
+
+    <data name="alert_message_choose_file_upload" xml:space="preserve"><value>Please choose file to upload!</value></data>
+
+  
+
 </root>

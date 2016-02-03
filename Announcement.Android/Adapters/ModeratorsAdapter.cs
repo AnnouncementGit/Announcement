@@ -13,9 +13,11 @@ namespace Announcement.Android
     {
         public Action<Moderator, View> ItemDeleteClick { get; set; }
         
-        public ModeratorsAdapter(Context context, List<Moderator> objects, InterceptedSwipeRefreshLayout swipeRefreshLayout) : base(context, objects)
+        public ModeratorsAdapter(Context context, List<Moderator> objects, InterceptedSwipeRefreshLayout swipeRefreshLayout, global::Android.Widget.ListView listView) : base(context, objects)
         {
             this.swipeRefreshLayout = swipeRefreshLayout;
+
+            this.listView = listView;
         }
 
         public override View GetView(int position, View convertView, ViewGroup parent)
@@ -31,6 +33,8 @@ namespace Announcement.Android
                 holder = new ModeratorsAdapterItemHolder();
 
                 holder.scrlSlider = (MagicHorizontalScrollView)convertView;
+
+                holder.scrlSlider.SlideStateChanged += ItemSlideStateChanged;
 
                 holder.scrlSlider.SwipeRefreshLayout = swipeRefreshLayout;
 
@@ -51,13 +55,37 @@ namespace Announcement.Android
                 
             holder.txtTitle.Text = item.Username;
 
-            holder.scrlSlider.ScrollX = 0;
-
-            holder.scrlSlider.SlideState = SlideStates.Right;
-
             holder.position = position;
 
+            if (slidedItemPostion == position)
+            {
+                holder.scrlSlider.UpdateState(SlideStates.Left);
+            }
+            else
+            {
+                holder.scrlSlider.UpdateState(SlideStates.Right);
+            }
+
             return convertView;
+        }
+
+        protected void ItemSlideStateChanged (object sender, EventArgs e)
+        {
+            var item = sender as MagicHorizontalScrollView;
+
+            if (item.SlideState == SlideStates.Left)
+            {
+//                if (slidedItemPostion > -1 && slidedItemPostion==((ModeratorsAdapterItemHolder)item.Tag).position)
+//                {
+//                   ((MagicHorizontalScrollView)GetView(slidedItemPostion)).SlideState = SlideStates.Right;
+//                }
+//                
+                slidedItemPostion = ((ModeratorsAdapterItemHolder)item.Tag).position;
+            }
+            else
+            {
+                slidedItemPostion = -1;
+            }
         }
             
         protected void Holder_imgDelete_Click (object sender, EventArgs e)
@@ -136,6 +164,10 @@ namespace Announcement.Android
         }
 
         private InterceptedSwipeRefreshLayout swipeRefreshLayout;
+
+        private int slidedItemPostion = -1;
+
+        global::Android.Widget.ListView listView;
     }
 
     public class ModeratorsAdapterItemHolder : Java.Lang.Object

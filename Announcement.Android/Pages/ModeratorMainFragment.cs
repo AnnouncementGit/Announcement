@@ -169,7 +169,7 @@ namespace Announcement.Android
         {
             ratingSpammersTabList = ratingTabView.FindViewById<ListView> (Resource.Id.spammersListView);
 
-            ratingSpammersTabList.Adapter = new SpammersAdapter (Activity, ViewModel.RatingTopSpammers);
+            ratingSpammersTabList.Adapter = new SpammersRatingAdapter (Activity, ViewModel.RatingTopSpammers);
 
             tabHostContentFactory.spammersSwipeRefresh.Refresh += RatingSwipeRefresh_Refresh;
 
@@ -198,7 +198,7 @@ namespace Announcement.Android
 
             tabHostContentFactory.usersSwipeRefresh.Refreshing = false;
 
-            ((SpammersAdapter)ratingSpammersTabList.Adapter).UpdateAll(ViewModel.RatingTopSpammers);
+            ((SpammersRatingAdapter)ratingSpammersTabList.Adapter).UpdateAll(ViewModel.RatingTopSpammers);
 
             ((UsersAdapter)ratingUsersTabList.Adapter).UpdateAll(ViewModel.RatingTopUsers);
         }

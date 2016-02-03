@@ -57,6 +57,19 @@ namespace Announcement.Core
             {
                 if (result.IsSuccess)
                 {
+                    List<Report> reports = null;
+                    
+                    if (UserInfo.Role == UserRoles.Admin)
+                    {
+                        reports = AdminMainViewModel.Instance.Reports;
+                    }
+                    else
+                    {
+                        reports = ModeratorMainViewModel.Instance.Reports;
+                    }
+
+                    reports.Remove(currentReport);
+
                     AlertModule.ShowInformation(LocalizationModule.Translate("alert_message_report_confirmed"), callback);
                 }
                 else
@@ -80,6 +93,19 @@ namespace Announcement.Core
             {
                 if (result.IsSuccess)
                 {
+                    List<Report> reports = null;
+
+                    if (UserInfo.Role == UserRoles.Admin)
+                    {
+                        reports = AdminMainViewModel.Instance.Reports;
+                    }
+                    else
+                    {
+                        reports = ModeratorMainViewModel.Instance.Reports;
+                    }
+
+                    reports.Remove(currentReport);
+                    
                     AlertModule.ShowInformation(LocalizationModule.Translate("alert_message_report_rejected"), callback);
                 }
                 else

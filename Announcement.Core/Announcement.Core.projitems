@@ -52,6 +52,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\SpammersMainViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\SpammerAudioRecordInfoViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\OptionSpammer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\SpammerShort.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Language.resx">

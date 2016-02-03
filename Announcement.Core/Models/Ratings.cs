@@ -10,7 +10,7 @@ namespace Announcement.Core
         public List<User> TopUsers { get; set; }
 
         [JsonProperty("topSpammers")]
-        public List<Spammer> TopSpammers { get; set; }
+        public List<SpammerShort> TopSpammers { get; set; }
     }
 }
 

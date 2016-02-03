@@ -80,11 +80,15 @@ namespace Announcement.Android
 
         protected void ConfirmReportCallback()
         {
+            AdminMainFragment.StartTabIndex = 1;
+            
             NavigationManager.Backward();
         }
 
         protected void RejectReportCallback()
         {
+            AdminMainFragment.StartTabIndex = 1;
+
             NavigationManager.Backward();
         }
 	}

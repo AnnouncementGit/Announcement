@@ -25,4 +25,8 @@
     <attr name="lineWidthPercent" format="integer"/>
  </declare-styleable>
 
+ <declare-styleable name="ignore_landscape">
+    <attr name="notIgnoreLandscape" format="boolean"/>
+ </declare-styleable>
+
     </resources>

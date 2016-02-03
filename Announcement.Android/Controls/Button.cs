@@ -43,19 +43,26 @@ namespace Announcement.Android.Controls
 
         protected override void OnMeasure(int widthMeasureSpec, int heightMeasureSpec)
         {
-            if (Resources.Configuration.Orientation == Orientation.Landscape)
+            if (notIgnoreLandscape)
             {
-                var widthMode = MeasureSpec.GetMode(widthMeasureSpec);
-
-                var layouts = (ViewGroup.MarginLayoutParams)LayoutParameters;
-
-                var widthSize = Resources.DisplayMetrics.HeightPixels - layouts.LeftMargin - layouts.RightMargin;
-
-                base.OnMeasure(MeasureSpec.MakeMeasureSpec(widthSize, widthMode), heightMeasureSpec); 
+                base.OnMeasure(widthMeasureSpec, heightMeasureSpec); 
             }
             else
             {
-                base.OnMeasure(widthMeasureSpec, heightMeasureSpec); 
+                if (Resources.Configuration.Orientation == Orientation.Landscape)
+                {
+                    var widthMode = MeasureSpec.GetMode(widthMeasureSpec);
+
+                    var layouts = (ViewGroup.MarginLayoutParams)LayoutParameters;
+
+                    var widthSize = Resources.DisplayMetrics.HeightPixels - layouts.LeftMargin - layouts.RightMargin;
+
+                    base.OnMeasure(MeasureSpec.MakeMeasureSpec(widthSize, widthMode), heightMeasureSpec); 
+                }
+                else
+                {
+                    base.OnMeasure(widthMeasureSpec, heightMeasureSpec); 
+                }
             }
         }
 
@@ -112,7 +119,16 @@ namespace Announcement.Android.Controls
 
                 attributes.Recycle();
             }
+
+            using (var attributes = Context.ObtainStyledAttributes(attrs, Resource.Styleable.ignore_landscape))
+            {
+                notIgnoreLandscape = attributes.GetBoolean(Resource.Styleable.ignore_landscape_notIgnoreLandscape, false);
+
+                attributes.Recycle();
+            }
         }
+
+        private bool notIgnoreLandscape;
     }
 }
 

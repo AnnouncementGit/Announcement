@@ -19,7 +19,9 @@ namespace Announcement.Android
 				return AdminMainViewModel.Instance; 
             }
 		}
-            
+
+        public static int StartTabIndex { get; set; }
+           
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
             var view = inflater.Inflate(Resource.Layout.admin_main_layout, null);
@@ -42,6 +44,7 @@ namespace Announcement.Android
 
             AddTab(LocalizationModule.Translate("tab_title_ratings"), RATING_TAB_TAG);
 
+            tabHost.CurrentTab = StartTabIndex;
 
 			tabChangeListener = new AnimatedTabHostListener (tabHost);
 
@@ -161,7 +164,7 @@ namespace Announcement.Android
         {
             var moderatorsList = tabHostContentFactory.ModeratorsListView;
 
-            var adapter = new ModeratorsAdapter(Activity, ViewModel.Moderators, tabHostContentFactory.moderatorsSwipeRefresh);;
+            var adapter = new ModeratorsAdapter(Activity, ViewModel.Moderators, tabHostContentFactory.moderatorsSwipeRefresh, moderatorsList);
 
             adapter.ItemDeleteClick = (item, view) =>
             {
@@ -220,7 +223,7 @@ namespace Announcement.Android
 		{
             ratingSpammersTabList = ratingTabView.FindViewById<ListView> (Resource.Id.spammersListView);
 
-            ratingSpammersTabList.Adapter = new SpammersAdapter (Activity, ViewModel.RatingTopSpammers);
+            ratingSpammersTabList.Adapter = new SpammersRatingAdapter (Activity, ViewModel.RatingTopSpammers);
 
             tabHostContentFactory.spammersSwipeRefresh.Refresh += RatingSwipeRefresh_Refresh;
 
@@ -249,7 +252,7 @@ namespace Announcement.Android
 
             tabHostContentFactory.usersSwipeRefresh.Refreshing = false;
 
-            ((SpammersAdapter)ratingSpammersTabList.Adapter).UpdateAll(ViewModel.RatingTopSpammers);
+            ((SpammersRatingAdapter)ratingSpammersTabList.Adapter).UpdateAll(ViewModel.RatingTopSpammers);
 
             ((UsersAdapter)ratingUsersTabList.Adapter).UpdateAll(ViewModel.RatingTopUsers);
         }
