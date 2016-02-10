@@ -85,7 +85,7 @@
 
     <data name="progress_report_confirming" xml:space="preserve"><value>Звіт підтверджений...</value></data>
 
-    <data name="stop_spam_header_title" xml:space="preserve"><value>Stop Spam</value></data>
+    <data name="stop_spam_header_title" xml:space="preserve"><value>Стоп Спам</value></data>
 
     <data name="add_new_moderator_label" xml:space="preserve"><value>Додати нового модератора</value></data>
 
