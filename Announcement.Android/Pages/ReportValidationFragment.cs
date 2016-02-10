@@ -70,7 +70,7 @@ namespace Announcement.Android
 
         protected void OnConfirmClick(object sender, EventArgs e)
 		{
-            viewModel.ConfirmReport (ConfirmReportCallback);
+            viewModel.ConfirmReport (txtPhone.Text, ConfirmReportCallback);
 		}
 
         protected void OnCancelClick(object sender, EventArgs e)

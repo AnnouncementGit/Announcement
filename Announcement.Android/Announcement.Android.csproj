@@ -142,8 +142,6 @@
     <Compile Include="Controls\EditText.cs" />
     <Compile Include="Services\SocialServices.cs" />
     <Compile Include="Helpers\ImageDecoderHelper.cs" />
-    <Compile Include="Services\Location\ILocationProvider.cs" />
-    <Compile Include="Services\Location\LocationProvider.cs" />
     <Compile Include="Controls\TextView.cs" />
     <Compile Include="Controls\RadioButton.cs" />
     <Compile Include="Pages\CreateModeratorFragment.cs" />
@@ -167,6 +165,7 @@
     <Compile Include="Pages\AddAudioFileFragment.cs" />
     <Compile Include="Pages\SpammersFragment.cs" />
     <Compile Include="Adapters\SpammersRatingAdapter.cs" />
+    <Compile Include="Services\LocationService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />

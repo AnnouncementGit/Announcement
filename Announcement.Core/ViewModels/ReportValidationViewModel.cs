@@ -43,15 +43,24 @@ namespace Announcement.Core
             return result;
         }
 
-        public async void ConfirmReport(Action callback)
+        public async void ConfirmReport(string phoneNumber, Action callback)
         {
-            var result = await Task.Run<Result<string>>(() => SourceManager.ConfirmReport(currentReport.Id, PhoneNumber));
+            if (string.IsNullOrEmpty(phoneNumber))
+            {
+                AlertModule.Show(LocalizationModule.Translate("alert_title_type_error"), LocalizationModule.Translate("alert_message_empty_phone_number"), LocalizationModule.Translate("alert_button_ok"));
+
+                return;
+            }
+            
+            PhoneNumber = phoneNumber;
+
+            var result = await Task.Run<Result<string>>(() => SourceManager.ConfirmReport(currentReport.Id, phoneNumber));
 
             ProgressModule.End();
 
             if (result.HasError)
             {
-                AlertModule.ShowError(result.Message, () => ConfirmReport(callback));
+                AlertModule.ShowError(result.Message, () => ConfirmReport(phoneNumber, callback));
             }
             else
             {
@@ -74,7 +83,7 @@ namespace Announcement.Core
                 }
                 else
                 {
-                    AlertModule.ShowWarning(LocalizationModule.Translate("alert_message_report_not_confirmed"), () => ConfirmReport(callback));
+                    AlertModule.ShowWarning(LocalizationModule.Translate("alert_message_report_not_confirmed"), () => ConfirmReport(phoneNumber, callback));
                 }
             }
         }

@@ -210,6 +210,6 @@ Press OK to choose another one. </value></data>
 
     <data name="alert_message_choose_file_upload" xml:space="preserve"><value>Please choose file to upload!</value></data>
 
-  
+    <data name="alert_message_empty_phone_number" xml:space="preserve"><value>Phone number is empty. Please enter the phone number.</value></data>
 
 </root>

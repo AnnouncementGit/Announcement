@@ -17,6 +17,8 @@ namespace Announcement.Core
             
         public async void PushReportSpam(float latitude, float longitude, byte[] photo, Action callback, Action continueCallback, Action cancelCallback)
         {
+            ProgressModule.Message(LocalizationModule.Translate("progress_send_report_spam"), true);
+            
             Result<string> result = null;
             
             if (string.IsNullOrEmpty(reportId))

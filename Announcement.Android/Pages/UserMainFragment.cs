@@ -36,7 +36,7 @@ namespace Announcement.Android
 
         protected void BtnReportSpamOnClick(object sender, EventArgs e)
         {
-            if (!MainActivityInstance.Current.locationProvider.networkProviderEnabled && !MainActivityInstance.Current.locationProvider.gpsProviderEnabled)
+            if (!LocationService.IsLocationEnabled)
             {              
                 AlertModule.ShowInformation(LocalizationModule.Translate("alert_enable_gps"), null);
 
@@ -81,28 +81,37 @@ namespace Announcement.Android
             }
         }
 
-        protected void ReportSpam(byte[] buffer)
+        protected async void ReportSpam(byte[] buffer)
         {
-            var location = ((MainActivity)Activity).lastKnownLocation;
+            if (!LocationService.IsLocationEnabled)
+            {              
+                AlertModule.ShowInformation(LocalizationModule.Translate("alert_enable_gps"), null);
+
+                return;
+            }
+
+            ProgressModule.Message(LocalizationModule.Translate("progress_trying_to_get_location"), true);
             
-            if (location != null)
-            {
-                viewModel.PushReportSpam((float)location.Latitude, (float)location.Longitude, buffer, PushReportSpamCallback, PushReportSpamContinueCallback, PushReportSpamCancelCallback);
-            }
-            else
-            {
-                ProgressModule.End();
-                
-                AlertModule.ShowWarning(LocalizationModule.Translate("alert_bad_location"), async () =>
+            var locationTask = LocationService.GetLocationAsync();
+
+            Task.Run<bool>(() =>
+                {
+                   return locationTask.Wait(5000);
+                }).ContinueWith((result) =>
+                {
+                    if (result.Result)
                     {
-                        ProgressModule.Message(LocalizationModule.Translate("progress_trying_to_get_location"), true);
-
-                        await Task.Delay(LOCATION_TIMEOUT_MS);
-
-                        ReportSpam(buffer);  
+                        var location = locationTask.Result;
+                    
+                        viewModel.PushReportSpam((float)location.Latitude, (float)location.Longitude, buffer, PushReportSpamCallback, PushReportSpamContinueCallback, PushReportSpamCancelCallback);
                     }
-                    , PushReportSpamCancelCallback);
-            }
+                    else
+                    {
+                        ProgressModule.End();
+                    
+                        AlertModule.ShowWarning(LocalizationModule.Translate("alert_bad_location"), async () => ReportSpam(buffer), PushReportSpamCancelCallback);
+                    }
+                });
         }
 
         private void PushReportSpamCancelCallback()
