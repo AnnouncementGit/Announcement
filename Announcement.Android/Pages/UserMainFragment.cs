@@ -38,7 +38,7 @@ namespace Announcement.Android
         {
             if (!LocationService.IsLocationEnabled)
             {              
-                AlertModule.ShowInformation(LocalizationModule.Translate("alert_enable_gps"), null);
+                AlertModule.ShowInformation(LocalizationModule.Translate("alert_enable_gps"), OpenSettigs);
 
                 return;
             }
@@ -85,7 +85,7 @@ namespace Announcement.Android
         {
             if (!LocationService.IsLocationEnabled)
             {              
-                AlertModule.ShowInformation(LocalizationModule.Translate("alert_enable_gps"), null);
+				AlertModule.ShowInformation(LocalizationModule.Translate("alert_enable_gps"), OpenSettigs);
 
                 return;
             }
@@ -129,6 +129,12 @@ namespace Announcement.Android
 			//btnReportSpam.Visibility = ViewStates.Visible;
 
             btnReportSpam.PerformClick();
+		}
+
+		private void OpenSettigs()
+		{
+			Intent intent = new Intent (Settings.ActionLocationSourceSettings);
+			Activity.StartActivity (intent);
 		}
 
 
