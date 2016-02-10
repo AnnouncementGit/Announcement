@@ -1,0 +1,215 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>2.0</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+
+    <data name="progress_title" xml:space="preserve"><value>Синхронізація</value></data>
+
+    <data name="progress_receiving_data" xml:space="preserve"><value>Завантаження даних...</value></data>
+
+    <data name="progress_receiving_moderators" xml:space="preserve"><value>Завантаження списку модераторів...</value></data>
+
+    <data name="progress_receiving_spammers" xml:space="preserve"><value>Завантаження списку спамерів...</value></data>
+
+    <data name="progress_logout" xml:space="preserve"><value>Вихід...</value></data>
+
+    <data name="progress_getting_photo" xml:space="preserve"><value>Отримання фото...</value></data>
+
+    <data name="progress_receiving_ratings" xml:space="preserve"><value>Завантаження списку рейтингів...</value></data>
+
+    <data name="progress_receiving_reports" xml:space="preserve"><value>Завантаження списку звітів...</value></data>
+
+    <data name="progress_creating_moderator" xml:space="preserve"><value>Створення нового модератора...</value></data>
+
+    <data name="progress_authentication" xml:space="preserve"><value>Аутентифікація...</value></data>
+
+    <data name="progress_send_report_spam" xml:space="preserve"><value>Надсилання звіту...</value></data>
+
+    <data name="alert_title_type_error" xml:space="preserve"><value>Помилка</value></data>
+
+    <data name="alert_title_type_information" xml:space="preserve"><value>Інформація</value></data>
+
+    <data name="alert_title_type_warning" xml:space="preserve"><value>Попередження</value></data>
+
+    <data name="alert_timeout" xml:space="preserve"><value>Не вдається підключитися до сервера.</value></data>
+
+    <data name="alert_no_internet_connection" xml:space="preserve"><value>Немає підключення до Інтернету.</value></data>
+    
+    <data name="alert_title_type_success" xml:space="preserve"><value>Успіх</value></data>
+    
+    <data name="alert_button_try_again" xml:space="preserve"><value>Спробуйте ще раз</value></data>
+
+    <data name="alert_button_retry" xml:space="preserve"><value>Повторити</value></data>
+
+    <data name="alert_button_ok" xml:space="preserve"><value>OK</value></data>
+
+     <data name="alert_title_facebook" xml:space="preserve"><value>Facebook</value></data>
+
+    <data name="alert_button_cancel" xml:space="preserve"><value>Відмінити</value></data>
+
+    <data name="button_title_facebook" xml:space="preserve"><value>Facebook</value></data>
+
+    <data name="button_title_google_plus" xml:space="preserve"><value>Google+</value></data>
+
+    <data name="button_title_vk" xml:space="preserve"><value>VK</value></data>
+
+    <data name="button_title_linked_in" xml:space="preserve"><value>LinkedIn</value></data>
+
+    <data name="button_title_moderator" xml:space="preserve"><value>Ви модератор?</value></data>
+
+    <data name="tab_title_moderators" xml:space="preserve"><value>Модератори</value></data>
+
+    <data name="tab_title_validation" xml:space="preserve"><value>Валідація</value></data>
+
+    <data name="tab_title_ratings" xml:space="preserve"><value>Рейтинги</value></data>
+
+    <data name="button_title_login" xml:space="preserve"><value>Вхід</value></data>
+
+    <data name="edit_text_hint_username" xml:space="preserve"><value>Ім'я користувача</value></data>
+
+    <data name="edit_text_hint_password" xml:space="preserve"><value>Пароль</value></data>
+
+    <data name="alert_message_report_null" xml:space="preserve"><value>Пустий звіт</value></data>
+
+    <data name="progress_report_rejecting" xml:space="preserve"><value>Звіт відхилений...</value></data>
+
+    <data name="progress_report_confirming" xml:space="preserve"><value>Звіт підтверджений...</value></data>
+
+    <data name="stop_spam_header_title" xml:space="preserve"><value>Stop Spam</value></data>
+
+    <data name="add_new_moderator_label" xml:space="preserve"><value>Додати нового модератора</value></data>
+
+    <data name="button_title_create" xml:space="preserve"><value>Створити</value></data>
+
+    <data name="list_one_posts_label" xml:space="preserve"><value>Повідомлення:</value></data>
+
+    <data name="list_one_confirmed_label" xml:space="preserve"><value>Підтверджені:</value></data>
+
+    <data name="button_title_spammers" xml:space="preserve"><value>Спамери</value></data>
+
+    <data name="button_title_users" xml:space="preserve"><value>Користувачі</value></data>
+
+    <data name="label_add_moderator" xml:space="preserve"><value>Додати Модератора</value></data>
+
+     <data name="label_spammers" xml:space="preserve"><value>Спамери</value></data>
+
+    <data name="label_logout" xml:space="preserve"><value>Вихід</value></data>
+
+    <data name="alert_enable_gps" xml:space="preserve"><value>Будь ласка, включіть GPS та Інтернет позиціювання в налаштуваннях</value></data>
+
+    <data name="progress_trying_to_get_location" xml:space="preserve"><value>Визначається ваше місце розташування...</value></data>
+
+    <data name="alert_bad_location" xml:space="preserve"><value>Невірне місце розташування. Повторити?</value></data>
+
+    <data name="alert_title_upload_completed" xml:space="preserve"><value>Завантаження завершене</value></data>
+
+    <data name="alert_message_upload_completed" xml:space="preserve"><value>Ваша фотографія успішно завантажена.
+
+Натисніть OK, щоб завантажити більше.</value></data>
+
+<data name="alert_message_upload_completed_not_found" xml:space="preserve"><value>Ми не знайшли жодного телефонного номера на фото.
+
+Натисніть Повторити, щоб зробити іншу фотографію.</value></data>
+
+    <data name="button_title_confirm" xml:space="preserve"><value>Підтвердити</value></data>
+
+    <data name="button_title_cancel" xml:space="preserve"><value>Відмінити</value></data>
+
+    <data name="label_enter_phone_number" xml:space="preserve"><value>Введіть телефонний номер</value></data>
+
+
+    <data name="alert_incorrect_name_or_password" xml:space="preserve"><value>Невірне Ім'я або Пароль</value></data>
+
+    <data name="alert_please_enter_name" xml:space="preserve"><value>Будь ласка, введіть Ім'я. Мінімум 5 символів.</value></data>
+
+    <data name="alert_name_too_short" xml:space="preserve"><value>Ім'я дуже коротке. Мінімум 5 символів.</value></data>
+
+    <data name="alert_name_can_have_only_letters_or_numbers" xml:space="preserve"><value>Ім'я може містити тільки букви або цифри</value></data>
+
+    <data name="alert_please_enter_password" xml:space="preserve"><value>Будь ласка, введіть Пароль. Мінімум 5 символів.</value></data>
+
+    <data name="alert_password_too_short" xml:space="preserve"><value>Пароль дуже короткий. Мінімум 5 символів.</value></data>
+
+    <data name="alert_password_unsupported_character" xml:space="preserve"><value>Пароль містить неприпустимі символи.</value></data>
+
+    <data name="title_phone_number_not_recognized" xml:space="preserve"><value>Телефон не був розпізнаний.</value></data>
+
+    <data name="label_audio_record" xml:space="preserve"><value>Аудіозапис:</value></data>
+
+    <data name="label_select_audio_record" xml:space="preserve"><value>Виберіть аудіозапис</value></data>
+
+    <data name="button_title_upload" xml:space="preserve"><value>Завантажити</value></data>
+
+    <data name="title_complaints" xml:space="preserve"><value>Скарги:</value></data>
+
+    <data name="title_reports" xml:space="preserve"><value>Звіти:</value></data>
+
+    <data name="title_confirmeds" xml:space="preserve"><value>Підтверджені:</value></data>
+
+    <data name="button_title_reject" xml:space="preserve"><value>Відхилити</value></data>
+
+     <data name="alert_message_report_confirmed" xml:space="preserve"><value>Звіт був успішно підтверджений. Дякую. Report successfully confirmed. Thanks.
+
+Натисніть OK для наступних перевірок.</value></data>
+
+     <data name="alert_message_report_not_confirmed" xml:space="preserve"><value>Звіт не був підтверджений.
+
+Натисніть Повторити, щоб повторити спробу.</value></data>
+
+       <data name="alert_message_report_rejected" xml:space="preserve"><value>Звіт був успішно відхилений. Дякую.
+
+Натисніть OK для наступних перевірок.</value></data>
+
+     <data name="alert_message_report_not_rejected" xml:space="preserve"><value>Звіт не був відхилений.
+
+Натисніть Повторити, щоб повторити спробу.</value></data>
+
+ <data name="alert_title_authorization" xml:space="preserve"><value>Авторизація</value></data>
+
+ <data name="alert_message_wrong_credentials" xml:space="preserve"><value>Неправильні авторизаційні дані. Будь ласка, введіть правильні дані.</value></data>
+
+  <data name="alert_moderator_successfully_created" xml:space="preserve"><value>Модератор успішно створений. Дякую.</value></data>
+
+     <data name="alert_moderator_creation_fail" xml:space="preserve"><value>створення Модератор не вдалося.
+
+Натисніть Повторити, щоб повторити спробу.</value></data>
+
+<data name="progress_deleting_moderator" xml:space="preserve"><value>Видалення модератора...</value></data>
+
+<data name="alert_message_username_already_exists" xml:space="preserve"><value>Це ім'я користувача вже існує.
+
+Натисніть OK, щоб вибрати інше. </value></data>
+
+<data name="alert_message_moderator_creation" xml:space="preserve"><value>Створення модератора.</value></data>
+
+<data name="alert_message_wrong_token" xml:space="preserve"><value>Неправильний ключ доступа.</value></data>
+
+<data name="alert_message_no_audio" xml:space="preserve"><value>Немає аудіозапису на сервері. Будь ласка, завантажте або виберіть файл для відтворення!</value></data>
+
+<data name="progress_uploading_audio_record" xml:space="preserve"><value>Завантаження аудіозапису. Будь ласка, зачекайте...</value></data>
+
+ <data name="alert_message_upload_audio_file_completed" xml:space="preserve"><value>Ваш аудіозапис був успішно завантажений.</value></data>
+
+  <data name="alert_message_audio_file_too_large" xml:space="preserve"><value>Цей файл занадто великий. Максимальний розмір для вашого звукового файлу 20 Мб.</value></data>
+
+  <data name="alert_button_delete" xml:space="preserve"><value>Видалити</value></data>
+
+  <data name="alert_message_delete_question" xml:space="preserve"><value>Ви впевнені, що хочете видалити цього модератора?</value></data>
+
+  <data name="alert_message_moderator_delete_completed" xml:space="preserve"><value>Модератор був успішно видалений. Дякую</value></data>
+
+    <data name="alert_message_choose_file_upload" xml:space="preserve"><value>Будь ласка виберіть файл для завантаження!</value></data>
+
+    <data name="alert_message_empty_phone_number" xml:space="preserve"><value>Телефонний номер порожній. Будь ласка, введіть номер телефону.</value></data>
+
+</root>
