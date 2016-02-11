@@ -12,6 +12,7 @@ using Announcement.Core;
 using Android.Support.V4.App;
 using Android.Views.InputMethods;
 using Android.App;
+using Android.Gms.Analytics;
 
 namespace Announcement.Android
 {
@@ -39,6 +40,9 @@ namespace Announcement.Android
 			btnAdd.Click += BtnAddOnClick;
 
             view.SetOnTouchListener(this);
+
+			MainActivity.GATracker.SetScreenName ("Create Moderator Fragment");
+			MainActivity.GATracker.Send (new HitBuilders.ScreenViewBuilder ().Build ());
 
 			return view;
 		}

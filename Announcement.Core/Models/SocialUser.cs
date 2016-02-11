@@ -8,6 +8,9 @@ namespace Announcement.Core
         [JsonProperty("userId")]
         public string UserId { get; set; }
 
+		[JsonProperty("username")]
+		public string Username { get; set; }
+
         [JsonProperty("token")]
         public String Token { get; set; }
     }

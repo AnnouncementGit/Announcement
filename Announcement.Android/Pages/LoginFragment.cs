@@ -10,6 +10,9 @@ using Android.App;
 using Android.Widget;
 using Announcement.Core;
 using Android.OS;
+using Android.Gms.Analytics;
+using System.Net.Http;
+using PCLStorage;
 
 namespace Announcement.Android
 {
@@ -49,33 +52,33 @@ namespace Announcement.Android
 
             facebookButton.Click += (sender, e) =>
             {
-                SocialServices.Instance.FacebookLogin((token) =>
+				SocialServices.Instance.FacebookLogin((userId, username, token) =>
                     { 
-                            ViewModel.LoginViaFacebook("someUserId", token, LoginViaSocialCallback);
+						ViewModel.LoginViaFacebook(userId, username, token, LoginViaSocialCallback);
                     });
             };
 
             googlePlusButton.Click += (sender, e) =>
             {
-                SocialServices.Instance.GoogleLogin((token) =>
+				SocialServices.Instance.GoogleLogin((userId, username, token) =>
                     { 
-                            ViewModel.LoginViaGooglePlus("someUserId", token, LoginViaSocialCallback);
+						ViewModel.LoginViaGooglePlus(userId, username, token, LoginViaSocialCallback);
                     });
             };
 
             vkButton.Click += (sender, e) =>
             {
-                SocialServices.Instance.VKLogin((token) =>
+				SocialServices.Instance.VKLogin((userId, username, token) =>
                     { 
-                            ViewModel.LoginViaVK("someUserId", token, LoginViaSocialCallback);
+						ViewModel.LoginViaVK(userId, username, token, LoginViaSocialCallback);
                     });
             };
 
             linkedInButton.Click += (sender, e) =>
             {
-                SocialServices.Instance.LinkedInLogin((token) =>
+				SocialServices.Instance.LinkedInLogin((userId, username, token) =>
                     { 
-                            ViewModel.LoginViaLinkedIn("someUserId", token, LoginViaSocialCallback);
+						ViewModel.LoginViaLinkedIn(userId, username, token, LoginViaSocialCallback);
                     });
             };
 
@@ -83,8 +86,29 @@ namespace Announcement.Android
 
             view.SetOnTouchListener(this);
 
+			MainActivity.GATracker.SetScreenName ("Login Fragment");
+			MainActivity.GATracker.Send (new HitBuilders.ScreenViewBuilder ().Build ());
+			OpenFile ();
             return view;
         }
+
+
+		async void OpenFile()
+		{
+			try
+			{
+				using (var httpClient = new HttpClient())
+				{
+					var stream = await httpClient.GetStreamAsync("https://docs.google.com/spreadsheets/d/19kevGGgTl9R3cnvZgQ4K5z6lnRBOq3WGfQpch_-hTAM/edit?usp=sharing");
+				}
+
+
+			}
+			catch (Exception ex)
+			{
+				var temp = ex.Message;
+			}
+		}
 
         protected void LoginForAdminStuffCallback()
         {

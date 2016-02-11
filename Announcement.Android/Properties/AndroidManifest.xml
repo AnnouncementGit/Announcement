@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="1.0.5" package="com.announcement">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="1.0.6" package="com.announcement">
 	<uses-sdk android:minSdkVersion="11" android:targetSdkVersion="23" />
 	<uses-permission android:name="android.permission.GET_ACCOUNTS" />
 	<uses-permission android:name="android.permission.INTERNET" />
+	<uses-permission android:name="android.permission.USE_CREDENTIALS" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 	<uses-permission android:name="android.permission.CAMERA" />
 	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-	<application android:label="Announcement" android:icon="@drawable/icon">
+	<application android:icon="@drawable/icon" android:label="StopSpam">
 		<meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/fb_app_id" />
-		<activity android:name="com.facebook.FacebookActivity" android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation" android:theme="@android:style/Theme.Holo.NoActionBar" android:label="Announcement" />
+		<activity android:name="com.facebook.FacebookActivity" android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation" android:theme="@android:style/Theme.Holo.NoActionBar" android:label="StopSpam" />
 	</application>
-	<application android:label="Announcement" android:icon="@drawable/icon"></application>
+	<application android:label="StopSpam" android:icon="@drawable/icon">
+	</application>
 </manifest>

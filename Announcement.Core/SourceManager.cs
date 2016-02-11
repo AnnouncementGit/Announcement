@@ -143,13 +143,15 @@ namespace Announcement.Core
             return AmazonModule.InvokeLambda<UserCredentials>("Login", user);
         }
 
-        public Result<UserCredentials> LoginViaSocial(string userId, string token)
+		public Result<UserCredentials> LoginViaSocial(string userId, string userName, string token)
         {
             ProgressModule.Message(LocalizationModule.Translate("progress_authentication"));
 
             var user = new SocialUser();
 
             user.UserId = userId;
+
+			user.Username = userName;
 
             user.Token = token;
 

@@ -56,7 +56,7 @@ namespace Announcement.Core
                 {
                     lambdaClient = new AmazonLambdaClient(Credentials, regionEndpoint);
 
-                    lambdaClient.Config.Timeout = TimeSpan.FromSeconds(20);
+                    lambdaClient.Config.Timeout = TimeSpan.FromSeconds(60);
                 }
 
                 return lambdaClient;
@@ -182,7 +182,7 @@ namespace Announcement.Core
 
         private static RegionEndpoint regionEndpoint = RegionEndpoint.EUWest1;
 
-        private const int CONNECTION_TIMEOUT_MS = 20000;
+        private const int CONNECTION_TIMEOUT_MS = 60000;
 
         private const string BUCKET_FOR_AUDIO_FILES = "stop-spam/audio_records";
 

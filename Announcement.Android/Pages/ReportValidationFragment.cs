@@ -13,6 +13,7 @@ using Android.Content;
 using Javax.Net.Ssl;
 using Square.OkHttp;
 using Android.Runtime;
+using Android.Gms.Analytics;
 
 namespace Announcement.Android
 {
@@ -59,6 +60,9 @@ namespace Announcement.Android
             {
                 txtPhone.Text = viewModel.PhoneNumber;
             }
+
+			MainActivity.GATracker.SetScreenName ("Report Validation Fragment");
+			MainActivity.GATracker.Send (new HitBuilders.ScreenViewBuilder ().Build ());
 
 			return view;
 		}

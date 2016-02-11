@@ -10,6 +10,7 @@ using Android.App;
 using Android.Widget;
 using Announcement.Core;
 using Android.OS;
+using Android.Gms.Analytics;
 
 namespace Announcement.Android
 {
@@ -36,6 +37,9 @@ namespace Announcement.Android
             spammersSwipeRefresh = view.FindViewById<global::Android.Support.V4.Widget.SwipeRefreshLayout> (Resource.Id.SpammersSwipeRefresh);
 
             spammersSwipeRefresh.Refresh += SpammersListViewRefreshLayout_Refresh;
+
+			MainActivity.GATracker.SetScreenName ("Spammers Fragment");
+			MainActivity.GATracker.Send (new HitBuilders.ScreenViewBuilder ().Build ());
 
             return view;
         }

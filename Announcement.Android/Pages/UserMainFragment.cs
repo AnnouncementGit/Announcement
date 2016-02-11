@@ -9,6 +9,7 @@ using System;
 using System.Threading.Tasks;
 using System.Threading;
 using Java.IO;
+using Android.Gms.Analytics;
 
 namespace Announcement.Android
 {
@@ -30,6 +31,9 @@ namespace Announcement.Android
             btnReportSpam = view.FindViewById<ImageView>(Resource.Id.btnReportSpam);
 
             btnReportSpam.Click += BtnReportSpamOnClick;
+
+			MainActivity.GATracker.SetScreenName ("User Main Fragment");
+			MainActivity.GATracker.Send (new HitBuilders.ScreenViewBuilder ().Build ());
 
             return view;
         }

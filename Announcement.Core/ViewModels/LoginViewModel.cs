@@ -16,24 +16,24 @@ namespace Announcement.Core
             }
         }
              
-        public async void LoginViaFacebook(string userId, string token, Action callback)
+		public async void LoginViaFacebook(string userId, string username, string token, Action callback)
         {
-            await SocialLogin(userId, token, callback);
+			await SocialLogin(userId, username, token, callback);
         }
 
-        public async void LoginViaGooglePlus(string userId, string token, Action callback)
+		public async void LoginViaGooglePlus(string userId, string username, string token, Action callback)
         {
-            await SocialLogin(userId, token, callback);
+			await SocialLogin(userId, username,token, callback);
         }
 
-        public async void LoginViaVK(string userId, string token, Action callback)
+		public async void LoginViaVK(string userId, string username, string token, Action callback)
         {
-            await SocialLogin(userId, token, callback);
+			await SocialLogin(userId, username, token, callback);
         }
 
-        public async void LoginViaLinkedIn(string userId, string token, Action callback)
+		public async void LoginViaLinkedIn(string userId, string username, string token, Action callback)
         {
-            await SocialLogin(userId, token, callback);
+			await SocialLogin(userId, username, token, callback);
         }
             
         public async void LoginForAdminStuff(string username, string password, Action callback)
@@ -101,11 +101,11 @@ namespace Announcement.Core
             }
         }
 
-        protected async Task SocialLogin(string userId, string token, Action callback)
+		protected async Task SocialLogin(string userId, string username, string token, Action callback)
         {
             var viewModel = UserMainViewModel.Instance;
             
-            var loginResult = await Task.Run<Result<UserCredentials>>(() => SourceManager.LoginViaSocial(userId, EncryptorModule.Encrypt("dsdsdsds")));
+            var loginResult = await Task.Run<Result<UserCredentials>>(() => SourceManager.LoginViaSocial(userId, username, EncryptorModule.Encrypt("dsdsdsds")));
 
             if (loginResult.HasError || !loginResult.IsSuccess)
             {
@@ -117,7 +117,7 @@ namespace Announcement.Core
                 }
                 else
                 {
-                    AlertModule.ShowError(loginResult.Message, () => SocialLogin(userId, token, callback));
+                    AlertModule.ShowError(loginResult.Message, () => SocialLogin(userId, username, token, callback));
                 }
             }
             else
@@ -130,7 +130,7 @@ namespace Announcement.Core
 
                 if (result.HasError)
                 {
-                    AlertModule.ShowError(result.Message, () => SocialLogin(userId, token, callback));
+                    AlertModule.ShowError(result.Message, () => SocialLogin(userId, username, token, callback));
                 }
                 else
                 {

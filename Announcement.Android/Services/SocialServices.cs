@@ -10,6 +10,11 @@ using Android.Gms.Auth;
 using System.Threading.Tasks;
 using Android.OS;
 using Announcement.Core;
+using System.Net;
+using System.IO;
+using Newtonsoft.Json;
+using System.Xml;
+using Java.Net;
 
 namespace Announcement.Android
 {
@@ -28,9 +33,9 @@ namespace Announcement.Android
 			activity = MainActivityInstance.Current;
 		}
 
-		#region FacebookLogin SDK - get token = ok
+		#region FacebookLogin SDK - get token, userId, username (first, last name)
 		
-		public void FacebookLogin(Action<string> callback)
+		public void FacebookLogin(Action<string,string,string> callback)
 		{
 			if (isSocailServiceInProcess) {
 				return;
@@ -43,10 +48,11 @@ namespace Announcement.Android
                 
 				if (!FacebookSdk.IsInitialized) {
 					FacebookSdk.SdkInitialize (activity.ApplicationContext);
-
-					if (callback != null && AccessToken.CurrentAccessToken != null && !string.IsNullOrWhiteSpace (AccessToken.CurrentAccessToken.Token)) {
+					if (callback != null && AccessToken.CurrentAccessToken != null && !string.IsNullOrWhiteSpace (AccessToken.CurrentAccessToken.Token) && Profile.CurrentProfile != null) {										
+						
 						isSocailServiceInProcess = false;
-						callback.Invoke (AccessToken.CurrentAccessToken.Token);
+						string username = string.Format ("{0} {1}", Profile.CurrentProfile.FirstName, Profile.CurrentProfile.LastName);
+						callback.Invoke (AccessToken.CurrentAccessToken.UserId, username, AccessToken.CurrentAccessToken.Token);
 
 						return;
 					}
@@ -69,9 +75,10 @@ namespace Announcement.Android
 
 					facebookCallback.Success += (sender, e) => {
 						isSocailServiceInProcess = false;
+						if (callback != null && AccessToken.CurrentAccessToken != null && !string.IsNullOrWhiteSpace (AccessToken.CurrentAccessToken.Token) && Profile.CurrentProfile != null) {										
 
-						if (callback != null && AccessToken.CurrentAccessToken!=null && !string.IsNullOrWhiteSpace (AccessToken.CurrentAccessToken.Token)) {
-							callback.Invoke (AccessToken.CurrentAccessToken.Token);
+							string username = string.Format("{0} {1}", Profile.CurrentProfile.FirstName, Profile.CurrentProfile.LastName);
+							callback.Invoke (AccessToken.CurrentAccessToken.UserId, username, AccessToken.CurrentAccessToken.Token);
 						} else
 							ProgressModule.End ();
 					};
@@ -90,10 +97,10 @@ namespace Announcement.Android
 		private GoogleApiClient googleApiClient;
 		private ConnectionResult googleConnectionResult;
 		private bool googleLogInButtonClicked;
-		private Action<string> googleLoginCallback;
+		private Action<string, string, string> googleLoginCallback;
 		public const int GoogleRecoverableAuthRequestCode = 111;
 
-		public void GoogleLogin(Action<string> callback)
+		public void GoogleLogin(Action<string,string,string> callback)
 		{
             if (isSocailServiceInProcess)
             {
@@ -118,12 +125,13 @@ namespace Announcement.Android
 
 		private void AddGoogleApiClient()
 		{
-			var googleApiClientBuilder = new GoogleApiClient.Builder (activity);
-			googleApiClientBuilder.AddConnectionCallbacks (this);
-			googleApiClientBuilder.AddOnConnectionFailedListener (this);
-			googleApiClientBuilder.AddApi (PlusClass.API);
-			googleApiClientBuilder.AddScope (PlusClass.ScopePlusLogin);
-			googleApiClientBuilder.AddScope (PlusClass.ScopePlusProfile);
+			var googleApiClientBuilder = new GoogleApiClient.Builder (activity)
+			.AddConnectionCallbacks (this)
+			.AddOnConnectionFailedListener (this)			
+			.AddApi (PlusClass.API)
+			.AddScope (PlusClass.ScopePlusProfile)
+			.AddScope (PlusClass.ScopePlusLogin);
+					
 			googleApiClient = googleApiClientBuilder.Build ();
 		}
 
@@ -158,106 +166,151 @@ namespace Announcement.Android
 
 			Task.Run (() => {
 				var token = string.Empty;
-				try
-				{
-					ProgressModule.Message(LocalizationModule.Translate("progress_authentication"), false);
-					token = GoogleAuthUtil.GetToken(MainActivityInstance.Current, account,"oauth2:" + Scopes.PlusLogin + " https://www.googleapis.com/auth/plus.profile.emails.read");
+				try {
+					ProgressModule.Message (LocalizationModule.Translate ("progress_authentication"), false);
+					token = GoogleAuthUtil.GetToken (MainActivityInstance.Current, account, "oauth2:" + Scopes.PlusLogin + " https://www.googleapis.com/auth/plus.profile.emails.read");
 
-					if (!string.IsNullOrWhiteSpace(token) && googleLoginCallback != null){
-						googleLoginCallback.Invoke (token);
+					//var person = PlusClass.PeopleApi.GetCurrentPerson (googleApiClient);
+
+					if (!string.IsNullOrWhiteSpace (token) && googleLoginCallback != null){// && person != null) {
+						string userId = "gp_user_" + account;
+						string username = account.Substring(0, account.IndexOf("@"));
+
+						googleLoginCallback.Invoke (userId, username, token);
 						isSocailServiceInProcess = false;
 					}
-				}
-				catch (UserRecoverableAuthException e)
-				{
+					else
+					{
+						isSocailServiceInProcess = false;
+						ProgressModule.End ();
+					}
+				} catch (UserRecoverableAuthException e) {
 					MainActivityInstance.Current.StartActivityForResult (e.Intent, SocialServices.GoogleRecoverableAuthRequestCode);
-				}
-				catch (GoogleAuthException ex){
+				} catch (GoogleAuthException ex) {
 					var t = ex.Message;
 
 					isSocailServiceInProcess = false;
-
-					ProgressModule.End();
+					AlertModule.ShowInformation ("Not Authenticated", null);
+					ProgressModule.End ();
 				}
+
 			});
 		}
 		#endregion
-		#region LinkedInLogin - get token = ok
 
-		public void LinkedInLogin(Action<string> callback)
+		#region LinkedInLogin - get token, userId, username (first, last name)
+		public void LinkedInLogin(Action<string,string,string> callback)
 		{
-			if (isSocailServiceInProcess)
-            {
-                return;
-            }
+			if (isSocailServiceInProcess) {
+				return;
+			}
 
 			isSocailServiceInProcess = true;
 
-			ProgressModule.Message(LocalizationModule.Translate("progress_authentication"), false);
+			ProgressModule.Message (LocalizationModule.Translate ("progress_authentication"), false);
             
 			var auth = new OAuth2Authenticator (
-				clientId: "77o5jxdgmf5uho",
-				clientSecret: "XCYQtNLFRUoMGPVO",
-				scope: "",
-				authorizeUrl: new Uri ("https://www.linkedin.com/uas/oauth2/authorization"),
-				redirectUrl: new Uri ("https://oauth.vk.com/blank.html"),  //need to change
-				accessTokenUrl: new Uri ("https://www.linkedin.com/uas/oauth2/accessToken")
-			);
+				           clientId: "77o5jxdgmf5uho",
+				           clientSecret: "XCYQtNLFRUoMGPVO",
+				           scope: "",
+				           authorizeUrl: new Uri ("https://www.linkedin.com/uas/oauth2/authorization"),
+				           redirectUrl: new Uri ("https://oauth.vk.com/blank.html"),  //need to change
+				           accessTokenUrl: new Uri ("https://www.linkedin.com/uas/oauth2/accessToken")
+			           );
 			auth.AllowCancel = true;
 			auth.ShowUIErrors = false;
 			auth.Completed += (s, e) => {
 				if (!e.IsAuthenticated) {
-					AlertModule.ShowInformation("Not Authenticated", null);
-					ProgressModule.End();
-				}
-				else
-				{
+					AlertModule.ShowInformation ("Not Authenticated", null);
+					ProgressModule.End ();
+				} else {
 					var token = e.Account.Properties ["access_token"].ToString ();
-					if(callback != null && !string.IsNullOrWhiteSpace(token))
-						callback.Invoke(token);
+					try {
+						
+						var request = HttpWebRequest.Create (string.Format (@"https://api.linkedin.com/v1/people/~:(id,firstName,lastName)?oauth2_access_token=" + token + "&format=json", ""));
+						request.ContentType = "application/json";
+						request.Method = "GET";
+
+						using (HttpWebResponse response = request.GetResponse () as HttpWebResponse) {
+							System.Console.Out.WriteLine ("Stautus Code is: {0}", response.StatusCode);
+
+							using (StreamReader reader = new StreamReader (response.GetResponseStream ())) {
+								var content = reader.ReadToEnd ();
+								if (!string.IsNullOrWhiteSpace (content)) {
+
+									System.Console.Out.WriteLine (content);
+								}
+								var result = JsonConvert.DeserializeObject<SocialUser> (content);
+								string userId = result.id;
+								string username = string.Format("{0} {1}", result.firstName, result.lastName);
+								if (callback != null && !string.IsNullOrWhiteSpace (token))
+									callback.Invoke (userId, username, token);
+							}
+						}
+					} catch (Exception exx) {
+						System.Console.WriteLine (exx.ToString ());
+						AlertModule.ShowInformation ("Not Authenticated", null);
+						ProgressModule.End ();
+					}
 				}
 
 				isSocailServiceInProcess = false;
-			} ;
+			};
 
 			var intent = auth.GetUI (activity);
 			activity.StartActivity (intent);
 		}
 
 		#endregion
-		#region VKLogin - get token = ok
-		public void VKLogin (Action<string> callback)
+
+		#region VKLogin - get token, userId, username (first, last name)
+		public void VKLogin (Action<string,string,string> callback)
 		{
-			if (isSocailServiceInProcess)
-            {
-                return;
-            }
+			if (isSocailServiceInProcess) {
+				return;
+			}
 
 			isSocailServiceInProcess = true;
 
-			ProgressModule.Message(LocalizationModule.Translate("progress_authentication"), false);
+			ProgressModule.Message (LocalizationModule.Translate ("progress_authentication"), false);
             
 			var auth = new OAuth2Authenticator (
-				clientId: "5173092",
-				scope: "friends,video,groups",
-				authorizeUrl: new Uri ("https://oauth.vk.com/authorize"),
-				redirectUrl: new Uri ("https://oauth.vk.com/blank.html"));
+				           clientId: "5173092",
+				           scope: "friends,video,groups",
+				           authorizeUrl: new Uri ("https://oauth.vk.com/authorize"),
+				           redirectUrl: new Uri ("https://oauth.vk.com/blank.html"));
 			auth.AllowCancel = true;
 			auth.ShowUIErrors = false;
 			auth.Completed += (s, e) => {
-				if (!e.IsAuthenticated){
-					AlertModule.ShowInformation("Not Authenticated", null);
-					ProgressModule.End();
-				}
-				else
-				{
+				if (!e.IsAuthenticated) {
+					AlertModule.ShowInformation ("Not Authenticated", null);
+					ProgressModule.End ();
+				} else {
 					var token = e.Account.Properties ["access_token"].ToString ();
-					if(callback!=null && !string.IsNullOrWhiteSpace(token))
-						callback.Invoke(token);   
+					var userId = e.Account.Properties ["user_id"].ToString ();
+
+					try {
+						XmlDocument xmlDocument = new XmlDocument ();
+						WebRequest webRequest = WebRequest.Create ("https://api.vk.com/method/users.get.xml?&access_token=" + token);
+						WebResponse webResponse = webRequest.GetResponse ();
+						Stream stream = webResponse.GetResponseStream ();
+						xmlDocument.Load (stream);
+						string firstname = xmlDocument.SelectSingleNode ("response/user/first_name").InnerText;
+						string lastname = xmlDocument.SelectSingleNode ("response/user/last_name").InnerText;
+						string username = string.Format ("{0} {1}", firstname, lastname);
+
+						if (callback != null && !string.IsNullOrWhiteSpace (token))
+							callback.Invoke (userId, username, token); 
+
+					} catch (Exception ex) {
+						System.Console.WriteLine (ex.ToString ());
+						AlertModule.ShowInformation ("Not Authenticated", null);
+						ProgressModule.End ();
+					}
 				}
 
 				isSocailServiceInProcess = false;
-			} ;
+			};
 
 			var intent = auth.GetUI (activity);
 			activity.StartActivity (intent);
@@ -269,22 +322,30 @@ namespace Announcement.Android
 		{
 			isSocailServiceInProcess = false;
 
+			//Google
 			if (googleApiClient != null && !googleApiClient.IsConnecting && requestCode == 0) {
 				googleApiClient.Connect ();
 			}
 
-			if (requestCode == GoogleRecoverableAuthRequestCode) 
-			{
+			if (requestCode == GoogleRecoverableAuthRequestCode) {
 				var extras = data.Extras;
 				var token = extras.GetString ("authtoken");
-                if (!string.IsNullOrWhiteSpace(token) && googleLoginCallback != null)
-                {
-					googleLoginCallback.Invoke(token);
-                }
-				else
+				var account = PlusClass.AccountApi.GetAccountName (googleApiClient);
+
+				//var person = PlusClass.PeopleApi.GetCurrentPerson (googleApiClient);
+				if (!string.IsNullOrWhiteSpace (token) && googleLoginCallback != null) {// && person != null) {
+					string userId = "gp_user_" + account;
+					string username = account.Substring (0, account.IndexOf ("@"));
+
+					googleLoginCallback.Invoke (userId, username, token);
+					isSocailServiceInProcess = false;
+				} else {
+					isSocailServiceInProcess = false;
 					ProgressModule.End ();
+				}
 			}
 
+			//Facebook
             if (FacebookSdk.IsInitialized && requestCode == FacebookSdk.CallbackRequestCodeOffset && callbackManager != null)
             {
 				callbackManager.OnActivityResult (requestCode, (int)resultCode, data);
@@ -351,4 +412,17 @@ namespace Announcement.Android
             }
         }
     }
+
+	public class SocialUser
+	{
+		[Newtonsoft.Json.JsonProperty("id")]
+		public string id {get;set;}
+
+		[Newtonsoft.Json.JsonProperty("firstName")]
+		public string firstName {get;set;}
+
+		[Newtonsoft.Json.JsonProperty("lastName")]
+		public string lastName {get;set;}
+	}
+
 }

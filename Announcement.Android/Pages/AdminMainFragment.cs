@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System;
 using Android.Views.Animations;
+using Android.Gms.Analytics;
 
 namespace Announcement.Android
 {
@@ -47,6 +48,9 @@ namespace Announcement.Android
             tabHost.CurrentTab = StartTabIndex;
 
 			tabChangeListener = new AnimatedTabHostListener (tabHost);
+
+			MainActivity.GATracker.SetScreenName ("Admin Main Fragment");
+			MainActivity.GATracker.Send (new HitBuilders.ScreenViewBuilder ().Build ());
 
             return view;
 		}

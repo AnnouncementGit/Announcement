@@ -7,10 +7,11 @@ using Android.Content;
 using Android.Views;
 using Announcement.Core;
 using Android.Widget;
+using Android.Gms.Analytics;
 
 namespace Announcement.Android
 {
-    [Activity(ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.ScreenSize, Label = "Announcement", MainLauncher = true, Icon = "@drawable/icon", Theme="@style/splash_theme", WindowSoftInputMode = SoftInput.AdjustResize )]
+    [Activity(ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.ScreenSize, Label = "StopSpam", MainLauncher = true, Icon = "@drawable/icon", Theme="@style/splash_theme", WindowSoftInputMode = SoftInput.AdjustResize )]
     public class MainActivity : FragmentActivity, ViewTreeObserver.IOnGlobalLayoutListener
 	{
         private MainViewModel ViewModel 
@@ -100,6 +101,24 @@ namespace Announcement.Android
 
 			SocialServices.Instance.OnActivityResult (requestCode, resultCode, data);
 		}
+
+		private static Tracker tracker;
+		public static Tracker GATracker 
+		{
+			get {
+
+				if (tracker == null) {
+					var analytics = GoogleAnalytics.GetInstance (Application.Context);
+					analytics.Logger.LogLevel = LoggerLogLevel.Verbose;
+					tracker = analytics.NewTracker (GA_PROPERTY_ID);
+					tracker.EnableAdvertisingIdCollection (true);				
+				}
+
+				return tracker;
+			}
+		}
+
+		const string GA_PROPERTY_ID = "UA-73653423-1";
     }
 
 	public class MainActivityInstance 

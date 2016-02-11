@@ -9,6 +9,7 @@ using Java.IO;
 using Announcement.Core;
 using Android.Media;
 using System.Threading.Tasks;
+using Android.Gms.Analytics;
 
 namespace Announcement.Android
 {
@@ -38,6 +39,9 @@ namespace Announcement.Android
             filePath = ViewModel.CurrentAudioRecordPath;
 
 			audioPlayer = new MediaPlayer ();
+
+			MainActivity.GATracker.SetScreenName ("Add Audio File Fragment");
+			MainActivity.GATracker.Send (new HitBuilders.ScreenViewBuilder ().Build ());
 
 			return view;
 		}

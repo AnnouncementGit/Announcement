@@ -9,138 +9,134 @@ using Android.Views.Animations;
 using System;
 using Android.Graphics.Drawables;
 using Android.Animation;
+using Android.Gms.Analytics;
 
 namespace Announcement.Android
 {
         public class ModeratorMainFragment : Fragment
         {
-            private ModeratorMainViewModel ViewModel 
-            { 
-                get 
-                { 
-                    return ModeratorMainViewModel.Instance; 
-                }
-            }
+            private ModeratorMainViewModel ViewModel { 
+			get { 
+				return ModeratorMainViewModel.Instance; 
+			}
+		}
 
-            public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-            {
-                var view = inflater.Inflate(Resource.Layout.admin_main_layout, null);
+        public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+		{
+			var view = inflater.Inflate (Resource.Layout.admin_main_layout, null);
 
 
-                tabHost = view.FindViewById<TabHost> (Android.Resource.Id.tabHost);
+			tabHost = view.FindViewById<TabHost> (Android.Resource.Id.tabHost);
 
-                tabHost.Setup ();
+			tabHost.Setup ();
 
-                tabHostContentFactory = new TabHostContentFactory (inflater);
+			tabHostContentFactory = new TabHostContentFactory (inflater);
 
-                tabHostContentFactory.SetContentCreatedListener(TabHostContentFactoryOnContentCreated);
+			tabHostContentFactory.SetContentCreatedListener (TabHostContentFactoryOnContentCreated);
 
-                tabHost.TabChanged += TabHost_TabChanged;
-
-
-                AddTab(LocalizationModule.Translate("tab_title_validation"), VALIDATION_TAB_TAG);
-
-                AddTab(LocalizationModule.Translate("tab_title_ratings"), RATING_TAB_TAG);
+			tabHost.TabChanged += TabHost_TabChanged;
 
 
-                tabChangeListener = new AnimatedTabHostListener (tabHost);
+			AddTab (LocalizationModule.Translate ("tab_title_validation"), VALIDATION_TAB_TAG);
 
-                return view;
-            }
+			AddTab (LocalizationModule.Translate ("tab_title_ratings"), RATING_TAB_TAG);
+
+
+			tabChangeListener = new AnimatedTabHostListener (tabHost);
+
+			MainActivity.GATracker.SetScreenName ("Moderator Main Fragment");
+			MainActivity.GATracker.Send (new HitBuilders.ScreenViewBuilder ().Build ());
+
+			return view;
+		}
 
             protected void AddTab(string title, string tag)
-            {
-                var tabSpec = tabHost.NewTabSpec (tag);
+		{
+			var tabSpec = tabHost.NewTabSpec (tag);
 
-                tabSpec.SetContent (tabHostContentFactory);
+			tabSpec.SetContent (tabHostContentFactory);
 
-                var view = Activity.LayoutInflater.Inflate (Resource.Layout.tab_indicator, null);
+			var view = Activity.LayoutInflater.Inflate (Resource.Layout.tab_indicator, null);
 
-                view.FindViewById<TextView> (Resource.Id.indicatorTextView).Text = title;
+			view.FindViewById<TextView> (Resource.Id.indicatorTextView).Text = title;
 
-                tabSpec.SetIndicator(view);
+			tabSpec.SetIndicator (view);
 
-                tabHost.AddTab(tabSpec); 
-            }
+			tabHost.AddTab (tabSpec); 
+		}
 
             protected void TabHost_TabChanged (object sender, TabHost.TabChangeEventArgs e)
-            {
-                var view = tabHostContentFactory.ValidationListView;
+		{
+			var view = tabHostContentFactory.ValidationListView;
 
-                if (view != null)
-                {
-                    view.ScrollStateChanged -= View_ScrollStateChanged;
+			if (view != null) {
+				view.ScrollStateChanged -= View_ScrollStateChanged;
 
-                    view.ScrollStateChanged += View_ScrollStateChanged;
+				view.ScrollStateChanged += View_ScrollStateChanged;
 
-                    view.VerticalScrollBarEnabled = false;
-                }
+				view.VerticalScrollBarEnabled = false;
+			}
 
-                view = ratingUsersTabList;
+			view = ratingUsersTabList;
 
-                if (view != null)
-                {
-                    view.ScrollStateChanged -= View_ScrollStateChanged;
+			if (view != null) {
+				view.ScrollStateChanged -= View_ScrollStateChanged;
 
-                    view.ScrollStateChanged += View_ScrollStateChanged;
+				view.ScrollStateChanged += View_ScrollStateChanged;
 
-                    view.VerticalScrollBarEnabled = false;
-                }
+				view.VerticalScrollBarEnabled = false;
+			}
 
-                view = ratingSpammersTabList;
+			view = ratingSpammersTabList;
 
-                if (view != null)
-                {
-                    view.ScrollStateChanged -= View_ScrollStateChanged;
+			if (view != null) {
+				view.ScrollStateChanged -= View_ScrollStateChanged;
 
-                    view.ScrollStateChanged += View_ScrollStateChanged;
+				view.ScrollStateChanged += View_ScrollStateChanged;
 
-                    view.VerticalScrollBarEnabled = false;
-                }
-            }
+				view.VerticalScrollBarEnabled = false;
+			}
+		}
 
             protected void View_ScrollStateChanged (object sender, AbsListView.ScrollStateChangedEventArgs e)
-            {
-                var view = sender as View;
+		{
+			var view = sender as View;
 
-                switch (e.ScrollState)
-                {
-                    case ScrollState.TouchScroll:
+			switch (e.ScrollState) {
+			case ScrollState.TouchScroll:
 
-                        if (!view.VerticalScrollBarEnabled)
-                        {
-                            view.VerticalScrollBarEnabled = true;
-                        }
-                        break;
-                }
-            }
+				if (!view.VerticalScrollBarEnabled) {
+					view.VerticalScrollBarEnabled = true;
+				}
+				break;
+			}
+		}
 
             protected void TabHostContentFactoryOnContentCreated (string tag)
-            {
-                switch (tag)
-                {
-                    case VALIDATION_TAB_TAG:
-                        InitializeValidation();
-                        break;
+		{
+			switch (tag) {
+			case VALIDATION_TAB_TAG:
+				InitializeValidation ();
+				break;
 
-                    case RATING_TAB_TAG:
-                        ratingTabView = tabHostContentFactory.RatingTabView;
+			case RATING_TAB_TAG:
+				ratingTabView = tabHostContentFactory.RatingTabView;
 
-                        ratingsViewSwitcher = ratingTabView.FindViewById<ViewSwitcher>(Resource.Id.RatingsViewSwitcher);
+				ratingsViewSwitcher = ratingTabView.FindViewById<ViewSwitcher> (Resource.Id.RatingsViewSwitcher);
 
-                        ratingsViewSwitcher.SetInAnimation(Activity, Resource.Animation.fade_in_animation);
+				ratingsViewSwitcher.SetInAnimation (Activity, Resource.Animation.fade_in_animation);
 
-                        ratingsViewSwitcher.SetOutAnimation(Activity, Resource.Animation.fade_out_animation);
+				ratingsViewSwitcher.SetOutAnimation (Activity, Resource.Animation.fade_out_animation);
 
-                        InitializeSpamers();
-                        InitializeUsers();
+				InitializeSpamers ();
+				InitializeUsers ();
 
-                        ratingRadioButtons = ratingTabView.FindViewById<RadioGroup>(Resource.Id.ratingRadioGroup);
-                        ratingRadioButtons.CheckedChange += RatingRadioButtonsOnCheckedChange;
-                        ratingRadioButtons.Check(Resource.Id.btnSpammers);
-                        break;
-                }
-            }
+				ratingRadioButtons = ratingTabView.FindViewById<RadioGroup> (Resource.Id.ratingRadioGroup);
+				ratingRadioButtons.CheckedChange += RatingRadioButtonsOnCheckedChange;
+				ratingRadioButtons.Check (Resource.Id.btnSpammers);
+				break;
+			}
+		}
                 
         protected void InitializeValidation()
         {
@@ -261,7 +257,7 @@ namespace Announcement.Android
             private const string VALIDATION_TAB_TAG = "validationTab";
 
             private const string RATING_TAB_TAG = "ratingTab";
-        }
+	}
 
 	public class TabHostContentFactory : Java.Lang.Object, TabHost.ITabContentFactory
 	{
