@@ -103,6 +103,8 @@
 
      <data name="label_spammers" xml:space="preserve"><value>Spammers</value></data>
 
+     <data name="label_about" xml:space="preserve"><value>About</value></data>
+
     <data name="label_logout" xml:space="preserve"><value>Logout</value></data>
 
     <data name="alert_enable_gps" xml:space="preserve"><value>Please enable GPS and Network Positioning in your Settings</value></data>
@@ -211,5 +213,7 @@ Press OK to choose another one. </value></data>
     <data name="alert_message_choose_file_upload" xml:space="preserve"><value>Please choose file to upload!</value></data>
 
     <data name="alert_message_empty_phone_number" xml:space="preserve"><value>Phone number is empty. Please enter the phone number.</value></data>
+
+    <data name="alert_message_empty_about_persons" xml:space="preserve"><value>Couldn't load information about the responsible person in your city. Try again?</value></data>
 
 </root>

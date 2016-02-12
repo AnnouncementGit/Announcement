@@ -7,6 +7,8 @@ using Android.OS;
 using System.Collections.Generic;
 using Android.Views.InputMethods;
 using Android.Content.Res;
+using Android.Content;
+using Android.Provider;
 
 namespace Announcement.Android
 {
@@ -111,7 +113,7 @@ namespace Announcement.Android
                     if(NavigationManager.CurrentFragment != typeof(SpammersFragment))
                     {
                         menuItems.Add(LocalizationModule.Translate("label_spammers"));
-                    }
+                    }					
                     break;
 
                 case UserRoles.Admin:
@@ -126,7 +128,12 @@ namespace Announcement.Android
                     }
                     break;
             }
-                    
+               
+			if(NavigationManager.CurrentFragment != typeof(AboutFragment))
+			{
+				menuItems.Add(LocalizationModule.Translate("label_about"));
+			}
+
             menuItems.Add(LocalizationModule.Translate("label_logout"));
 
             popupListView.Adapter = new ArrayAdapter(MainActivityInstance.Current, Resource.Layout.popup_menu_item, menuItems);
@@ -159,11 +166,30 @@ namespace Announcement.Android
                         NavigationManager.Forward(typeof(SpammersFragment));
                     });
             }
+			else if (title == LocalizationModule.Translate("label_about"))
+			{
+				if (!LocationService.IsLocationEnabled)
+				{              
+					AlertModule.ShowInformation(LocalizationModule.Translate("alert_enable_gps"), OpenSettings);
+
+					return;
+				}
+				AboutViewModel.Instance.GetAboutPersons(() =>
+					{
+						NavigationManager.Forward(typeof(AboutFragment));
+					});
+			}
             else if (title == LocalizationModule.Translate("label_logout"))
             {
                 ViewModel.Logout(LogoutCallback);
             }
         }
+
+		private void OpenSettings()
+		{
+			Intent intent = new Intent (Settings.ActionLocationSourceSettings);
+			Activity.StartActivity (intent);
+		}
 
         protected void LogoutCallback()
         {

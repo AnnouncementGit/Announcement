@@ -35,10 +35,11 @@ namespace Announcement.Core
 				alertSimpleView.FindViewById<Button> (Resource.Id.alertBtnRetry).Visibility = ViewStates.Gone;
 
 				alertSimpleView.FindViewById<Button> (Resource.Id.alertBtnDismiss).Text = okButton;
-				alertSimpleView.FindViewById<Button> (Resource.Id.alertBtnDismiss).Click += (sender, e) => {
+				alertSimpleView.FindViewById<Button> (Resource.Id.alertBtnDismiss).Click += (sender, e) => {	
 					alertSimpleView.Dismiss ();
 				};
 				alertSimpleView.DismissEvent += (sender, e) => {
+
 					if (okCallback != null)
 						okCallback.Invoke ();
 				};
@@ -53,7 +54,7 @@ namespace Announcement.Core
 
 				if (activity == null)
 					return;
-					
+		
 				var customView = activity.LayoutInflater.Inflate (Resource.Layout.simple_alert, null);
 				var builder = new AlertDialogEx.Builder (activity);
 				builder.SetView (customView);
@@ -84,7 +85,10 @@ namespace Announcement.Core
 						cancelCallback.Invoke ();
 				};
 
-				alertWithCancelView.DismissEvent += (sender, e) => {
+				alertWithCancelView.DismissEvent += (sender, e) => {					
+
+					if (cancelCallback != null)
+						cancelCallback.Invoke ();
 				};
 
 			}, null);

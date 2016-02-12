@@ -4,6 +4,7 @@ using Android.Locations;
 using Android.App;
 using Android.Content;
 using Android.OS;
+using System.Collections.Generic;
 
 namespace Announcement.Android
 {
@@ -29,6 +30,11 @@ namespace Announcement.Android
             return await locationListener.GetCurrentLocation();
         }
 
+		public static async Task<string> GetCityAsync()
+		{
+			return await locationListener.GetCurrentCity();
+		}
+
         private static LocationManager locationManager;
 
         private static LocationListener locationListener;
@@ -43,6 +49,8 @@ namespace Announcement.Android
 
         public async Task<global::Android.Locations.Location> GetCurrentLocation()
         {
+			isGetCity = false;
+
             tskCompletionSource = new TaskCompletionSource<global::Android.Locations.Location>();
 
             locationManager.RequestLocationUpdates(LocationManager.GpsProvider, LOCATION_REFRESH_TIME, LOCATION_REFRESH_DISTANCE, this);
@@ -63,13 +71,46 @@ namespace Announcement.Android
                 currentBestLocation = location;
             }
 
-            if (tskCompletionSource != null && tskCompletionSource.Task != null && !tskCompletionSource.Task.IsCompleted)
-            {
-                tskCompletionSource.TrySetResult(currentBestLocation);
-            }
-
-
+			if (!isGetCity) {
+				if (tskCompletionSource != null && tskCompletionSource.Task != null && !tskCompletionSource.Task.IsCompleted) {
+					tskCompletionSource.TrySetResult (currentBestLocation);
+				}
+			} else
+				GetCity ();
         }
+
+		public async Task<string> GetCurrentCity()
+		{
+			isGetCity = true;
+
+			tskCompletionSourceCity = new TaskCompletionSource<string>();
+
+			locationManager.RequestLocationUpdates(LocationManager.GpsProvider, LOCATION_REFRESH_TIME, LOCATION_REFRESH_DISTANCE, this);
+
+			locationManager.RequestLocationUpdates(LocationManager.NetworkProvider, LOCATION_REFRESH_TIME, LOCATION_REFRESH_DISTANCE, this);					
+
+			return await tskCompletionSourceCity.Task;
+
+		}
+
+
+		private async void GetCity()
+		{
+			Geocoder coder = new Geocoder(Application.Context, new Java.Util.Locale("uk"));
+			string city = string.Empty;
+			try {
+				var result = await coder.GetFromLocationAsync(currentBestLocation.Latitude, currentBestLocation.Longitude, 1);
+				if(result != null && result.Count > 0)
+					city = result[0].Locality;
+			} catch (Exception e) {
+				// nothing
+			}
+
+			if (tskCompletionSourceCity != null && tskCompletionSourceCity.Task != null && !tskCompletionSourceCity.Task.IsCompleted) {
+				isGetCity = false;
+				tskCompletionSourceCity.TrySetResult (city);
+			}
+		}
 
         public void OnProviderDisabled(string provider)
         {
@@ -188,6 +229,10 @@ namespace Announcement.Android
         private global::Android.Locations.Location currentBestLocation;
 
         private TaskCompletionSource<global::Android.Locations.Location> tskCompletionSource;
+
+		private TaskCompletionSource<string> tskCompletionSourceCity;
+
+		private bool isGetCity = false;
 
         private const int LOCATION_REFRESH_TIME = 1000;
 

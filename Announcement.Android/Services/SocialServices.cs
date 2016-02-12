@@ -165,25 +165,49 @@ namespace Announcement.Android
 			var account = PlusClass.AccountApi.GetAccountName (googleApiClient);
 
 			Task.Run (() => {
-				var token = string.Empty;
+				
 				try {
 					ProgressModule.Message (LocalizationModule.Translate ("progress_authentication"), false);
-					token = GoogleAuthUtil.GetToken (MainActivityInstance.Current, account, "oauth2:" + Scopes.PlusLogin + " https://www.googleapis.com/auth/plus.profile.emails.read");
+					var loginToken  = GoogleAuthUtil.GetToken (MainActivityInstance.Current, account + "", "oauth2:" + Scopes.PlusLogin + " https://www.googleapis.com/auth/plus.profile.emails.read");
+				
+					var token = GoogleAuthUtil.GetToken (MainActivityInstance.Current, account + "", "oauth2:" + Scopes.Profile + " https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email");
+					GoogleAuthUtil.InvalidateToken (MainActivityInstance.Current, token);
+					token = GoogleAuthUtil.GetToken (MainActivityInstance.Current, account + "", "oauth2:" + Scopes.Profile + " https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email");
 
-					//var person = PlusClass.PeopleApi.GetCurrentPerson (googleApiClient);
+					var request = HttpWebRequest.Create ("https://www.googleapis.com/oauth2/v1/userinfo?access_token=" + token);
+					request.ContentType = "application/json";
+					request.Method = "GET";
 
-					if (!string.IsNullOrWhiteSpace (token) && googleLoginCallback != null){// && person != null) {
-						string userId = "gp_user_" + account;
-						string username = account.Substring(0, account.IndexOf("@"));
+					try {
+						using (HttpWebResponse response = request.GetResponse () as HttpWebResponse) {
+							System.Console.Out.WriteLine ("Stautus Code is: {0}", response.StatusCode);
+							using (StreamReader reader = new StreamReader (response.GetResponseStream ())) {
+								var content = reader.ReadToEnd ();
+								if (!string.IsNullOrWhiteSpace (content)) {
+									System.Console.Out.WriteLine (content);
+								}
+								var result = JsonConvert.DeserializeObject<SocialUser> (content);
+								string userId = result.id;
+								string username = result.googleName;
 
-						googleLoginCallback.Invoke (userId, username, token);
+								if (!string.IsNullOrWhiteSpace (loginToken) && googleLoginCallback != null) {						
+
+									googleLoginCallback.Invoke (userId, username, loginToken);
+									isSocailServiceInProcess = false;
+								} else {
+									isSocailServiceInProcess = false;
+									ProgressModule.End ();
+								}
+
+							}
+						}
+
+					} catch (Exception ex) {
 						isSocailServiceInProcess = false;
-					}
-					else
-					{
-						isSocailServiceInProcess = false;
+						AlertModule.ShowInformation ("Not Authenticated", null);
 						ProgressModule.End ();
 					}
+
 				} catch (UserRecoverableAuthException e) {
 					MainActivityInstance.Current.StartActivityForResult (e.Intent, SocialServices.GoogleRecoverableAuthRequestCode);
 				} catch (GoogleAuthException ex) {
@@ -329,18 +353,45 @@ namespace Announcement.Android
 
 			if (requestCode == GoogleRecoverableAuthRequestCode) {
 				var extras = data.Extras;
-				var token = extras.GetString ("authtoken");
+				var loginToken  = extras.GetString ("authtoken");
+
 				var account = PlusClass.AccountApi.GetAccountName (googleApiClient);
 
-				//var person = PlusClass.PeopleApi.GetCurrentPerson (googleApiClient);
-				if (!string.IsNullOrWhiteSpace (token) && googleLoginCallback != null) {// && person != null) {
-					string userId = "gp_user_" + account;
-					string username = account.Substring (0, account.IndexOf ("@"));
+				var token = GoogleAuthUtil.GetToken (MainActivityInstance.Current, account + "", "oauth2:" + Scopes.Profile + " https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email");
+				GoogleAuthUtil.InvalidateToken (MainActivityInstance.Current, token);
+				token = GoogleAuthUtil.GetToken (MainActivityInstance.Current, account + "", "oauth2:" + Scopes.Profile + " https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email");
 
-					googleLoginCallback.Invoke (userId, username, token);
+				var request = HttpWebRequest.Create ("https://www.googleapis.com/oauth2/v1/userinfo?access_token=" + token);
+				request.ContentType = "application/json";
+				request.Method = "GET";
+
+				try {
+					using (HttpWebResponse response = request.GetResponse () as HttpWebResponse) {
+						System.Console.Out.WriteLine ("Stautus Code is: {0}", response.StatusCode);
+						using (StreamReader reader = new StreamReader (response.GetResponseStream ())) {
+							var content = reader.ReadToEnd ();
+							if (!string.IsNullOrWhiteSpace (content)) {
+								System.Console.Out.WriteLine (content);
+							}
+							var result = JsonConvert.DeserializeObject<SocialUser> (content);
+							string userId = result.id;
+							string username = result.googleName;
+
+							if (!string.IsNullOrWhiteSpace (loginToken) && googleLoginCallback != null) {						
+
+								googleLoginCallback.Invoke (userId, username, loginToken);
+								isSocailServiceInProcess = false;
+							} else {
+								isSocailServiceInProcess = false;
+								ProgressModule.End ();
+							}
+
+						}
+					}
+
+				} catch (Exception ex) {
 					isSocailServiceInProcess = false;
-				} else {
-					isSocailServiceInProcess = false;
+					AlertModule.ShowInformation ("Not Authenticated", null);
 					ProgressModule.End ();
 				}
 			}
@@ -423,6 +474,9 @@ namespace Announcement.Android
 
 		[Newtonsoft.Json.JsonProperty("lastName")]
 		public string lastName {get;set;}
+
+		[Newtonsoft.Json.JsonProperty("name")]
+		public string googleName {get;set;}
 	}
 
 }
