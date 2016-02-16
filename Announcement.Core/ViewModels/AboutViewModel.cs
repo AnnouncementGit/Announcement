@@ -31,9 +31,7 @@ namespace Announcement.Core
 
 			var cityTask = LocationService.GetCityAsync();
 
-			Task.Run<bool> (() => {
-				ProgressModule.End();
-				AlertModule.ShowError(LocalizationModule.Translate("alert_bad_location"), () => GetAboutPersons(callback));
+			Task.Run<bool> (() => {				
 				return cityTask.Wait (5000);
 			}).ContinueWith ((resultCity) => {
 				if (resultCity.Result)
@@ -61,7 +59,11 @@ namespace Announcement.Core
 							DispatcherModule.Invoke(callback);
 						}
 					}
-
+				}
+				else 
+				{
+					ProgressModule.End();
+					AlertModule.ShowError(LocalizationModule.Translate("alert_bad_location"), () => GetAboutPersons(callback));
 				}
 			});		
 

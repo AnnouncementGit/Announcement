@@ -13,6 +13,12 @@ namespace Announcement.Core
 
         [JsonProperty("audioRecord")]
         public String AudioRecord { get; set; }
+
+		[JsonProperty("latitude")]
+		public float Latitude { get; set; }
+
+		[JsonProperty("longitude")]
+		public float Longitude { get; set; }
     }
 }
 

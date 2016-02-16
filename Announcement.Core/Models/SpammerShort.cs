@@ -10,6 +10,12 @@ namespace Announcement.Core
 
         [JsonProperty("spamCount")]
         public int SpamCount { get; set; }
+
+		[JsonProperty("latitude")]
+		public float Latitude { get; set; }
+
+		[JsonProperty("longitude")]
+		public float Longitude { get; set; }
     }
 }
 

@@ -154,6 +154,10 @@ Press Retry to retake photo.</value></data>
 
     <data name="title_complaints" xml:space="preserve"><value>Complaints:</value></data>
 
+    <data name="title_city" xml:space="preserve"><value>City:</value></data>
+
+    <data name="title_city_unknown" xml:space="preserve"><value>Unknown</value></data>    
+
     <data name="title_reports" xml:space="preserve"><value>Reports:</value></data>
 
     <data name="title_confirmeds" xml:space="preserve"><value>Confirmed:</value></data>

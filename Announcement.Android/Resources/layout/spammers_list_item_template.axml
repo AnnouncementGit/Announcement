@@ -14,12 +14,40 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left|top"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="9dp"
             android:textSize="20sp"
             android:singleLine="true"
             android:ellipsize="end"
             android:textColor="@color/major_color" />
         <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/ComplaintsLine"
+            android:layout_marginBottom="-7dp">
+            <Announcement.Android.Controls.TextView
+                style="@style/text_view_normal_font_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|center_vertical"
+                android:layout_marginTop="3dp"
+                android:textSize="14sp"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:textColor="@color/major_color"
+                local:localizationKey="title_city" />
+            <Announcement.Android.Controls.TextView
+                style="@style/text_view_normal_font_style"
+                android:id="@+id/City"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|center_vertical"
+                android:textSize="14sp"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:textColor="@color/major_color" />
+        </FrameLayout>
+        <FrameLayout
+            android:id="@+id/ComplaintsLine"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"

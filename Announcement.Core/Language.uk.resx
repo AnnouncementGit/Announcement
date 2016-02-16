@@ -154,6 +154,10 @@
 
     <data name="title_complaints" xml:space="preserve"><value>Скарги:</value></data>
 
+    <data name="title_city" xml:space="preserve"><value>Місто:</value></data>
+
+    <data name="title_city_unknown" xml:space="preserve"><value>Невідоме</value></data>        
+
     <data name="title_reports" xml:space="preserve"><value>Звіти:</value></data>
 
     <data name="title_confirmeds" xml:space="preserve"><value>Підтверджені:</value></data>
