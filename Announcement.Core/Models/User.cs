@@ -4,12 +4,12 @@ using Newtonsoft.Json;
 namespace Announcement.Core
 {
     public class User 
-    {
-        [JsonProperty("id")]
-        public string Id { get; set; }
-
+    {       
         [JsonProperty("username")]
         public String Username { get; set; }
+
+		[JsonProperty("displayName")]
+		public string DisplayName { get; set; }
 
         [JsonProperty("password")]
         public String Password { get; set; }

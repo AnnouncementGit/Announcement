@@ -151,7 +151,7 @@ namespace Announcement.Core
 
             user.UserId = userId;
 
-			user.Username = userName;
+			user.DisplayName = userName;
 
             user.Token = token;
 

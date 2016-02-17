@@ -42,7 +42,7 @@ namespace Announcement.Android
             }
                 
 
-            holder.txtTitle.Text =  item.Username;
+            holder.txtTitle.Text =  item.DisplayName;
 
             holder.txtReports.Text = item.Reports.ToString();
 
