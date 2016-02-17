@@ -9,6 +9,7 @@ using Android.Views.InputMethods;
 using Android.App;
 using Android.Widget;
 using Android.Animation;
+using Android.OS;
 
 namespace Announcement.Android.Controls
 {
@@ -71,13 +72,16 @@ namespace Announcement.Android.Controls
 
         protected void Initialize()
         {
-            var layoutTransition = new LayoutTransition();
+            if (Build.VERSION.SdkInt > global::Android.OS.BuildVersionCodes.JellyBean)
+            {
+                var layoutTransition = new LayoutTransition();
 
-            layoutTransition.EnableTransitionType(LayoutTransitionType.Appearing);
+                layoutTransition.EnableTransitionType(LayoutTransitionType.Appearing);
 
-            layoutTransition.EnableTransitionType(LayoutTransitionType.Disappearing);
+                layoutTransition.EnableTransitionType(LayoutTransitionType.Disappearing);
 
-            LayoutTransition = layoutTransition;
+                LayoutTransition = layoutTransition;
+            }
 
             
             image = new ScaleImageView(Context);

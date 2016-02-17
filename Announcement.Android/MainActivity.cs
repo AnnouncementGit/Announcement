@@ -48,8 +48,15 @@ namespace Announcement.Android
         public void OnGlobalLayout()
         {
             var mainContent = FindViewById<LinearLayout>(Resource.Id.MainContent);
-            
-            mainContent.ViewTreeObserver.RemoveOnGlobalLayoutListener(this);
+
+            if (Build.VERSION.SdkInt < global::Android.OS.BuildVersionCodes.JellyBean) 
+            {
+                mainContent.ViewTreeObserver.RemoveGlobalOnLayoutListener(this); 
+            } 
+            else 
+            {
+                mainContent.ViewTreeObserver.RemoveOnGlobalLayoutListener(this); 
+            }
 
             ViewModel.AutoLogin(AutoLoginSuccessCallback, AutoLoginFailCallback);
         }

@@ -8,6 +8,7 @@ using Android.Content.Res;
 using Android.Views.InputMethods;
 using Android.App;
 using Android.Animation;
+using Android.OS;
 
 namespace Announcement.Android.Controls
 {
@@ -35,11 +36,14 @@ namespace Announcement.Android.Controls
 
         protected void Initialize()
         {
-            var layoutTransition = new LayoutTransition();
+            if (Build.VERSION.SdkInt > global::Android.OS.BuildVersionCodes.JellyBean) 
+            {
+                var layoutTransition = new LayoutTransition();
 
-            layoutTransition.EnableTransitionType(LayoutTransitionType.Changing);
+                layoutTransition.EnableTransitionType(LayoutTransitionType.Changing);
 
-            LayoutTransition = layoutTransition;
+                LayoutTransition = layoutTransition;
+            } 
         }
     }
 }
