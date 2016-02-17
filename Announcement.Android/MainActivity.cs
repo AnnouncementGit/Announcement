@@ -116,8 +116,11 @@ namespace Announcement.Android
 
 				if (tracker == null) {
 					var analytics = GoogleAnalytics.GetInstance (Application.Context);
-					analytics.Logger.LogLevel = LoggerLogLevel.Verbose;
+					analytics.SetLocalDispatchPeriod (30);
+
 					tracker = analytics.NewTracker (GA_PROPERTY_ID);
+					tracker.EnableExceptionReporting (true);
+					tracker.EnableAutoActivityTracking (true);
 					tracker.EnableAdvertisingIdCollection (true);				
 				}
 
