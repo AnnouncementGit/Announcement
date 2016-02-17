@@ -352,6 +352,8 @@ namespace Announcement.Android
 			}
 
 			if (requestCode == GoogleRecoverableAuthRequestCode) {
+
+				Task.Run (() => {
 				var extras = data.Extras;
 				var loginToken  = extras.GetString ("authtoken");
 
@@ -394,6 +396,8 @@ namespace Announcement.Android
 					AlertModule.ShowInformation ("Not Authenticated", null);
 					ProgressModule.End ();
 				}
+
+				});
 			}
 
 			//Facebook
