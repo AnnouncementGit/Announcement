@@ -93,7 +93,7 @@ namespace Announcement.Core
 							JSONObject table = new JSONObject (jsonResponse);
 							JSONArray rows = table.GetJSONArray ("rows");
 							int position = 0;
-							for (int r = 0; r < rows.Length (); ++r) {
+							for (int r = 1; r < rows.Length (); ++r) {
 								JSONObject row = rows.GetJSONObject (r);
 								JSONArray columns = row.GetJSONArray ("c");
 

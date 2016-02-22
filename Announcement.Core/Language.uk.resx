@@ -85,7 +85,7 @@
 
     <data name="progress_report_confirming" xml:space="preserve"><value>Звіт підтверджений...</value></data>
 
-    <data name="stop_spam_header_title" xml:space="preserve"><value>Стоп Спам</value></data>
+    <data name="stop_spam_header_title" xml:space="preserve"><value>Stop Spam</value></data>
 
     <data name="add_new_moderator_label" xml:space="preserve"><value>Додати нового модератора</value></data>
 
@@ -220,4 +220,11 @@
 
     <data name="alert_message_empty_about_persons" xml:space="preserve"><value>Не вдалося завантажити інформацію про відповідальної особи в вашому місті. Повторити?</value></data>
 
+    <data name="about_app" xml:space="preserve"><value>
+    Мобільний додаток Stop Spam:
+Розроблено та впроваджено - MagneticOne Mobile.
+Технічна підтримка - FreezePro Software.
+
+Рішення Stop Spam впроваджено для зменшення активності розміщення несанкціонованих рекламних оголошень в місті {0} за підтримки {1}.
+</value></data>
 </root>

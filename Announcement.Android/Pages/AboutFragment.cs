@@ -11,11 +11,19 @@ using Android.Runtime;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using Announcement.Core;
 
 namespace Announcement.Android
 {
 	public class AboutFragment : BaseFragment
 	{
+		private AboutViewModel ViewModel 
+		{ 
+			get 
+			{ 
+				return AboutViewModel.Instance; 
+			}
+		}
 
 		TextView aboutInfo;
 		public override void OnCreate (Bundle savedInstanceState)
@@ -30,6 +38,18 @@ namespace Announcement.Android
 			aboutInfo = view.FindViewById<TextView> (Resource.Id.aboutInfo);
 
 			return view;
+		}
+
+		public override void OnResume ()
+		{
+			base.OnResume ();
+
+			if (ViewModel.CurrentPerson != null) {
+				string about_text = string.Format (LocalizationModule.Translate ("about_app"), ViewModel.CurrentPerson.City, ViewModel.CurrentPerson.Pib);
+				aboutInfo.Text = about_text;
+			}
+			else
+				aboutInfo.Text = string.Empty;
 		}
 	}
 }

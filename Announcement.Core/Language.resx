@@ -220,4 +220,9 @@ Press OK to choose another one. </value></data>
 
     <data name="alert_message_empty_about_persons" xml:space="preserve"><value>Couldn't load information about the responsible person in your city. Try again?</value></data>
 
+    <data name="about_app" xml:space="preserve"><value>Mobile application Stop Spam:
+Developed and implemented - MagneticOne Mobile.
+Technical support - FreezePro Software.
+
+Stop Spam Solutions implemented to reduce the activity of unauthorized placement of advertisements in {0} supported {1}.</value></data>
 </root>
