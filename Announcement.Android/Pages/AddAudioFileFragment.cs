@@ -43,6 +43,9 @@ namespace Announcement.Android
 			MainActivity.GATracker.SetScreenName ("Add Audio File Fragment");
 			MainActivity.GATracker.Send (new HitBuilders.ScreenViewBuilder ().Build ());
 
+			if(NavigationManager.CurrentHeader != null && NavigationManager.CurrentHeader is HeaderFragment)
+				(NavigationManager.CurrentHeader as HeaderFragment).ShowBack (true);
+			
 			return view;
 		}
 

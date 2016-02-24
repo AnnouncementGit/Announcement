@@ -11,9 +11,12 @@ using Square.Picasso;
 using Android.App;
 using Android.Content;
 using Javax.Net.Ssl;
-using Square.OkHttp;
 using Android.Runtime;
 using Android.Gms.Analytics;
+using System.Threading;
+using Android.Locations;
+using System.Linq;
+
 
 namespace Announcement.Android
 {
@@ -24,6 +27,7 @@ namespace Announcement.Android
 		private ViewPager reportViewPager;
 		private CustomViewPagerAdapter reportViewPagerAdapter;
 		private Announcement.Android.Controls.EditText txtPhone;
+		private Announcement.Android.Controls.TextView txtLocation;
 
 		public override global::Android.Views.View OnCreateView (global::Android.Views.LayoutInflater inflater, global::Android.Views.ViewGroup container, global::Android.OS.Bundle savedInstanceState)
 		{
@@ -51,6 +55,8 @@ namespace Announcement.Android
 
 			txtPhone = view.FindViewById<Announcement.Android.Controls.EditText> (Resource.Id.reportPhoneNumber);
 
+			txtLocation = view.FindViewById<Announcement.Android.Controls.TextView> (Resource.Id.reportLocation); 
+
 			view.FindViewById<Announcement.Android.Controls.Button> (Resource.Id.btnConfirm).Click += OnConfirmClick;
 
             view.FindViewById<Announcement.Android.Controls.Button> (Resource.Id.btnReject).Click += OnCancelClick;
@@ -64,7 +70,41 @@ namespace Announcement.Android
 			MainActivity.GATracker.SetScreenName ("Report Validation Fragment");
 			MainActivity.GATracker.Send (new HitBuilders.ScreenViewBuilder ().Build ());
 
+			if(NavigationManager.CurrentHeader != null && NavigationManager.CurrentHeader is HeaderFragment)
+				(NavigationManager.CurrentHeader as HeaderFragment).ShowBack (true);
+
+			SetLocationData ();
+
 			return view;
+		}
+	
+
+		void SetLocationData()
+		{
+			IList<Address> address = new List<Address>();
+			new Thread (new ThreadStart (() => {
+				try {
+					var geo = new Geocoder (NavigationManager.CurrentActivity);
+					address = geo.GetFromLocation (viewModel.Latitude, viewModel.Longitude, 1);
+				} 
+				catch (Exception ex) 
+				{
+					Console.WriteLine(ex.Message);
+				}
+				finally
+				{
+					NavigationManager.CurrentActivity.RunOnUiThread (() => {
+						string city = string.Empty;
+						if (address != null && address.Any ())
+							city = address[0].Locality;
+						else city =  LocalizationModule.Translate("title_city_unknown"); 
+
+						txtLocation.Text = string.Format("{0} {1} ({2}: {3}, {4}: {5})", LocalizationModule.Translate("title_city"), city,
+							LocalizationModule.Translate("label_latitude"), viewModel.Latitude, LocalizationModule.Translate("label_longitude"), viewModel.Longitude);
+
+					});
+				}
+			})).Start ();		
 		}
 
 		protected void ReportViewPagerOnPageScrolled (object sender, global::Android.Support.V4.View.ViewPager.PageScrolledEventArgs e)

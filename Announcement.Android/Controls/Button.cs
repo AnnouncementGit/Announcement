@@ -81,7 +81,10 @@ namespace Announcement.Android.Controls
         {
             using (var attributes = Context.ObtainStyledAttributes(attrs, Resource.Styleable.localization))
             {
-                SetText(LocalizationModule.Translate(attributes.GetString(Resource.Styleable.localization_localizationKey)), BufferType.Normal); 
+				string text = attributes.GetString (Resource.Styleable.localization_localizationKey);
+
+				if(!string.IsNullOrWhiteSpace(text))
+					SetText(LocalizationModule.Translate(text), BufferType.Normal); 
 
                 attributes.Recycle();
             }

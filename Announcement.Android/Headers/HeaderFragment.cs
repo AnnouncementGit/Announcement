@@ -30,6 +30,9 @@ namespace Announcement.Android
             btnMenu.Click += BtnMenuOnClick;
             btnMenu.ViewTreeObserver.AddOnGlobalLayoutListener(this);
 
+			btnBack = view.FindViewById<Button>(Resource.Id.btnBack);
+			btnBack.Click += BtnBack_Click;
+
             var popupView = inflater.Inflate(Resource.Layout.popup_menu, null);
             popupWindow = new PopupWindow(MainActivityInstance.Current);
             popupWindow.Focusable = true;
@@ -45,6 +48,16 @@ namespace Announcement.Android
 
             return view;
         }
+
+        void BtnBack_Click (object sender, System.EventArgs e)
+        {
+			NavigationManager.CurrentActivity.OnBackPressed ();
+        }
+
+		public void ShowBack(bool isShow)
+		{
+			btnBack.Visibility = (isShow) ? ViewStates.Visible : ViewStates.Invisible;
+		}
 
         public void OnGlobalLayout()
         {
@@ -103,7 +116,7 @@ namespace Announcement.Android
         protected void ShowPopupMenu()
         {
             var menuItems = new List<string>();
-
+					
             switch (BaseViewModel.UserInfo.Role)
             {
                 case UserRoles.User:
@@ -152,7 +165,7 @@ namespace Announcement.Android
 
             var title = (string)((ArrayAdapter)popupListView.Adapter).GetItem(e.Position);
 
-            if (title == LocalizationModule.Translate("label_add_moderator"))
+			if (title == LocalizationModule.Translate("label_add_moderator"))
             {
                 AdminMainViewModel.Instance.InitializeCreateModerator(() =>
                     {
@@ -183,6 +196,7 @@ namespace Announcement.Android
             {
                 ViewModel.Logout(LogoutCallback);
             }
+
         }
 
 		private void OpenSettings()
@@ -201,6 +215,8 @@ namespace Announcement.Android
         }
 
         private ToggleButton btnMenu;
+
+		private Button btnBack;
 
         private PopupWindow popupWindow;
 

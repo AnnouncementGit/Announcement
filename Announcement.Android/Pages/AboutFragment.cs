@@ -37,6 +37,8 @@ namespace Announcement.Android
 
 			aboutInfo = view.FindViewById<TextView> (Resource.Id.aboutInfo);
 
+			if(NavigationManager.CurrentHeader != null && NavigationManager.CurrentHeader is HeaderFragment)
+				(NavigationManager.CurrentHeader as HeaderFragment).ShowBack (true);
 			return view;
 		}
 

@@ -42,6 +42,7 @@
     <EnableLLVM>true</EnableLLVM>
     <JavaMaximumHeapSize>1G</JavaMaximumHeapSize>
     <RunCodeAnalysis>false</RunCodeAnalysis>
+    <AndroidSupportedAbis>armeabi;armeabi-v7a;x86;arm64-v8a;x86_64</AndroidSupportedAbis>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -312,6 +313,11 @@
     <AndroidResource Include="Resources\drawable\player_stop_state.xml" />
     <AndroidResource Include="Resources\drawable\player_play_state.xml" />
     <AndroidResource Include="Resources\layout\about_view.axml" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\back.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\back.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\back.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\back.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\back.png" />
   </ItemGroup>
   <Import Project="..\Announcement.Core\Announcement.Core.projitems" Label="Shared" Condition="Exists('..\Announcement.Core\Announcement.Core.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />

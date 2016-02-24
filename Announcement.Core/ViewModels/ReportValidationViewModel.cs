@@ -11,6 +11,10 @@ namespace Announcement.Core
 
         public List<string> Photos { get; set; }
 
+		public float Latitude { get; set;}
+
+		public float Longitude { get; set;}
+
 
         public static ReportValidationViewModel Instance
         {
@@ -32,6 +36,9 @@ namespace Announcement.Core
                 PhoneNumber = report.PhoneNumber != null ? report.PhoneNumber : string.Empty;
 
                 Photos = report.Photos != null ? report.Photos : new List<string>();
+
+				Latitude = report.Latitude;
+				Longitude = report.Longitude;
             }
             else
             {

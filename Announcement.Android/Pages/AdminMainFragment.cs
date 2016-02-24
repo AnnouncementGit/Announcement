@@ -52,6 +52,9 @@ namespace Announcement.Android
 			MainActivity.GATracker.SetScreenName ("Admin Main Fragment");
 			MainActivity.GATracker.Send (new HitBuilders.ScreenViewBuilder ().Build ());
 
+			if(NavigationManager.CurrentHeader != null && NavigationManager.CurrentHeader is HeaderFragment)
+				(NavigationManager.CurrentHeader as HeaderFragment).ShowBack (false);
+			
             return view;
 		}
               

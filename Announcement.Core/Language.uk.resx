@@ -227,4 +227,10 @@
 
 Рішення Stop Spam впроваджено для зменшення активності розміщення несанкціонованих рекламних оголошень в місті {0} за підтримки {1}.
 </value></data>
+
+ <data name="label_back" xml:space="preserve"><value>Назад</value></data>
+
+ <data name="label_latitude" xml:space="preserve"><value>Ш</value></data>
+ <data name="label_longitude" xml:space="preserve"><value>Д</value></data>
+
 </root>

@@ -20,6 +20,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/grey_color" />
+            <Announcement.Android.Controls.TextView
+                android:id="@+id/reportLocation"
+                style="@style/text_view_normal_font_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|center_vertical"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="10dp"
+                android:textSize="16sp"
+                android:singleLine="false"
+                android:ellipsize="end"
+                android:text=""
+                android:textColor="@color/major_color" />
             <Announcement.Android.Controls.EditText
                 style="@style/text_view_normal_font_style"
                 android:id="@+id/reportPhoneNumber"

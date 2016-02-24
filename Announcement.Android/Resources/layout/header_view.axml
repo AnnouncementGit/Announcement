@@ -13,6 +13,18 @@
         android:textColor="@color/major_color"
         android:background="@android:color/black"
         local:localizationKey="stop_spam_header_title" />
+    <Announcement.Android.Controls.Button
+        android:id="@+id/btnBack"
+        style="@style/text_view_normal_font_style"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        local:localizationKey="label_back"
+        android:background="@android:color/transparent"
+        android:layout_marginRight="10dp"
+        android:textColor="@color/major_color"
+        android:visibility="visible"
+        android:drawableLeft="@drawable/back"
+        android:layout_toLeftOf="@+id/btnMenu" />
     <ToggleButton
         android:id="@+id/btnMenu"
         android:layout_width="40dp"

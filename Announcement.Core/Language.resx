@@ -225,4 +225,11 @@ Developed and implemented - MagneticOne Mobile.
 Technical support - FreezePro Software.
 
 Stop Spam Solutions implemented to reduce the activity of unauthorized placement of advertisements in {0} supported {1}.</value></data>
+
+ <data name="label_back" xml:space="preserve"><value>Back</value></data>
+
+ <data name="label_latitude" xml:space="preserve"><value>Lat</value></data>
+ <data name="label_longitude" xml:space="preserve"><value>Lng</value></data>
+ 
+
 </root>

@@ -8,6 +8,9 @@ namespace Announcement.Android
     public static class NavigationManager
     {
         public static global::Android.App.Activity CurrentActivity { get; private set; }
+
+		public static Fragment CurrentHeader { get; private set; }
+
 		public static Type CurrentFragment{
 			get 
 			{
@@ -62,7 +65,9 @@ namespace Announcement.Android
 
 			var transaction = fragmentManager.BeginTransaction();
 
-			transaction.Replace(Resource.Id.HeaderContainer, (Fragment)Activator.CreateInstance(headerType));
+			var headerFragment = (Fragment)Activator.CreateInstance (headerType);
+			CurrentHeader = headerFragment;
+			transaction.Replace(Resource.Id.HeaderContainer, headerFragment);
 
 			transaction.Commit();
 		}
